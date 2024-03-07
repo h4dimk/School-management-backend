@@ -8,7 +8,6 @@ const adminSchema: Schema<IAdmin> = new Schema(
       type: String,
       min: 3,
     },
-
     email: {
       type: String,
       required: [true, "please provide a valid email"],
@@ -17,7 +16,6 @@ const adminSchema: Schema<IAdmin> = new Schema(
     password: {
       type: String,
       minlength: [6, "password must be atleast six characters"],
-      select: false,
     },
     phonenumber: {
       type: Number,

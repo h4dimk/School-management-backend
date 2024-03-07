@@ -1,9 +1,10 @@
 import { IAdminRepository } from "../interface/repository/adminRepository";
 import { IAdminUseCase } from "../interface/useCase/adminUseCase";
 import { IAdmin } from "../../entities/adminEntity";
+import { ITeacher } from "../../entities/teacherEntity";
 
 export class AdminUseCase implements IAdminUseCase {
-  private readonly adminRepository: IAdminRepository;
+  private adminRepository: IAdminRepository;
 
   constructor(adminRepository: IAdminRepository) {
     this.adminRepository = adminRepository;
@@ -12,8 +13,9 @@ export class AdminUseCase implements IAdminUseCase {
   async login(email: string, password: string): Promise<string> {
     try {
       const admin = await this.adminRepository.findByEmail(email);
+      console.log(admin);
       if (admin && admin.password === password) {
-        const token = "generated_token"; // Replace with actual token generation logic
+        const token = "generated_token";
         return token;
       } else {
         throw new Error("Invalid credentials");
@@ -26,20 +28,47 @@ export class AdminUseCase implements IAdminUseCase {
 
   async createAdmin(email: string, password: string): Promise<void> {
     try {
-        // Check if admin already exists with the given email
-        const existingAdmin = await this.adminRepository.findByEmail(email);
-        if (existingAdmin) {
-            throw new Error('Admin with this email already exists');
-        }
-        
-        // Create the admin object
-        const admin: IAdmin = { email, password };
+      console.log(email, password, "usecase");
+      // Check if admin already exists with the given email
+      const existingAdmin = await this.adminRepository.findByEmail(email);
+      if (existingAdmin) {
+        throw new Error("Admin with this email already exists");
+      }
 
-        // Insert the admin data into the repository
-        await this.adminRepository.create(admin);
+      // Create the admin object
+      const admin: IAdmin = { email, password };
+
+      // Insert the admin data into the repository
+      await this.adminRepository.create(admin);
     } catch (error) {
-        console.error('Error creating admin:', error);
-        throw new Error('Failed to create admin');
+      console.error("Error creating admin:", error);
+      throw new Error("Failed to create admin");
     }
-}
+  }
+
+  async addTeacher(teacher: ITeacher): Promise<void> {
+    try {
+      const existingTeacher = await this.adminRepository.findTeacher(
+        teacher.email
+      );
+      if (existingTeacher) {
+        throw new Error("Teacher with this email already exists");
+      }
+
+      return await this.adminRepository.createTeacher(teacher);
+    } catch (error) {
+      console.error("Error creating teacher:", error);
+      throw new Error("Failed to create teacher");
+    }
+  }
+
+  async getTeachers(): Promise<ITeacher[]> {
+    try {
+      const teachers = await this.adminRepository.getTeachers();
+      return teachers;
+    } catch (error) {
+      console.error("Error fetching teachers:", error);
+      throw new Error("Failed to fetch teachers");
+    }
+  }
 }

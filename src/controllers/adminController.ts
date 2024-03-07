@@ -1,6 +1,10 @@
-import { Route, Req, Res, Next } from "../frameworks/types/serverPackageTypes";
+import { Req, Res, Next } from "../frameworks/types/serverPackageTypes";
 
 import { IAdminUseCase } from "../useCases/interface/useCase/adminUseCase";
+
+import { ITeacher } from "../entities/teacherEntity";
+
+import { randomBytes } from "crypto";
 
 export class AdminController {
   private readonly adminUseCase: IAdminUseCase;
@@ -27,6 +31,37 @@ export class AdminController {
     } catch (error) {
       console.error("Error creating admin:", error);
       return next(error);
+    }
+  }
+
+  async addTeacher(req: Req, res: Res) {
+    try {
+      const { name, email, subject, gender } = req.body;
+      const password = randomBytes(8).toString("hex");
+      const newTeacher: ITeacher = {
+        name,
+        email,
+        subject,
+        gender,
+        password,
+      };
+      const addedTeacher = await this.adminUseCase.addTeacher(newTeacher);
+      res.status(201).json(addedTeacher);
+    } catch (error) {
+      console.error("Error adding teacher:", error);
+      res.status(500).json({ error: "Failed to add teacher" });
+    }
+  }
+
+  async getTeachers(req: Req, res: Res){
+    try {
+    
+      const teachers= await this.adminUseCase.getTeachers();
+      res.json(teachers);
+    } catch (error) {
+      console.error("Error fetching teachers:", error);
+      res.status(500).json({ error: "Failed to fetch teachers" });
+      
     }
   }
 }
