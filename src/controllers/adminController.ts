@@ -53,15 +53,36 @@ export class AdminController {
     }
   }
 
-  async getTeachers(req: Req, res: Res){
+  async getTeachers(req: Req, res: Res) {
     try {
-    
-      const teachers= await this.adminUseCase.getTeachers();
+      const teachers = await this.adminUseCase.getTeachers();
       res.json(teachers);
     } catch (error) {
       console.error("Error fetching teachers:", error);
       res.status(500).json({ error: "Failed to fetch teachers" });
-      
     }
   }
+
+  async blockTeacher(req: Req, res: Res) {
+    const teacherId = req.params.id;
+    try {
+      const isActive = await this.adminUseCase.blockTeacher(teacherId);
+      // Respond with a success message and the updated isActive status
+      res.status(200).json({ isActive });
+    } catch (error) {
+      console.error("Error blocking/unblocking teacher:", error);
+      res.status(500).json({ error: "Failed to block/unblock teacher" });
+    }
+  }
+
+  async removeTeacher(req: Req, res: Res) {
+    const teacherId = req.params.id;
+    try {
+        await this.adminUseCase.removeTeacher(teacherId);
+        res.status(200).json({ message: 'Teacher removed successfully' });
+    } catch (error) {
+        console.error('Error removing teacher:', error);
+        res.status(500).json({ error: 'Failed to remove teacher' });
+    }
+}
 }

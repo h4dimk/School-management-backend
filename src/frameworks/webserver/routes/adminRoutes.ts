@@ -27,6 +27,18 @@ export const adminRoute = (router: Route) => {
       adminController.getTeachers(req, res);
     })
   );
+  router.put(
+    "/block-teacher/:id",
+    catchAsyncErrors((req: Req, res: Res) => {
+      adminController.blockTeacher(req, res);
+    })
+  );
+  router.delete(
+    "/remove-teacher/:id",
+    catchAsyncErrors((req: Req, res: Res)=>{
+      adminController.removeTeacher(req,res)
+    })
+  )
 
   return router;
 };

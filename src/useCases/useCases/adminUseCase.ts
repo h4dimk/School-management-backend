@@ -71,4 +71,26 @@ export class AdminUseCase implements IAdminUseCase {
       throw new Error("Failed to fetch teachers");
     }
   }
+
+  async blockTeacher(teacherId: string): Promise<boolean> {
+    try {
+      const isActive = await this.adminRepository.blockTeacher(teacherId);
+      return isActive;
+    } catch (error) {
+      console.error("Error blocking/unblocking teacher:", error);
+      throw new Error("Failed to block/unblock teacher");
+    }
+  }
+
+   async removeTeacher(teacherId: string): Promise<void> {
+
+    try {
+      await this.adminRepository.removeTeacher(teacherId)
+      console.log(`Teacher with ID ${teacherId} has been removed successfully`);
+    } catch (error) {
+      console.error('Error removing teacher:', error);
+      throw new Error('Failed to remove teacher');
+    }
+    
+  }
 }

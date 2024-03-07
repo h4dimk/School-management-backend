@@ -5,4 +5,6 @@ export interface IAdminUseCase {
   createAdmin(email: string, password: string): Promise<void>;
   addTeacher(teacher: ITeacher): Promise<void>;
   getTeachers(): Promise<ITeacher[]>;
+  blockTeacher(teacherId: string): Promise<boolean>;
+  removeTeacher(teacherId: string): Promise<void>;
 }

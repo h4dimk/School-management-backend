@@ -9,13 +9,11 @@ import { adminRoute } from "../routes/adminRoutes";
 import { teacherRoute } from "../routes/teacherRoutes";
 import { studentRoute } from "../routes/studentRoutes";
 
-
-
 app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
-    methods: ["GET", "PATCH", "PUT", "POST"],
+    methods: ["GET", "PATCH", "PUT", "POST", "DELETE"],
     optionsSuccessStatus: 204,
   })
 );

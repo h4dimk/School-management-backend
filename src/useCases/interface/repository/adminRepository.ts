@@ -7,4 +7,6 @@ export interface IAdminRepository {
   createTeacher(teacher: ITeacher): Promise<void>;
   findTeacher(email: string): Promise<ITeacher | null>;
   getTeachers(): Promise<ITeacher[]>;
+  blockTeacher(teacherId: string): Promise<boolean>;
+  removeTeacher(teacherId: string): Promise<void>;
 }
