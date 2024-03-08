@@ -18,6 +18,9 @@ const studentSchema: Schema<IStudent> = new Schema(
       minlength: [6, "Password must be at least six characters"],
       select: false,
     },
+    gender: {
+      type: String,
+    },
     course: {
       type: String,
       required: [true, "Please provide a valid course"],
@@ -33,8 +36,10 @@ const studentSchema: Schema<IStudent> = new Schema(
     phonenumber: {
       type: Number,
     },
-    profile: {
+    avatar: {
       type: String,
+      default:
+        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
     },
   },
   { timestamps: true }

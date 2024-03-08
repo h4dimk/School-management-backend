@@ -1,4 +1,5 @@
 import teacherModel from "../../models/teacherModel";
+
 export const findTeacher = async (email: string) => {
   try {
     const teacher = await teacherModel.findOne({ email });

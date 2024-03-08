@@ -2,6 +2,7 @@ import { IAdminRepository } from "../interface/repository/adminRepository";
 import { IAdminUseCase } from "../interface/useCase/adminUseCase";
 import { IAdmin } from "../../entities/adminEntity";
 import { ITeacher } from "../../entities/teacherEntity";
+import { IStudent } from "../../entities/studentEntity";
 
 export class AdminUseCase implements IAdminUseCase {
   private adminRepository: IAdminRepository;
@@ -54,6 +55,12 @@ export class AdminUseCase implements IAdminUseCase {
       if (existingTeacher) {
         throw new Error("Teacher with this email already exists");
       }
+      const existingStudent = await this.adminRepository.findStudent(
+        teacher.email
+      );
+      if (existingStudent) {
+        throw new Error("Student with this email already exists");
+      }
 
       return await this.adminRepository.createTeacher(teacher);
     } catch (error) {
@@ -82,15 +89,63 @@ export class AdminUseCase implements IAdminUseCase {
     }
   }
 
-   async removeTeacher(teacherId: string): Promise<void> {
-
+  async removeTeacher(teacherId: string): Promise<void> {
     try {
-      await this.adminRepository.removeTeacher(teacherId)
-      console.log(`Teacher with ID ${teacherId} has been removed successfully`);
+      await this.adminRepository.removeTeacher(teacherId);
     } catch (error) {
-      console.error('Error removing teacher:', error);
-      throw new Error('Failed to remove teacher');
+      console.error("Error removing teacher:", error);
+      throw new Error("Failed to remove teacher");
     }
-    
+  }
+
+  async addStudent(student: IStudent): Promise<void> {
+    try {
+      const existingStudent = await this.adminRepository.findStudent(
+        student.email
+      );
+      if (existingStudent) {
+        throw new Error("Student with this email already exists");
+      }
+      const existingTeacher = await this.adminRepository.findTeacher(
+        student.email
+      );
+      if (existingTeacher) {
+        throw new Error("Teacher with this email already exists");
+      }
+
+      return await this.adminRepository.createStudent(student);
+    } catch (error) {
+      console.error("Error creating student:", error);
+      throw new Error("Failed to create student");
+    }
+  }
+
+  async getStudents(): Promise<IStudent[]> {
+    try {
+      const students = await this.adminRepository.getStudents();
+      return students;
+    } catch (error) {
+      console.error("Error fetching students:", error);
+      throw new Error("Failed to fetch students");
+    }
+  }
+
+  async blockStudent(studentId: string): Promise<boolean> {
+    try {
+      const isActive = await this.adminRepository.blockStudent(studentId);
+      return isActive;
+    } catch (error) {
+      console.error("Error blocking/unblocking student:", error);
+      throw new Error("Failed to block/unblock student");
+    }
+  }
+
+  async removeStudent(studentId: string): Promise<void> {
+    try {
+      await this.adminRepository.removeStudent(studentId);
+    } catch (error) {
+      console.error("Error removing student:", error);
+      throw new Error("Failed to remove student");
+    }
   }
 }

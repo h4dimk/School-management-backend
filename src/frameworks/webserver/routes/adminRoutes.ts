@@ -35,10 +35,35 @@ export const adminRoute = (router: Route) => {
   );
   router.delete(
     "/remove-teacher/:id",
-    catchAsyncErrors((req: Req, res: Res)=>{
-      adminController.removeTeacher(req,res)
+    catchAsyncErrors((req: Req, res: Res) => {
+      adminController.removeTeacher(req, res);
     })
-  )
+  );
+
+  router.post(
+    "/add-student",
+    catchAsyncErrors((req: Req, res: Res) => {
+      adminController.addStudent(req, res);
+    })
+  );
+  router.get(
+    "/get-students",
+    catchAsyncErrors((req: Req, res: Res) => {
+      adminController.getStudents(req, res);
+    })
+  );
+  router.put(
+    "/block-student/:id",
+    catchAsyncErrors((req: Req, res: Res) => {
+      adminController.blockStudent(req, res);
+    })
+  );
+  router.delete(
+    "/remove-student/:id",
+    catchAsyncErrors((req: Req, res: Res) => {
+      adminController.removeStudent(req, res);
+    })
+  );
 
   return router;
 };

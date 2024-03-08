@@ -5,7 +5,8 @@ export interface IStudent {
   password: string;
   course: string;
   batch: string | number;
-  isActive: boolean;
+  gender:string;
+  isActive?: boolean;
   phonenumber?: number;
-  profile?: string;
+  avatar?: string;
 }

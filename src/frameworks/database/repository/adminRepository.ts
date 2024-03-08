@@ -1,9 +1,9 @@
 import adminModel from "../models/adminModel";
-import teacherModel from "../models/teacherModel";
 
 import { IAdminRepository } from "../../../useCases/interface/repository/adminRepository";
 import { IAdmin } from "../../../entities/adminEntity";
 import { ITeacher } from "../../../entities/teacherEntity";
+import { IStudent } from "../../../entities/studentEntity";
 
 import {
   findByEmail,
@@ -12,6 +12,11 @@ import {
   getTeachers,
   blockTeacher,
   removeTeacher,
+  createStudent,
+  findStudent,
+  getStudents,
+  blockStudent,
+  removeStudent,
 } from "./adminRepository/index";
 
 export class AdminRepository implements IAdminRepository {
@@ -78,10 +83,56 @@ export class AdminRepository implements IAdminRepository {
   async removeTeacher(teacherId: string): Promise<void> {
     try {
       await removeTeacher(teacherId);
-      console.log(`Teacher with ID ${teacherId} has been removed successfully`);
     } catch (error) {
-      console.error('Error removing teacher:', error);
-      throw new Error('Failed to remove teacher');
+      console.error("Error removing teacher:", error);
+      throw new Error("Failed to remove teacher");
+    }
+  }
+
+  async createStudent(student: IStudent): Promise<void> {
+    try {
+      await createStudent(student);
+    } catch (error) {
+      console.error("Error creating student:", error);
+      throw new Error("Failed to create student");
+    }
+  }
+
+  async findStudent(email: string): Promise<IStudent | null> {
+    try {
+      const studentExist = await findStudent(email);
+      return studentExist;
+    } catch (error) {
+      console.error("Error finding student by email:", error);
+      throw new Error("Failed to find student by email");
+    }
+  }
+
+  async getStudents(): Promise<IStudent[]> {
+    try {
+      const students = await getStudents();
+      return students;
+    } catch (error) {
+      throw new Error("Failed to fetch students");
+    }
+  }
+
+  async blockStudent(studentId: string): Promise<boolean> {
+    try {
+      const isActive = await blockStudent(studentId);
+      return isActive;
+    } catch (error) {
+      console.error("Error blocking/unblocking student:", error);
+      throw new Error("Failed to block/unblock student");
+    }
+  }
+
+  async removeStudent(studentId: string): Promise<void> {
+    try {
+      await removeStudent(studentId);
+    } catch (error) {
+      console.error("Error removing student:", error);
+      throw new Error("Failed to remove student");
     }
   }
 }

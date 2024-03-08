@@ -1,4 +1,5 @@
 import teacherModel from "../../models/teacherModel";
+
 export const getTeachers = async () => {
   try {
     const teachers = await teacherModel.find();
