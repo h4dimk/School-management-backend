@@ -65,5 +65,24 @@ export const adminRoute = (router: Route) => {
     })
   );
 
+  router.post(
+    "/add-course",
+    catchAsyncErrors((req: Req, res: Res) => {
+      adminController.addCourse(req, res);
+    })
+  );
+  router.get(
+    "/get-courses",
+    catchAsyncErrors((req: Req, res: Res) => {
+      adminController.getCourses(req, res);
+    })
+  );
+  router.delete(
+    "/remove-course/:id",
+    catchAsyncErrors((req: Req, res: Res) => {
+      adminController.removeCourse(req, res);
+    })
+  );
+
   return router;
 };

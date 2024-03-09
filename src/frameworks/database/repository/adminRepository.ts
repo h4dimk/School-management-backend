@@ -17,7 +17,12 @@ import {
   getStudents,
   blockStudent,
   removeStudent,
+  createCourse,
+  findCourse,
+  getCourses,
+  removeCourse,
 } from "./adminRepository/index";
+import { ICourse } from "../../../entities/courseEntity";
 
 export class AdminRepository implements IAdminRepository {
   constructor(private adminModels: typeof adminModel) {}
@@ -133,6 +138,43 @@ export class AdminRepository implements IAdminRepository {
     } catch (error) {
       console.error("Error removing student:", error);
       throw new Error("Failed to remove student");
+    }
+  }
+
+  async createCourse(course: ICourse): Promise<void> {
+    try {
+      await createCourse(course);
+    } catch (error) {
+      console.error("Error creating course:", error);
+      throw new Error("Failed to create course");
+    }
+  }
+
+  async findCourse(name: string): Promise<ICourse | null> {
+    try {
+      const courseExist = await findCourse(name);
+      return courseExist;
+    } catch (error) {
+      console.error("Error finding course by name:", error);
+      throw new Error("Failed to find course by name");
+    }
+  }
+
+  async getCourse(): Promise<ICourse[]> {
+    try {
+      const courses = await getCourses();
+      return courses;
+    } catch (error) {
+      throw new Error("Failed to fetch courses");
+    }
+  }
+
+  async removeCourse(courseId: string): Promise<void> {
+    try {
+      await removeCourse(courseId);
+    } catch (error) {
+      console.error("Error removing course:", error);
+      throw new Error("Failed to remove course");
     }
   }
 }

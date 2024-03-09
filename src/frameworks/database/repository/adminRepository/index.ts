@@ -7,6 +7,10 @@ import { createStudent } from "./createStudent";
 import { findStudent } from "./findStudent";
 import { getStudents } from "./getStudents";
 import { blockStudent, removeStudent } from "./manageStudents";
+import { createCourse } from "./createCourse";
+import { findCourse } from "./findCourse";
+import { getCourses } from "./getCourses";
+import { removeCourse } from "./removeCourse";
 
 export {
   findByEmail,
@@ -20,4 +24,8 @@ export {
   getStudents,
   blockStudent,
   removeStudent,
+  createCourse,
+  findCourse,
+  getCourses,
+  removeCourse,
 };

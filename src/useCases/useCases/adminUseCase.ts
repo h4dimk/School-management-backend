@@ -3,6 +3,7 @@ import { IAdminUseCase } from "../interface/useCase/adminUseCase";
 import { IAdmin } from "../../entities/adminEntity";
 import { ITeacher } from "../../entities/teacherEntity";
 import { IStudent } from "../../entities/studentEntity";
+import { ICourse } from "../../entities/courseEntity";
 
 export class AdminUseCase implements IAdminUseCase {
   private adminRepository: IAdminRepository;
@@ -146,6 +147,40 @@ export class AdminUseCase implements IAdminUseCase {
     } catch (error) {
       console.error("Error removing student:", error);
       throw new Error("Failed to remove student");
+    }
+  }
+
+  async addCourse(course: ICourse): Promise<void> {
+    try {
+      const existingCourse = await this.adminRepository.findCourse(
+        course.course
+      );
+      if (existingCourse) {
+        throw new Error("Course with this email already exists");
+      }
+      return await this.adminRepository.createCourse(course);
+    } catch (error) {
+      console.error("Error creating course:", error);
+      throw new Error("Failed to create course");
+    }
+  }
+
+  async getCourses(): Promise<ICourse[]> {
+    try {
+      const courses = await this.adminRepository.getCourse();
+      return courses;
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+      throw new Error("Failed to fetch courses");
+    }
+  }
+
+  async removeCourse(courseId: string): Promise<void> {
+    try {
+      await this.adminRepository.removeCourse(courseId);
+    } catch (error) {
+      console.error("Error removing course:", error);
+      throw new Error("Failed to remove course");
     }
   }
 }

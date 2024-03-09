@@ -6,6 +6,7 @@ import { ITeacher } from "../entities/teacherEntity";
 
 import { randomBytes } from "crypto";
 import { IStudent } from "../entities/studentEntity";
+import { ICourse } from "../entities/courseEntity";
 
 export class AdminController {
   private readonly adminUseCase: IAdminUseCase;
@@ -137,6 +138,42 @@ export class AdminController {
     } catch (error) {
       console.error("Error removing student:", error);
       res.status(500).json({ error: "Failed to remove student" });
+    }
+  }
+
+  async addCourse(req: Req, res: Res) {
+    try {
+      const { course, subjects } = req.body;
+      const newCourse: ICourse = {
+        course,
+        subjects,
+      };
+      const addedCourse = await this.adminUseCase.addCourse(newCourse);
+      res.status(201).json(addedCourse);
+    } catch (error) {
+      console.error("Error adding course:", error);
+      res.status(500).json({ error: "Failed to add course" });
+    }
+  }
+
+  async getCourses(req: Req, res: Res) {
+    try {
+      const courses = await this.adminUseCase.getCourses();
+      res.json(courses);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+      res.status(500).json({ error: "Failed to fetch courses" });
+    }
+  }
+
+  async removeCourse(req: Req, res: Res) {
+    const courseId = req.params.id;
+    try {
+      await this.adminUseCase.removeCourse(courseId);
+      res.status(200).json({ message: "Course removed successfully" });
+    } catch (error) {
+      console.error("Error removing course:", error);
+      res.status(500).json({ error: "Failed to remove course" });
     }
   }
 }
