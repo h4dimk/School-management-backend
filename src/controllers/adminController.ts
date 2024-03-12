@@ -7,6 +7,7 @@ import { ITeacher } from "../entities/teacherEntity";
 import { randomBytes } from "crypto";
 import { IStudent } from "../entities/studentEntity";
 import { ICourse } from "../entities/courseEntity";
+import IJwtService from "../useCases/interface/services/jwtService";
 
 export class AdminController {
   private readonly adminUseCase: IAdminUseCase;
@@ -40,12 +41,14 @@ export class AdminController {
     try {
       const { name, email, subject, gender } = req.body;
       const password = randomBytes(8).toString("hex");
+      const role = "teacher";
       const newTeacher: ITeacher = {
         name,
         email,
         subject,
         gender,
         password,
+        role,
       };
       const addedTeacher = await this.adminUseCase.addTeacher(newTeacher);
       res.status(201).json(addedTeacher);
@@ -92,6 +95,7 @@ export class AdminController {
     try {
       const { name, email, course, batch, gender } = req.body;
       const password = randomBytes(8).toString("hex");
+      const role = "student";
       const newStudent: IStudent = {
         name,
         email,
@@ -99,6 +103,7 @@ export class AdminController {
         batch,
         gender,
         password,
+        role,
       };
       const addedStudent = await this.adminUseCase.addStudent(newStudent);
       res.status(201).json(addedStudent);

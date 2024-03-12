@@ -36,6 +36,9 @@ const studentSchema: Schema<IStudent> = new Schema(
     phonenumber: {
       type: Number,
     },
+    role: {
+      type: String,
+    },
     avatar: {
       type: String,
       default:

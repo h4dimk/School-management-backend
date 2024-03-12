@@ -4,20 +4,23 @@ import { IAdmin } from "../../entities/adminEntity";
 import { ITeacher } from "../../entities/teacherEntity";
 import { IStudent } from "../../entities/studentEntity";
 import { ICourse } from "../../entities/courseEntity";
+import IJwtService from "../interface/services/jwtService";
 
 export class AdminUseCase implements IAdminUseCase {
-  private adminRepository: IAdminRepository;
+  private readonly adminRepository: IAdminRepository;
+  private readonly jwt: IJwtService
 
-  constructor(adminRepository: IAdminRepository) {
+  constructor(adminRepository: IAdminRepository, jwt:IJwtService) {
     this.adminRepository = adminRepository;
+    this.jwt = jwt
   }
 
   async login(email: string, password: string): Promise<string> {
     try {
       const admin = await this.adminRepository.findByEmail(email);
-      console.log(admin);
-      if (admin && admin.password === password) {
-        const token = "generated_token";
+      
+      if (admin && admin.password === password && admin._id && admin.role) {
+        const token = this.jwt.createToken({_id:admin._id, role:admin.role})
         return token;
       } else {
         throw new Error("Invalid credentials");

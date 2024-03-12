@@ -20,7 +20,10 @@ const adminSchema: Schema<IAdmin> = new Schema(
     phonenumber: {
       type: Number,
     },
-    profile: {
+    role: {
+      type: String,
+    },
+    avatar: {
       type: String,
     },
   },

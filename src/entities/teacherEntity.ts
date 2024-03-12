@@ -3,6 +3,7 @@ export interface ITeacher {
   name: string;
   email: string;
   gender:string;
+  role:string;
   password?: string;
   subject: string;
   isActive?: boolean;
