@@ -8,15 +8,13 @@ import { findByEmail } from "./teacherRepository/index";
 export class TeacherRepository implements ITeacherRepository {
   constructor(private teacherModels: typeof teacherModel) {}
 
-
-  async findByEmail(email: string): Promise<ITeacher| null> {
+  async findByEmail(email: string): Promise<ITeacher | null> {
     try {
       const teacherExist = await findByEmail(email);
       return teacherExist;
     } catch (error) {
-      console.error("Error occurred while logging in admin:", error);
-      throw new Error("Failed to log in admin");
+      console.error("Error occurred while logging in teacher:", error);
+      throw new Error("Failed to log in teacher");
     }
   }
-  
 }

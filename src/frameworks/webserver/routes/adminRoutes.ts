@@ -1,5 +1,4 @@
 import Role from "../../../@types/enum/roles";
-import Jwt from "../../services/jwt";
 import { Req, Res, Next, Route } from "../../types/serverPackageTypes";
 import { isAuth, role } from "../middlewares/auth";
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors";

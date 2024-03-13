@@ -7,7 +7,7 @@ import { ITeacher } from "../entities/teacherEntity";
 import { randomBytes } from "crypto";
 import { IStudent } from "../entities/studentEntity";
 import { ICourse } from "../entities/courseEntity";
-import IJwtService from "../useCases/interface/services/jwtService";
+import Role from "../@types/enum/roles";
 
 export class AdminController {
   private readonly adminUseCase: IAdminUseCase;
@@ -41,7 +41,7 @@ export class AdminController {
     try {
       const { name, email, subject, gender } = req.body;
       const password = randomBytes(8).toString("hex");
-      const role = "teacher";
+      const role = Role.TEACHER;
       const newTeacher: ITeacher = {
         name,
         email,
@@ -95,7 +95,7 @@ export class AdminController {
     try {
       const { name, email, course, batch, gender } = req.body;
       const password = randomBytes(8).toString("hex");
-      const role = "student";
+      const role = Role.STUDENT;
       const newStudent: IStudent = {
         name,
         email,

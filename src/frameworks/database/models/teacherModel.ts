@@ -20,7 +20,6 @@ const teacherSchema: Schema<ITeacher> = new Schema(
     password: {
       type: String,
       minlength: [6, "Password must be at least six characters"],
-      select: false,
     },
     subject: {
       type: String,

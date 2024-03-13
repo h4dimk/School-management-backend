@@ -5,22 +5,32 @@ import { ITeacher } from "../../entities/teacherEntity";
 import { IStudent } from "../../entities/studentEntity";
 import { ICourse } from "../../entities/courseEntity";
 import IJwtService from "../interface/services/jwtService";
+import { ISendEmail } from "../interface/services/sendMail";
 
 export class AdminUseCase implements IAdminUseCase {
   private readonly adminRepository: IAdminRepository;
-  private readonly jwt: IJwtService
+  private readonly jwt: IJwtService;
+  private readonly sendMail: ISendEmail;
 
-  constructor(adminRepository: IAdminRepository, jwt:IJwtService) {
+  constructor(
+    adminRepository: IAdminRepository,
+    jwt: IJwtService,
+    sendMail: ISendEmail
+  ) {
     this.adminRepository = adminRepository;
-    this.jwt = jwt
+    this.jwt = jwt;
+    this.sendMail = sendMail;
   }
 
   async login(email: string, password: string): Promise<string> {
     try {
       const admin = await this.adminRepository.findByEmail(email);
-      
+
       if (admin && admin.password === password && admin._id && admin.role) {
-        const token = this.jwt.createToken({_id:admin._id, role:admin.role})
+        const token = this.jwt.createToken({
+          _id: admin._id,
+          role: admin.role,
+        });
         return token;
       } else {
         throw new Error("Invalid credentials");
@@ -65,6 +75,12 @@ export class AdminUseCase implements IAdminUseCase {
       if (existingStudent) {
         throw new Error("Student with this email already exists");
       }
+
+      this.sendMail.sendEmail(
+        teacher.name,
+        teacher.email,
+        teacher.password ?? `${teacher.name}123`
+      );
 
       return await this.adminRepository.createTeacher(teacher);
     } catch (error) {

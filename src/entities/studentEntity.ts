@@ -1,3 +1,5 @@
+import Role from "../@types/enum/roles";
+
 export interface IStudent {
   _id?: string;
   name: string;
@@ -6,7 +8,7 @@ export interface IStudent {
   course: string;
   batch: string | number;
   gender: string;
-  role: string;
+  role: Role;
   isActive?: boolean;
   phonenumber?: number;
   avatar?: string;
