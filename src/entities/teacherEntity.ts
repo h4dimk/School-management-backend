@@ -6,7 +6,7 @@ export interface ITeacher {
   email: string;
   gender:string;
   role:Role;
-  password?: string;
+  password: string;
   subject: string;
   isActive?: boolean;
   phonenumber?: number;

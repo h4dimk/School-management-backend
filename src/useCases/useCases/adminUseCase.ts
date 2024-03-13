@@ -76,11 +76,7 @@ export class AdminUseCase implements IAdminUseCase {
         throw new Error("Student with this email already exists");
       }
 
-      this.sendMail.sendEmail(
-        teacher.name,
-        teacher.email,
-        teacher.password ?? `${teacher.name}123`
-      );
+      this.sendMail.sendEmail(teacher.name, teacher.email, teacher.password);
 
       return await this.adminRepository.createTeacher(teacher);
     } catch (error) {
@@ -132,6 +128,8 @@ export class AdminUseCase implements IAdminUseCase {
       if (existingTeacher) {
         throw new Error("Teacher with this email already exists");
       }
+
+      this.sendMail.sendEmail(student.name, student.email, student.password);
 
       return await this.adminRepository.createStudent(student);
     } catch (error) {

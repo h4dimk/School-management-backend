@@ -10,5 +10,13 @@ export class StudentController {
     this.studentUseCase = studentUseCase;
   }
 
-  
+  async login(req: Req, res: Res, next: Next) {
+    try {
+      const { email, password } = req.body;
+      const token = await this.studentUseCase.login(email, password);
+      return res.status(200).json({ token });
+    } catch (error) {
+      return next(error);
+    }
+  }
 }

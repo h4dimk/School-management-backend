@@ -26,7 +26,7 @@ const studentRepository = new StudentRepository(studentModel);
 
 const adminUseCase = new AdminUseCase(adminRepository, jwt, sendMail);
 const teacherUseCase = new TeacherUseCase(teacherRepository,jwt);
-const studentUseCase = new StudentUseCase(studentRepository);
+const studentUseCase = new StudentUseCase(studentRepository,jwt);
 
 const adminController = new AdminController(adminUseCase);
 const teacherController = new TeacherController(teacherUseCase);

@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 //routes
 app.use("/api/admin", adminRoute(express.Router()));
 app.use("/api/teacher", teacherRoute(express.Router()));
-app.use("/api/student", studentRoute);
+app.use("/api/student", studentRoute(express.Router()));
 
 //unknown url
 
