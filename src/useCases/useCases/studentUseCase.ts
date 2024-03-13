@@ -1,6 +1,8 @@
 import { IStudentRepository } from "../interface/repository/studentRepository";
 import IJwtService from "../interface/services/jwtService";
 import { IStudentUseCase } from "../interface/useCase/studentUseCase";
+import ErrorHandler from "../middlewares/errorHandler";
+import { Next } from "../../frameworks/types/serverPackageTypes";
 
 export class StudentUseCase implements IStudentUseCase {
   private readonly studentRepository: IStudentRepository;
@@ -11,7 +13,7 @@ export class StudentUseCase implements IStudentUseCase {
     this.jwt = jwt;
   }
 
-  async login(email: string, password: string): Promise<string> {
+  async login(email: string, password: string, next: Next): Promise<string | void> {
     try {
       const student = await this.studentRepository.findByEmail(email);
 
@@ -27,11 +29,13 @@ export class StudentUseCase implements IStudentUseCase {
         });
         return token;
       } else {
-        throw new Error("Invalid credentials");
+        next(new ErrorHandler(401, "Invalid credentials"));
+        return;
       }
     } catch (error) {
       console.error("Error occurred while logging in student:", error);
-      throw new Error("Failed to log in student");
+      next(new ErrorHandler(500, "Failed to log in student"));
+      return;
     }
   }
 }

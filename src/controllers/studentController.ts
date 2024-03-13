@@ -1,6 +1,7 @@
 import { Req, Res, Next } from "../frameworks/types/serverPackageTypes";
 
 import { IStudent } from "../entities/studentEntity";
+
 import { IStudentUseCase } from "../useCases/interface/useCase/studentUseCase";
 
 export class StudentController {
@@ -13,8 +14,8 @@ export class StudentController {
   async login(req: Req, res: Res, next: Next) {
     try {
       const { email, password } = req.body;
-      const token = await this.studentUseCase.login(email, password);
-      return res.status(200).json({ token });
+      const token = await this.studentUseCase.login(email, password,next);
+      return res.status(200).json({ token, success: true });
     } catch (error) {
       return next(error);
     }

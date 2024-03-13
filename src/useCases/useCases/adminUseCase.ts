@@ -6,6 +6,8 @@ import { IStudent } from "../../entities/studentEntity";
 import { ICourse } from "../../entities/courseEntity";
 import IJwtService from "../interface/services/jwtService";
 import { ISendEmail } from "../interface/services/sendMail";
+import ErrorHandler from "../middlewares/errorHandler";
+import { Next } from "../../frameworks/types/serverPackageTypes";
 
 export class AdminUseCase implements IAdminUseCase {
   private readonly adminRepository: IAdminRepository;
@@ -22,7 +24,11 @@ export class AdminUseCase implements IAdminUseCase {
     this.sendMail = sendMail;
   }
 
-  async login(email: string, password: string): Promise<string> {
+  async login(
+    email: string,
+    password: string,
+    next: Next
+  ): Promise<string | void> {
     try {
       const admin = await this.adminRepository.findByEmail(email);
 
@@ -33,47 +39,31 @@ export class AdminUseCase implements IAdminUseCase {
         });
         return token;
       } else {
-        throw new Error("Invalid credentials");
+        next(new ErrorHandler(401, "Invalid credentials"));
+        return;
       }
     } catch (error) {
       console.error("Error occurred while logging in admin:", error);
-      throw new Error("Failed to log in admin");
+      next(new ErrorHandler(500, "Failed to log in admin"));
+      return;
     }
   }
 
-  async createAdmin(email: string, password: string): Promise<void> {
-    try {
-      console.log(email, password, "usecase");
-      // Check if admin already exists with the given email
-      const existingAdmin = await this.adminRepository.findByEmail(email);
-      if (existingAdmin) {
-        throw new Error("Admin with this email already exists");
-      }
-
-      // Create the admin object
-      const admin: IAdmin = { email, password };
-
-      // Insert the admin data into the repository
-      await this.adminRepository.create(admin);
-    } catch (error) {
-      console.error("Error creating admin:", error);
-      throw new Error("Failed to create admin");
-    }
-  }
-
-  async addTeacher(teacher: ITeacher): Promise<void> {
+  async addTeacher(teacher: ITeacher, next: Next): Promise<void> {
     try {
       const existingTeacher = await this.adminRepository.findTeacher(
         teacher.email
       );
       if (existingTeacher) {
-        throw new Error("Teacher with this email already exists");
+        next(new ErrorHandler(400, "Teacher with this email already exists"));
+        return;
       }
       const existingStudent = await this.adminRepository.findStudent(
         teacher.email
       );
       if (existingStudent) {
-        throw new Error("Student with this email already exists");
+        next(new ErrorHandler(400, "Student with this email already exists"));
+        return;
       }
 
       this.sendMail.sendEmail(teacher.name, teacher.email, teacher.password);
@@ -81,52 +71,56 @@ export class AdminUseCase implements IAdminUseCase {
       return await this.adminRepository.createTeacher(teacher);
     } catch (error) {
       console.error("Error creating teacher:", error);
-      throw new Error("Failed to create teacher");
+      next(new ErrorHandler(500, "Failed to create teacher"));
     }
   }
 
-  async getTeachers(): Promise<ITeacher[]> {
+  async getTeachers(next: Next): Promise<ITeacher[]> {
     try {
       const teachers = await this.adminRepository.getTeachers();
       return teachers;
     } catch (error) {
       console.error("Error fetching teachers:", error);
-      throw new Error("Failed to fetch teachers");
+      next(new ErrorHandler(500, "Failed to fetch teachers"));
+      return [];
     }
   }
 
-  async blockTeacher(teacherId: string): Promise<boolean> {
+  async blockTeacher(teacherId: string, next: Next): Promise<boolean> {
     try {
       const isActive = await this.adminRepository.blockTeacher(teacherId);
       return isActive;
     } catch (error) {
       console.error("Error blocking/unblocking teacher:", error);
-      throw new Error("Failed to block/unblock teacher");
+      next(new ErrorHandler(500, "Failed to block/unblock teacher"));
+      return false;
     }
   }
 
-  async removeTeacher(teacherId: string): Promise<void> {
+  async removeTeacher(teacherId: string, next: Next): Promise<void> {
     try {
       await this.adminRepository.removeTeacher(teacherId);
     } catch (error) {
       console.error("Error removing teacher:", error);
-      throw new Error("Failed to remove teacher");
+      next(new ErrorHandler(500, "Failed to remove teacher"));
     }
   }
 
-  async addStudent(student: IStudent): Promise<void> {
+  async addStudent(student: IStudent, next: Next): Promise<void> {
     try {
       const existingStudent = await this.adminRepository.findStudent(
         student.email
       );
       if (existingStudent) {
-        throw new Error("Student with this email already exists");
+        next(new ErrorHandler(400, "Student with this email already exists"));
+        return;
       }
       const existingTeacher = await this.adminRepository.findTeacher(
         student.email
       );
       if (existingTeacher) {
-        throw new Error("Teacher with this email already exists");
+        next(new ErrorHandler(400, "Teacher with this email already exists"));
+        return;
       }
 
       this.sendMail.sendEmail(student.name, student.email, student.password);
@@ -134,70 +128,74 @@ export class AdminUseCase implements IAdminUseCase {
       return await this.adminRepository.createStudent(student);
     } catch (error) {
       console.error("Error creating student:", error);
-      throw new Error("Failed to create student");
+      next(new ErrorHandler(500, "Failed to create student"));
     }
   }
 
-  async getStudents(): Promise<IStudent[]> {
+  async getStudents(next: Next): Promise<IStudent[]> {
     try {
       const students = await this.adminRepository.getStudents();
       return students;
     } catch (error) {
       console.error("Error fetching students:", error);
-      throw new Error("Failed to fetch students");
+      next(new ErrorHandler(500, "Failed to fetch students"));
+      return [];
     }
   }
 
-  async blockStudent(studentId: string): Promise<boolean> {
+  async blockStudent(studentId: string, next: Next): Promise<boolean> {
     try {
       const isActive = await this.adminRepository.blockStudent(studentId);
       return isActive;
     } catch (error) {
       console.error("Error blocking/unblocking student:", error);
-      throw new Error("Failed to block/unblock student");
+      next(new ErrorHandler(500, "Failed to block/unblock student"));
+      return false;
     }
   }
 
-  async removeStudent(studentId: string): Promise<void> {
+  async removeStudent(studentId: string, next: Next): Promise<void> {
     try {
       await this.adminRepository.removeStudent(studentId);
     } catch (error) {
       console.error("Error removing student:", error);
-      throw new Error("Failed to remove student");
+      next(new ErrorHandler(500, "Failed to remove student"));
     }
   }
 
-  async addCourse(course: ICourse): Promise<void> {
+  async addCourse(course: ICourse, next: Next): Promise<void> {
     try {
       const existingCourse = await this.adminRepository.findCourse(
         course.course
       );
       if (existingCourse) {
-        throw new Error("Course with this email already exists");
+        next(new ErrorHandler(400, "Course with this name already exists"));
+        return;
       }
       return await this.adminRepository.createCourse(course);
     } catch (error) {
       console.error("Error creating course:", error);
-      throw new Error("Failed to create course");
+      next(new ErrorHandler(500, "Failed to create course"));
     }
   }
 
-  async getCourses(): Promise<ICourse[]> {
+  async getCourses(next: Next): Promise<ICourse[]> {
     try {
       const courses = await this.adminRepository.getCourse();
       return courses;
     } catch (error) {
       console.error("Error fetching courses:", error);
-      throw new Error("Failed to fetch courses");
+      next(new ErrorHandler(500, "Failed to fetch courses"));
+      return [];
     }
   }
 
-  async removeCourse(courseId: string): Promise<void> {
+  async removeCourse(courseId: string, next: Next): Promise<void> {
     try {
       await this.adminRepository.removeCourse(courseId);
     } catch (error) {
       console.error("Error removing course:", error);
-      throw new Error("Failed to remove course");
+      next(new ErrorHandler(500, "Failed to remove course"));
     }
   }
 }

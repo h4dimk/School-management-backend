@@ -4,7 +4,6 @@ import { IStudent } from "../../../entities/studentEntity";
 import { ITeacher } from "../../../entities/teacherEntity";
 
 export interface IAdminRepository {
-  create(admin: IAdmin): Promise<void>;
   createTeacher(teacher: ITeacher): Promise<void>;
   createStudent(student: IStudent): Promise<void>;
   createCourse(course: ICourse): Promise<void>;

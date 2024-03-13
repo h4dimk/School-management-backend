@@ -37,16 +37,6 @@ export class AdminRepository implements IAdminRepository {
     }
   }
 
-  async create(admin: IAdmin): Promise<void> {
-    try {
-      console.log(admin, "adminrep");
-      await adminModel.create(admin);
-    } catch (error) {
-      console.error("Error creating admin:", error);
-      throw new Error("Failed to create admin");
-    }
-  }
-
   async createTeacher(teacher: ITeacher): Promise<void> {
     try {
       await createTeacher(teacher);

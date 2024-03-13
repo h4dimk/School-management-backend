@@ -1,13 +1,11 @@
 import { Req, Res, Next } from "../frameworks/types/serverPackageTypes";
-
 import { IAdminUseCase } from "../useCases/interface/useCase/adminUseCase";
-
 import { ITeacher } from "../entities/teacherEntity";
-
-import { randomBytes } from "crypto";
 import { IStudent } from "../entities/studentEntity";
 import { ICourse } from "../entities/courseEntity";
+import { randomBytes } from "crypto";
 import Role from "../@types/enum/roles";
+import ErrorHandler from "../useCases/middlewares/errorHandler";
 
 export class AdminController {
   private readonly adminUseCase: IAdminUseCase;
@@ -19,25 +17,14 @@ export class AdminController {
   async login(req: Req, res: Res, next: Next) {
     try {
       const { email, password } = req.body;
-      const token = await this.adminUseCase.login(email, password);
-      return res.status(200).json({ token });
-    } catch (error) {
-      return next(error);
+      const token = await this.adminUseCase.login(email, password, next);
+      res.status(200).json({ token, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
     }
   }
 
-  async createAdmin(req: Req, res: Res, next: Next) {
-    try {
-      const { email, password } = req.body;
-      await this.adminUseCase.createAdmin(email, password);
-      return res.status(201).send("Admin created successfully");
-    } catch (error) {
-      console.error("Error creating admin:", error);
-      return next(error);
-    }
-  }
-
-  async addTeacher(req: Req, res: Res) {
+  async addTeacher(req: Req, res: Res, next: Next) {
     try {
       const { name, email, subject, gender } = req.body;
       const password = randomBytes(8).toString("hex");
@@ -50,48 +37,45 @@ export class AdminController {
         password,
         role,
       };
-      const addedTeacher = await this.adminUseCase.addTeacher(newTeacher);
-      res.status(201).json(addedTeacher);
-    } catch (error) {
-      console.error("Error adding teacher:", error);
-      res.status(500).json({ error: "Failed to add teacher" });
+      const addedTeacher = await this.adminUseCase.addTeacher(newTeacher, next);
+      res.status(201).json({ addedTeacher, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
     }
   }
 
-  async getTeachers(req: Req, res: Res) {
+  async getTeachers(req: Req, res: Res, next: Next) {
     try {
-      const teachers = await this.adminUseCase.getTeachers();
+      const teachers = await this.adminUseCase.getTeachers(next);
       res.json(teachers);
-    } catch (error) {
-      console.error("Error fetching teachers:", error);
-      res.status(500).json({ error: "Failed to fetch teachers" });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
     }
   }
 
-  async blockTeacher(req: Req, res: Res) {
+  async blockTeacher(req: Req, res: Res, next: Next) {
     const teacherId = req.params.id;
     try {
-      const isActive = await this.adminUseCase.blockTeacher(teacherId);
-      // Respond with a success message and the updated isActive status
-      res.status(200).json({ isActive });
-    } catch (error) {
-      console.error("Error blocking/unblocking teacher:", error);
-      res.status(500).json({ error: "Failed to block/unblock teacher" });
+      const isActive = await this.adminUseCase.blockTeacher(teacherId, next);
+      res.status(200).json({ isActive, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
     }
   }
 
-  async removeTeacher(req: Req, res: Res) {
+  async removeTeacher(req: Req, res: Res, next: Next) {
     const teacherId = req.params.id;
     try {
-      await this.adminUseCase.removeTeacher(teacherId);
-      res.status(200).json({ message: "Teacher removed successfully" });
-    } catch (error) {
-      console.error("Error removing teacher:", error);
-      res.status(500).json({ error: "Failed to remove teacher" });
+      await this.adminUseCase.removeTeacher(teacherId, next);
+      res
+        .status(200)
+        .json({ message: "Teacher removed successfully", success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
     }
   }
 
-  async addStudent(req: Req, res: Res) {
+  async addStudent(req: Req, res: Res, next: Next) {
     try {
       const { name, email, course, batch, gender } = req.body;
       const password = randomBytes(8).toString("hex");
@@ -105,80 +89,73 @@ export class AdminController {
         password,
         role,
       };
-      const addedStudent = await this.adminUseCase.addStudent(newStudent);
-      res.status(201).json(addedStudent);
-    } catch (error) {
-      console.error("Error adding student:", error);
-      res.status(500).json({ error: "Failed to add student" });
+      const addedStudent = await this.adminUseCase.addStudent(newStudent, next);
+      res.status(201).json({ addedStudent, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
     }
   }
 
-  async getStudents(req: Req, res: Res) {
+  async getStudents(req: Req, res: Res, next: Next) {
     try {
-      const students = await this.adminUseCase.getStudents();
+      const students = await this.adminUseCase.getStudents(next);
       res.json(students);
-    } catch (error) {
-      console.error("Error fetching students:", error);
-      res.status(500).json({ error: "Failed to fetch students" });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
     }
   }
 
-  async blockStudent(req: Req, res: Res) {
+  async blockStudent(req: Req, res: Res, next: Next) {
     const studentId = req.params.id;
     try {
-      const isActive = await this.adminUseCase.blockStudent(studentId);
-      // Respond with a success message and the updated isActive status
-      res.status(200).json({ isActive });
-    } catch (error) {
-      console.error("Error blocking/unblocking student:", error);
-      res.status(500).json({ error: "Failed to block/unblock student" });
+      const isActive = await this.adminUseCase.blockStudent(studentId, next);
+      res.status(200).json({ isActive, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
     }
   }
 
-  async removeStudent(req: Req, res: Res) {
+  async removeStudent(req: Req, res: Res, next: Next) {
     const studentId = req.params.id;
     try {
-      await this.adminUseCase.removeStudent(studentId);
-      res.status(200).json({ message: "Student removed successfully" });
-    } catch (error) {
-      console.error("Error removing student:", error);
-      res.status(500).json({ error: "Failed to remove student" });
+      await this.adminUseCase.removeStudent(studentId, next);
+      res
+        .status(200)
+        .json({ message: "Student removed successfully", success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
     }
   }
 
-  async addCourse(req: Req, res: Res) {
+  async addCourse(req: Req, res: Res, next: Next) {
     try {
       const { course, subjects } = req.body;
-      const newCourse: ICourse = {
-        course,
-        subjects,
-      };
-      const addedCourse = await this.adminUseCase.addCourse(newCourse);
-      res.status(201).json(addedCourse);
-    } catch (error) {
-      console.error("Error adding course:", error);
-      res.status(500).json({ error: "Failed to add course" });
+      const newCourse: ICourse = { course, subjects };
+      const addedCourse = await this.adminUseCase.addCourse(newCourse, next);
+      res.status(201).json({ addedCourse, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
     }
   }
 
-  async getCourses(req: Req, res: Res) {
+  async getCourses(req: Req, res: Res, next: Next) {
     try {
-      const courses = await this.adminUseCase.getCourses();
+      const courses = await this.adminUseCase.getCourses(next);
       res.json(courses);
-    } catch (error) {
-      console.error("Error fetching courses:", error);
-      res.status(500).json({ error: "Failed to fetch courses" });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
     }
   }
 
-  async removeCourse(req: Req, res: Res) {
+  async removeCourse(req: Req, res: Res, next: Next) {
     const courseId = req.params.id;
     try {
-      await this.adminUseCase.removeCourse(courseId);
-      res.status(200).json({ message: "Course removed successfully" });
-    } catch (error) {
-      console.error("Error removing course:", error);
-      res.status(500).json({ error: "Failed to remove course" });
+      await this.adminUseCase.removeCourse(courseId, next);
+      res
+        .status(200)
+        .json({ message: "Course removed successfully", success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
     }
   }
 }
