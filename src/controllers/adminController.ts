@@ -17,8 +17,9 @@ export class AdminController {
   async login(req: Req, res: Res, next: Next) {
     try {
       const { email, password } = req.body;
-      const token = await this.adminUseCase.login(email, password, next);
-      res.status(200).json({ token, success: true });
+      const result = await this.adminUseCase.login(email, password, next);
+
+      res.status(200).json({ result, success: true });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }

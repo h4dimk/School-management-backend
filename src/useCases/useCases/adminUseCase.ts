@@ -8,36 +8,41 @@ import IJwtService from "../interface/services/jwtService";
 import { ISendEmail } from "../interface/services/sendMail";
 import ErrorHandler from "../middlewares/errorHandler";
 import { Next } from "../../frameworks/types/serverPackageTypes";
+import { IHashpassword } from "../interface/services/hashPassword";
 
 export class AdminUseCase implements IAdminUseCase {
   private readonly adminRepository: IAdminRepository;
   private readonly jwt: IJwtService;
   private readonly sendMail: ISendEmail;
+  private readonly hashPassword: IHashpassword;
 
   constructor(
     adminRepository: IAdminRepository,
     jwt: IJwtService,
-    sendMail: ISendEmail
+    sendMail: ISendEmail,
+    hashPassword: IHashpassword
   ) {
     this.adminRepository = adminRepository;
     this.jwt = jwt;
     this.sendMail = sendMail;
+    this.hashPassword = hashPassword;
   }
 
   async login(
     email: string,
     password: string,
     next: Next
-  ): Promise<string | void> {
+  ): Promise<{ admin: IAdmin & { token: string } } | void> {
     try {
       const admin = await this.adminRepository.findByEmail(email);
 
       if (admin && admin.password === password && admin._id && admin.role) {
-        const token = this.jwt.createToken({
+        const token = await this.jwt.createToken({
           _id: admin._id,
           role: admin.role,
         });
-        return token;
+
+        return { admin: { ...admin, token } };
       } else {
         next(new ErrorHandler(401, "Invalid credentials"));
         return;
@@ -67,6 +72,11 @@ export class AdminUseCase implements IAdminUseCase {
       }
 
       this.sendMail.sendEmail(teacher.name, teacher.email, teacher.password);
+
+      const hashedPassword = await this.hashPassword.createHash(
+        teacher.password
+      );
+      teacher.password = hashedPassword;
 
       return await this.adminRepository.createTeacher(teacher);
     } catch (error) {
@@ -124,6 +134,11 @@ export class AdminUseCase implements IAdminUseCase {
       }
 
       this.sendMail.sendEmail(student.name, student.email, student.password);
+
+      const hashedPassword = await this.hashPassword.createHash(
+        student.password
+      );
+      student.password = hashedPassword;
 
       return await this.adminRepository.createStudent(student);
     } catch (error) {
