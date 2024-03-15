@@ -159,4 +159,32 @@ export class AdminController {
       next(new ErrorHandler(500, error.message));
     }
   }
+
+  async getAdminProfile(req: Req, res: Res, next: Next) {
+    try {
+      const adminId = req.params.id;
+      const admin = await this.adminUseCase.getAdminProfile(adminId);
+      if (!admin) {
+        res.status(404).json({ error: "Admin not found" });
+        return;
+      }
+      res.status(200).json({ admin, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async updateAdminProfile(req: Req, res: Res, next: Next) {
+    try {
+      const adminId = req.params.id;
+      const updates = req.body;
+      const updatedAdmin = await this.adminUseCase.updateAdminProfile(
+        adminId,
+        updates
+      );
+      return updatedAdmin;
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
 }

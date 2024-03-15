@@ -8,4 +8,6 @@ export interface IAdmin {
   role?:Role
   phonenumber?: number;
   avatar?: string;
+  gender?:string;
+  dob?: string | Date;
 }

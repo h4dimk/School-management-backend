@@ -21,6 +21,8 @@ import {
   findCourse,
   getCourses,
   removeCourse,
+  getAdminById,
+  updateAdmin,
 } from "./adminRepository/index";
 import { ICourse } from "../../../entities/courseEntity";
 
@@ -165,6 +167,31 @@ export class AdminRepository implements IAdminRepository {
     } catch (error) {
       console.error("Error removing course:", error);
       throw new Error("Failed to remove course");
+    }
+  }
+
+  async getAdminById(adminId: string): Promise<IAdmin | null> {
+    try {
+      if (!adminId) {
+        throw new Error("Admin ID is required");
+      }
+
+      const admin = await getAdminById(adminId);
+
+      return admin;
+    } catch (error) {
+      throw new Error("Failed to fetch admin");
+    }
+  }
+  async updateAdmin(adminId: string, admin: Partial<IAdmin>): Promise<IAdmin> {
+    try {
+      if (!adminId) {
+        throw new Error("Admin ID is required");
+      }
+      const updatedAdmin = await updateAdmin(adminId, admin);
+      return updatedAdmin;
+    } catch (error) {
+      throw new Error("Failed to update admin");
     }
   }
 }

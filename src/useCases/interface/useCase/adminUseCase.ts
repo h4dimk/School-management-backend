@@ -25,4 +25,8 @@ export interface IAdminUseCase {
   removeTeacher(teacherId: string, next: Next): Promise<void>;
   removeStudent(studentId: string, next: Next): Promise<void>;
   removeCourse(courseId: string, next: Next): Promise<void>;
+
+  getAdminProfile(adminId: string): Promise<IAdmin | null>;
+
+  updateAdminProfile(adminId: string, updates: Partial<IAdmin>): Promise<IAdmin>;
 }

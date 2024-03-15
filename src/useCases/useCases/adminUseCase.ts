@@ -213,4 +213,41 @@ export class AdminUseCase implements IAdminUseCase {
       next(new ErrorHandler(500, "Failed to remove course"));
     }
   }
+
+  async getAdminProfile(adminId: string): Promise<IAdmin | null> {
+    try {
+      if (!adminId) {
+        throw new Error("Admin ID is required");
+      }
+      const admin = await this.adminRepository.getAdminById(adminId);
+      return admin;
+    } catch (error) {
+      console.error("Error fetching admin profile:", error);
+      throw new ErrorHandler(500, "Failed to fetch admin profile");
+    }
+  }
+
+  async updateAdminProfile(
+    adminId: string,
+    updates: Partial<IAdmin>
+  ): Promise<IAdmin> {
+    try {
+      if (!adminId) {
+        throw new Error("Admin ID is required");
+      }
+      const updatedAdmin = await this.adminRepository.updateAdmin(
+        adminId,
+        updates
+      );
+
+      if (!updatedAdmin) {
+        throw new ErrorHandler(404, "Admin not found");
+      }
+
+      return updatedAdmin;
+    } catch (error) {
+      console.error("Error updating admin profile:", error);
+      throw new ErrorHandler(500, "Failed to update admin profile");
+    }
+  }
 }

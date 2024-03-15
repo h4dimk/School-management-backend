@@ -11,7 +11,7 @@ export const adminRoute = (router: Route) => {
       adminController.login(req, res, next);
     })
   );
-  
+
   router.post(
     "/add-teacher",
     isAuth,
@@ -100,6 +100,24 @@ export const adminRoute = (router: Route) => {
     role([Role.ADMIN]),
     catchAsyncErrors((req: Req, res: Res, next: Next) => {
       adminController.removeCourse(req, res, next);
+    })
+  );
+
+  router.get(
+    "/get-admin/:id",
+    isAuth,
+    role([Role.ADMIN]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      adminController.getAdminProfile(req, res, next);
+    })
+  );
+
+  router.put(
+    "/update-admin/:id",
+    isAuth,
+    role([Role.ADMIN]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      adminController.updateAdminProfile(req, res, next);
     })
   );
 

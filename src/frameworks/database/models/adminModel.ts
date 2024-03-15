@@ -6,7 +6,6 @@ const adminSchema: Schema<IAdmin> = new Schema(
   {
     name: {
       type: String,
-      min: 3,
     },
     email: {
       type: String,
@@ -25,6 +24,12 @@ const adminSchema: Schema<IAdmin> = new Schema(
     },
     avatar: {
       type: String,
+    },
+    gender: {
+      type: String,
+    },
+    dob: {
+      type: String || Date,
     },
   },
   { timestamps: true }

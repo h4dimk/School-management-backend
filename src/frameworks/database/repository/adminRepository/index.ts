@@ -11,6 +11,8 @@ import { createCourse } from "./createCourse";
 import { findCourse } from "./findCourse";
 import { getCourses } from "./getCourses";
 import { removeCourse } from "./removeCourse";
+import { updateAdmin } from "./updateAdmin";
+import { getAdminById } from "./getAdminById";
 
 export {
   findByEmail,
@@ -28,4 +30,6 @@ export {
   findCourse,
   getCourses,
   removeCourse,
+  updateAdmin,
+  getAdminById,
 };

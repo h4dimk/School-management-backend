@@ -23,4 +23,7 @@ export interface IAdminRepository {
   removeTeacher(teacherId: string): Promise<void>;
   removeStudent(studentId: string): Promise<void>;
   removeCourse(courseId: string): Promise<void>;
+
+  getAdminById(id: string): Promise<IAdmin | null>;
+  updateAdmin(adminId:string,admin: Partial<IAdmin>): Promise<IAdmin>;
 }
