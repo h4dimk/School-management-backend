@@ -32,7 +32,7 @@ export class AdminUseCase implements IAdminUseCase {
     email: string,
     password: string,
     next: Next
-  ): Promise<{ admin: IAdmin & { token: string } } | void> {
+  ): Promise<{ admin: IAdmin; token: string } | void> {
     try {
       const admin = await this.adminRepository.findByEmail(email);
 
@@ -42,7 +42,8 @@ export class AdminUseCase implements IAdminUseCase {
           role: admin.role,
         });
 
-        return { admin: { ...admin, token } };
+        admin.password = "";
+        return { admin, token };
       } else {
         next(new ErrorHandler(401, "Invalid credentials"));
         return;

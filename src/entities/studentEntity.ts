@@ -12,4 +12,5 @@ export interface IStudent {
   isActive?: boolean;
   phonenumber?: number;
   avatar?: string;
+  dob?: string | Date;
 }

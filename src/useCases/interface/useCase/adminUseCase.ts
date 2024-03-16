@@ -9,7 +9,7 @@ export interface IAdminUseCase {
     email: string,
     password: string,
     next: Next
-  ): Promise<{ admin: IAdmin & { token: string } } | void>;
+  ): Promise<{ admin: IAdmin ; token:string} | void>;
 
   addTeacher(teacher: ITeacher, next: Next): Promise<void>;
   addStudent(student: IStudent, next: Next): Promise<void>;

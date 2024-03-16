@@ -4,6 +4,7 @@ import { IStudentUseCase } from "../interface/useCase/studentUseCase";
 import ErrorHandler from "../middlewares/errorHandler";
 import { Next } from "../../frameworks/types/serverPackageTypes";
 import { IHashpassword } from "../interface/services/hashPassword";
+import { IStudent } from "../../entities/studentEntity";
 
 export class StudentUseCase implements IStudentUseCase {
   private readonly studentRepository: IStudentRepository;
@@ -24,7 +25,7 @@ export class StudentUseCase implements IStudentUseCase {
     email: string,
     password: string,
     next: Next
-  ): Promise<string | void> {
+  ): Promise<{ student: IStudent; token: string } | void> {
     try {
       const student = await this.studentRepository.findByEmail(email);
 
@@ -35,11 +36,13 @@ export class StudentUseCase implements IStudentUseCase {
         );
 
         if (passwordMatch && student._id && student.role) {
-          const token = this.jwt.createToken({
+          const token = await this.jwt.createToken({
             _id: student._id,
             role: student.role,
           });
-          return token;
+
+          student.password = "";
+          return { student, token };
         }
       }
       next(new ErrorHandler(401, "Invalid credentials"));
@@ -48,6 +51,43 @@ export class StudentUseCase implements IStudentUseCase {
       console.error("Error occurred while logging in student:", error);
       next(new ErrorHandler(500, "Failed to log in student"));
       return;
+    }
+  }
+
+  async getStudentProfile(studentId: string): Promise<IStudent | null> {
+    try {
+      if (!studentId) {
+        throw new Error("Student ID is required");
+      }
+      const student = await this.studentRepository.getStudentById(studentId);
+      return student;
+    } catch (error) {
+      console.error("Error fetching student profile:", error);
+      throw new ErrorHandler(500, "Failed to fetch student profile");
+    }
+  }
+
+  async updateStudentProfile(
+    studentId: string,
+    updates: Partial<IStudent>
+  ): Promise<IStudent> {
+    try {
+      if (!studentId) {
+        throw new Error("Student ID is required");
+      }
+      const updatedStudent = await this.studentRepository.updateStudent(
+        studentId,
+        updates
+      );
+
+      if (!updatedStudent) {
+        throw new ErrorHandler(404, "Admin not found");
+      }
+
+      return updatedStudent;
+    } catch (error) {
+      console.error("Error updating Student profile:", error);
+      throw new ErrorHandler(500, "Failed to update Student profile");
     }
   }
 }
