@@ -81,7 +81,7 @@ export class StudentUseCase implements IStudentUseCase {
       );
 
       if (!updatedStudent) {
-        throw new ErrorHandler(404, "Admin not found");
+        throw new ErrorHandler(404, "Student not found");
       }
 
       return updatedStudent;

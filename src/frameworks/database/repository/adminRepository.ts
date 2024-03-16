@@ -23,6 +23,9 @@ import {
   removeCourse,
   getAdminById,
   updateAdmin,
+  addBatch,
+  getBatches,
+  removeBatch,
 } from "./adminRepository/index";
 import { ICourse } from "../../../entities/courseEntity";
 

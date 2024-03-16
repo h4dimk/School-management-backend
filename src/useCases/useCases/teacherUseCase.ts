@@ -25,7 +25,7 @@ export class TeacherUseCase implements ITeacherUseCase {
     email: string,
     password: string,
     next: Next
-  ): Promise<string | void> {
+  ): Promise<{ teacher: ITeacher; token: string } | void> {
     try {
       const teacher = await this.teacherRepository.findByEmail(email);
 
@@ -36,11 +36,12 @@ export class TeacherUseCase implements ITeacherUseCase {
         );
 
         if (passwordMatch && teacher._id && teacher.role) {
-          const token = this.jwt.createToken({
+          const token = await this.jwt.createToken({
             _id: teacher._id,
             role: teacher.role,
           });
-          return token;
+          teacher.password = "";
+          return { teacher, token };
         }
       }
 
@@ -50,6 +51,43 @@ export class TeacherUseCase implements ITeacherUseCase {
       console.error("Error occurred while logging in teacher:", error);
       next(new ErrorHandler(500, "Failed to log in teacher"));
       return;
+    }
+  }
+
+  async getTeacherProfile(teacherId: string): Promise<ITeacher | null> {
+    try {
+      if (!teacherId) {
+        throw new Error("Teacher ID is required");
+      }
+      const teacher = await this.teacherRepository.getTeacherById(teacherId);
+      return teacher;
+    } catch (error) {
+      console.error("Error fetching teacher profile:", error);
+      throw new ErrorHandler(500, "Failed to fetch teacher profile");
+    }
+  }
+
+  async updateTeacherProfile(
+    teacherId: string,
+    updates: Partial<ITeacher>
+  ): Promise<ITeacher> {
+    try {
+      if (!teacherId) {
+        throw new Error("Teacher ID is required");
+      }
+      const updatedTeacher = await this.teacherRepository.updateTeacher(
+        teacherId,
+        updates
+      );
+
+      if (!updatedTeacher) {
+        throw new ErrorHandler(404, "Teacher not found");
+      }
+
+      return updatedTeacher;
+    } catch (error) {
+      console.error("Error updating Teacher profile:", error);
+      throw new ErrorHandler(500, "Failed to update Teacher profile");
     }
   }
 }

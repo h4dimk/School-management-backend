@@ -13,6 +13,7 @@ import { getCourses } from "./getCourses";
 import { removeCourse } from "./removeCourse";
 import { updateAdmin } from "./updateAdmin";
 import { getAdminById } from "./getAdminById";
+import { addBatch, getBatches, removeBatch } from "./manageBatch";
 
 export {
   findByEmail,
@@ -32,4 +33,7 @@ export {
   removeCourse,
   updateAdmin,
   getAdminById,
+  addBatch,
+  getBatches,
+  removeBatch,
 };
