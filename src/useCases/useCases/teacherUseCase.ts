@@ -9,7 +9,7 @@ import { IHashpassword } from "../interface/services/hashPassword";
 export class TeacherUseCase implements ITeacherUseCase {
   private readonly teacherRepository: ITeacherRepository;
   private readonly jwt: IJwtService;
-  private readonly hashedPassword: IHashpassword;
+  private readonly hashPassword: IHashpassword;
 
   constructor(
     teacherRepository: ITeacherRepository,
@@ -18,7 +18,7 @@ export class TeacherUseCase implements ITeacherUseCase {
   ) {
     this.teacherRepository = teacherRepository;
     this.jwt = jwt;
-    this.hashedPassword = hashedPassword;
+    this.hashPassword = hashedPassword;
   }
 
   async login(
@@ -30,7 +30,7 @@ export class TeacherUseCase implements ITeacherUseCase {
       const teacher = await this.teacherRepository.findByEmail(email);
 
       if (teacher) {
-        const passwordMatch = await this.hashedPassword.comparePassword(
+        const passwordMatch = await this.hashPassword.comparePassword(
           password,
           teacher.password
         );
@@ -75,6 +75,13 @@ export class TeacherUseCase implements ITeacherUseCase {
       if (!teacherId) {
         throw new Error("Teacher ID is required");
       }
+      if (updates.password) {
+        const hashedPassword = await this.hashPassword.createHash(
+          updates.password
+        );
+        updates.password = hashedPassword;
+      }
+
       const updatedTeacher = await this.teacherRepository.updateTeacher(
         teacherId,
         updates

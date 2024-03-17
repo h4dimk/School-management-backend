@@ -30,7 +30,6 @@ export class AdminController {
       const { name, email, subject, gender } = req.body;
       const password = randomBytes(8).toString("hex");
       const role = Role.TEACHER;
-      console.log(password)
       const newTeacher: ITeacher = {
         name,
         email,

@@ -75,6 +75,14 @@ export class StudentUseCase implements IStudentUseCase {
       if (!studentId) {
         throw new Error("Student ID is required");
       }
+
+      if (updates.password) {
+        const hashedPassword = await this.hashPassword.createHash(
+          updates.password
+        );
+        updates.password = hashedPassword;
+      }
+      
       const updatedStudent = await this.studentRepository.updateStudent(
         studentId,
         updates

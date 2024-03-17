@@ -16,7 +16,6 @@ export class StudentController {
     try {
       const { email, password } = req.body;
       const result = await this.studentUseCase.login(email, password, next);
-      console.log(result)
       return res.status(200).json({ result, success: true });
     } catch (error) {
       return next(error);

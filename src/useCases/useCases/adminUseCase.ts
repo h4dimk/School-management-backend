@@ -36,17 +36,23 @@ export class AdminUseCase implements IAdminUseCase {
     try {
       const admin = await this.adminRepository.findByEmail(email);
 
-      if (admin && admin.password === password && admin._id && admin.role) {
-        const token = await this.jwt.createToken({
-          _id: admin._id,
-          role: admin.role,
-        });
+      if (admin) {
+        const passwordMatch = await this.hashPassword.comparePassword(
+          password,
+          admin.password
+        );
+        if (passwordMatch && admin._id && admin.role) {
+          const token = await this.jwt.createToken({
+            _id: admin._id,
+            role: admin.role,
+          });
 
-        admin.password = "";
-        return { admin, token };
-      } else {
-        next(new ErrorHandler(401, "Invalid credentials"));
-        return;
+          admin.password = "";
+          return { admin, token };
+        } else {
+          next(new ErrorHandler(401, "Invalid credentials"));
+          return;
+        }
       }
     } catch (error) {
       console.error("Error occurred while logging in admin:", error);
@@ -236,6 +242,14 @@ export class AdminUseCase implements IAdminUseCase {
       if (!adminId) {
         throw new Error("Admin ID is required");
       }
+
+      if (updates.password) {
+        const hashedPassword = await this.hashPassword.createHash(
+          updates.password
+        );
+        updates.password = hashedPassword;
+      }
+
       const updatedAdmin = await this.adminRepository.updateAdmin(
         adminId,
         updates
