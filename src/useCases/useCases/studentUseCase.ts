@@ -34,7 +34,7 @@ export class StudentUseCase implements IStudentUseCase {
           password,
           student.password
         );
-
+        // const passwordMatch= password==student.password
         if (passwordMatch && student._id && student.role) {
           const token = await this.jwt.createToken({
             _id: student._id,
@@ -77,12 +77,13 @@ export class StudentUseCase implements IStudentUseCase {
       }
 
       if (updates.password) {
+        console.log(updates.password)
         const hashedPassword = await this.hashPassword.createHash(
           updates.password
         );
         updates.password = hashedPassword;
       }
-      
+
       const updatedStudent = await this.studentRepository.updateStudent(
         studentId,
         updates

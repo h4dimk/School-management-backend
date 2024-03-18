@@ -6,6 +6,7 @@ import { ICourse } from "../entities/courseEntity";
 import { randomBytes } from "crypto";
 import Role from "../@types/enum/roles";
 import ErrorHandler from "../useCases/middlewares/errorHandler";
+import { IBatch } from "../entities/batchEntity";
 
 export class AdminController {
   private readonly adminUseCase: IAdminUseCase;
@@ -183,6 +184,38 @@ export class AdminController {
         updates
       );
       return updatedAdmin;
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async addBatch(req: Req, res: Res, next: Next) {
+    try {
+      const { batch } = req.body;
+      const newBatch: IBatch = { batch };
+      const addedBatch = await this.adminUseCase.addBatch(newBatch, next);
+      res.status(201).json({ addedBatch, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getBatches(req: Req, res: Res, next: Next) {
+    try {
+      const batches = await this.adminUseCase.getBatches(next);
+      res.json(batches);
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async removeBatch(req: Req, res: Res, next: Next) {
+    const batchId = req.params.id;
+    try {
+      await this.adminUseCase.removeBatch(batchId, next);
+      res
+        .status(200)
+        .json({ message: "Batch removed successfully", success: true });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }

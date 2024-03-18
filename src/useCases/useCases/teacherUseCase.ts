@@ -35,6 +35,8 @@ export class TeacherUseCase implements ITeacherUseCase {
           teacher.password
         );
 
+        // const passwordMatch=password== teacher.password
+
         if (passwordMatch && teacher._id && teacher.role) {
           const token = await this.jwt.createToken({
             _id: teacher._id,
@@ -76,6 +78,8 @@ export class TeacherUseCase implements ITeacherUseCase {
         throw new Error("Teacher ID is required");
       }
       if (updates.password) {
+        console.log(updates.password)
+
         const hashedPassword = await this.hashPassword.createHash(
           updates.password
         );

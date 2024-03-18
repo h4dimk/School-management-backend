@@ -40,6 +40,7 @@ export class TeacherController {
     try {
       const teacherId = req.params.id;
       const updates = req.body;
+      console.log(updates)
       const updatedTeacher = await this.teacherUseCase.updateTeacherProfile(
         teacherId,
         updates

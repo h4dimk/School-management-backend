@@ -9,6 +9,8 @@ import { ISendEmail } from "../interface/services/sendMail";
 import ErrorHandler from "../middlewares/errorHandler";
 import { Next } from "../../frameworks/types/serverPackageTypes";
 import { IHashpassword } from "../interface/services/hashPassword";
+import { IBatch } from "../../entities/batchEntity";
+import { promises } from "dns";
 
 export class AdminUseCase implements IAdminUseCase {
   private readonly adminRepository: IAdminRepository;
@@ -41,6 +43,8 @@ export class AdminUseCase implements IAdminUseCase {
           password,
           admin.password
         );
+
+        // const passwordMatch= password==admin.password
         if (passwordMatch && admin._id && admin.role) {
           const token = await this.jwt.createToken({
             _id: admin._id,
@@ -263,6 +267,35 @@ export class AdminUseCase implements IAdminUseCase {
     } catch (error) {
       console.error("Error updating admin profile:", error);
       throw new ErrorHandler(500, "Failed to update admin profile");
+    }
+  }
+
+  async addBatch(batch: IBatch, next: Next): Promise<void> {
+    try {
+      await this.adminRepository.addBatch(batch);
+    } catch (error) {
+      console.error("Error creating batch:", error);
+      next(new ErrorHandler(500, "Failed to create batch"));
+    }
+  }
+
+  async getBatches(next: Next): Promise<IBatch[]> {
+    try {
+      const batches = await this.adminRepository.getBatches();
+      return batches;
+    } catch (error) {
+      console.error("Error fetching batcher:", error);
+      next(new ErrorHandler(500, "Failed to fetch batcher"));
+      return [];
+    }
+  }
+
+  async removeBatch(batchId: string, next: Next): Promise<void> {
+    try {
+      await this.adminRepository.removeBatch(batchId);
+    } catch (error) {
+      console.error("Error removing batch:", error);
+      next(new ErrorHandler(500, "Failed to remove batch"));
     }
   }
 }

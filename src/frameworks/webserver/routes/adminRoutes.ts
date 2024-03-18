@@ -121,5 +121,33 @@ export const adminRoute = (router: Route) => {
     })
   );
 
+  router.post(
+    "/add-batch",
+    isAuth,
+    role([Role.ADMIN]),
+
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      adminController.addBatch(req, res, next);
+    })
+  );
+
+  router.get(
+    "/get-batches",
+    isAuth,
+    role([Role.ADMIN]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      adminController.getBatches(req, res, next);
+    })
+  );
+
+  router.delete(
+    "/remove-batch/:id",
+    isAuth,
+    role([Role.ADMIN]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      adminController.removeBatch(req, res, next);
+    })
+  );
+
   return router;
 };

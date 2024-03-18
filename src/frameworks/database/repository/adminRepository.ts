@@ -28,6 +28,7 @@ import {
   removeBatch,
 } from "./adminRepository/index";
 import { ICourse } from "../../../entities/courseEntity";
+import { IBatch } from "../../../entities/batchEntity";
 
 export class AdminRepository implements IAdminRepository {
   constructor(private adminModels: typeof adminModel) {}
@@ -195,6 +196,33 @@ export class AdminRepository implements IAdminRepository {
       return updatedAdmin;
     } catch (error) {
       throw new Error("Failed to update admin");
+    }
+  }
+
+  async addBatch(batch: IBatch): Promise<void> {
+    try {
+      await addBatch(batch);
+    } catch (error) {
+      console.error("Error occurred while adding batch:", error); // Log the error
+      throw new Error("Failed to add batch.");
+    }
+  }
+
+  async getBatches(): Promise<IBatch[]> {
+    try {
+      const batches = await getBatches();
+      return batches;
+    } catch (error) {
+      throw new Error("Failed to fetch batches");
+    }
+  }
+
+  async removeBatch(batchId: string): Promise<void> {
+    try {
+      await removeBatch(batchId);
+    } catch (error) {
+      console.error("Error removing batch:", error);
+      throw new Error("Failed to remove batch");
     }
   }
 }
