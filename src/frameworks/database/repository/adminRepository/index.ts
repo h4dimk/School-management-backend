@@ -14,6 +14,12 @@ import { removeCourse } from "./removeCourse";
 import { updateAdmin } from "./updateAdmin";
 import { getAdminById } from "./getAdminById";
 import { addBatch, getBatches, removeBatch } from "./manageBatch";
+import { addStudentBatch } from "./addStudentBatches";
+import {
+  addAnnouncement,
+  removeAnnouncement,
+  getAnnouncements,
+} from "./manageAnnouncement";
 
 export {
   findByEmail,
@@ -36,4 +42,8 @@ export {
   addBatch,
   getBatches,
   removeBatch,
+  addStudentBatch,
+  addAnnouncement,
+  removeAnnouncement,
+  getAnnouncements,
 };

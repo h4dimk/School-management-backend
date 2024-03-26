@@ -1,4 +1,5 @@
 import { IAdmin } from "../../../entities/adminEntity";
+import { IAnnouncement } from "../../../entities/announcementEntity";
 import { IBatch } from "../../../entities/batchEntity";
 import { ICourse } from "../../../entities/courseEntity";
 import { IStudent } from "../../../entities/studentEntity";
@@ -8,7 +9,9 @@ export interface IAdminRepository {
   createTeacher(teacher: ITeacher): Promise<void>;
   createStudent(student: IStudent): Promise<void>;
   createCourse(course: ICourse): Promise<void>;
+
   addBatch(batch: IBatch): Promise<void>;
+  addAnnouncement(announcementData: IAnnouncement): Promise<void>;
 
   findByEmail(email: string): Promise<IAdmin | null>;
   findTeacher(email: string): Promise<ITeacher | null>;
@@ -19,6 +22,7 @@ export interface IAdminRepository {
   getStudents(): Promise<IStudent[]>;
   getCourse(): Promise<ICourse[]>;
   getBatches(): Promise<IBatch[]>;
+  getAnnouncements(): Promise<IAnnouncement[]>;
 
   blockTeacher(teacherId: string): Promise<boolean>;
   blockStudent(studentId: string): Promise<boolean>;
@@ -27,7 +31,10 @@ export interface IAdminRepository {
   removeStudent(studentId: string): Promise<void>;
   removeCourse(courseId: string): Promise<void>;
   removeBatch(batchId: string): Promise<void>;
+  removeAnnouncement(announcementId: string): Promise<void>;
 
   getAdminById(id: string): Promise<IAdmin | null>;
+
   updateAdmin(adminId: string, admin: Partial<IAdmin>): Promise<IAdmin>;
+  updateBatch(batchId: string, newStudent: IStudent): Promise<IBatch>;
 }

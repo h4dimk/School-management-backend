@@ -26,9 +26,14 @@ import {
   addBatch,
   getBatches,
   removeBatch,
+  addStudentBatch,
+  addAnnouncement,
+  removeAnnouncement,
+  getAnnouncements,
 } from "./adminRepository/index";
 import { ICourse } from "../../../entities/courseEntity";
 import { IBatch } from "../../../entities/batchEntity";
+import { IAnnouncement } from "../../../entities/announcementEntity";
 
 export class AdminRepository implements IAdminRepository {
   constructor(private adminModels: typeof adminModel) {}
@@ -223,6 +228,43 @@ export class AdminRepository implements IAdminRepository {
     } catch (error) {
       console.error("Error removing batch:", error);
       throw new Error("Failed to remove batch");
+    }
+  }
+
+  async updateBatch(batchId: string, newStudent: IStudent): Promise<IBatch> {
+    try {
+      const batch = await addStudentBatch(batchId, newStudent);
+      return batch;
+    } catch (error) {
+      console.error("Error updating batch:", error);
+      throw new Error("Failed to updating batch");
+    }
+  }
+
+  async addAnnouncement(announcementData: IAnnouncement): Promise<void> {
+    try {
+      await addAnnouncement(announcementData);
+    } catch (error) {
+      console.error("Error occurred while adding announcement:", error);
+      throw new Error("Failed to add announcement.");
+    }
+  }
+
+  async removeAnnouncement(announcementId: string): Promise<void> {
+    try {
+      await removeAnnouncement(announcementId);
+    } catch (error) {
+      console.error("Error removing announcement:", error);
+      throw new Error("Failed to remove announcement");
+    }
+  }
+
+  async getAnnouncements(): Promise<IAnnouncement[]> {
+    try {
+      const announcements = await getAnnouncements();
+      return announcements;
+    } catch (error) {
+      throw new Error("Failed to fetch announcements");
     }
   }
 }

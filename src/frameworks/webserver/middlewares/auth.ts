@@ -3,14 +3,24 @@ import { Next, Req, Res } from "../../types/serverPackageTypes";
 
 const jwt = new Jwt();
 
-function isAuth(req: Req, res: Res, next: Next) {
+async function isAuth(req: Req, res: Res, next: Next) {
   try {
     const token = req.headers.authorization as string;
     if (!token) {
       throw new Error("token not found");
     }
-    const decode = jwt.verifyToken(token);
+
+    const decode = await jwt.verifyToken(token);
     req.user = decode;
+
+    // const user = decode;
+    // if (user.isActive !== undefined && !user.isActive) {
+    //   return res.status(403).json({
+    //     success: false,
+    //     message: "User is not active",
+    //   });
+    // }
+
     next();
   } catch (error: any) {
     res.status(401).json({ success: false, message: error.message });

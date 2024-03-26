@@ -7,6 +7,7 @@ import { randomBytes } from "crypto";
 import Role from "../@types/enum/roles";
 import ErrorHandler from "../useCases/middlewares/errorHandler";
 import { IBatch } from "../entities/batchEntity";
+import { IAnnouncement } from "../entities/announcementEntity";
 
 export class AdminController {
   private readonly adminUseCase: IAdminUseCase;
@@ -79,7 +80,7 @@ export class AdminController {
 
   async addStudent(req: Req, res: Res, next: Next) {
     try {
-      const { name, email, course, batch, gender } = req.body;
+      const { name, email, course, batch, gender, batchId } = req.body;
       const password = randomBytes(8).toString("hex");
       const role = Role.STUDENT;
       const newStudent: IStudent = {
@@ -87,6 +88,7 @@ export class AdminController {
         email,
         course,
         batch,
+        batchId,
         gender,
         password,
         role,
@@ -179,11 +181,8 @@ export class AdminController {
     try {
       const adminId = req.params.id;
       const updates = req.body;
-      const updatedAdmin = await this.adminUseCase.updateAdminProfile(
-        adminId,
-        updates
-      );
-      return updatedAdmin;
+      await this.adminUseCase.updateAdminProfile(adminId, updates);
+      res.status(200).json({ success: true });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }
@@ -191,8 +190,8 @@ export class AdminController {
 
   async addBatch(req: Req, res: Res, next: Next) {
     try {
-      const { batch } = req.body;
-      const newBatch: IBatch = { batch };
+      const { name, students } = req.body;
+      const newBatch: IBatch = { name, students };
       const addedBatch = await this.adminUseCase.addBatch(newBatch, next);
       res.status(201).json({ addedBatch, success: true });
     } catch (error: any) {
@@ -216,6 +215,47 @@ export class AdminController {
       res
         .status(200)
         .json({ message: "Batch removed successfully", success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async addAnnouncement(req: Req, res: Res, next: Next) {
+    try {
+      const { announcement, date } = req.body;
+      const newAnnouncementData: IAnnouncement = {
+        announcement,
+        date: new Date(),
+      };
+
+      console.log();
+
+      const addedAnnouncement = await this.adminUseCase.addAnnouncement(
+        newAnnouncementData,
+        next
+      );
+      res.status(201).json({ addedAnnouncement, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getAnnouncements(req: Req, res: Res, next: Next) {
+    try {
+      const announcements = await this.adminUseCase.getAnnouncements(next);
+      res.json(announcements);
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async removeAnnouncement(req: Req, res: Res, next: Next) {
+    const announcementId = req.params.id;
+    try {
+      await this.adminUseCase.removeAnnouncemet(announcementId, next);
+      res
+        .status(200)
+        .json({ message: "Annoucement removed successfully", success: true });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }

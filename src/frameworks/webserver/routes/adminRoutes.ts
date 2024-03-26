@@ -149,5 +149,32 @@ export const adminRoute = (router: Route) => {
     })
   );
 
+  router.post(
+    "/add-announcement",
+    isAuth,
+    role([Role.ADMIN]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      adminController.addAnnouncement(req, res, next);
+    })
+  );
+
+  router.get(
+    "/get-announcements",
+    isAuth,
+    role([Role.ADMIN]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      adminController.getAnnouncements(req, res, next);
+    })
+  );
+
+  router.delete(
+    "/remove-announcement/:id",
+    isAuth,
+    role([Role.ADMIN]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      adminController.removeAnnouncement(req, res, next);
+    })
+  );
+
   return router;
 };

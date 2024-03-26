@@ -4,6 +4,7 @@ import { ITeacher } from "../../../entities/teacherEntity";
 import { Next } from "../../../frameworks/types/serverPackageTypes";
 import { IAdmin } from "../../../entities/adminEntity";
 import { IBatch } from "../../../entities/batchEntity";
+import { IAnnouncement } from "../../../entities/announcementEntity";
 
 export interface IAdminUseCase {
   login(
@@ -16,11 +17,13 @@ export interface IAdminUseCase {
   addStudent(student: IStudent, next: Next): Promise<void>;
   addCourse(course: ICourse, next: Next): Promise<void>;
   addBatch(batch: IBatch, next: Next): Promise<void>;
+  addAnnouncement(announcementData: IAnnouncement, next: Next): Promise<void>;
 
   getTeachers(next: Next): Promise<ITeacher[]>;
   getStudents(next: Next): Promise<IStudent[]>;
   getCourses(next: Next): Promise<ICourse[]>;
   getBatches(next: Next): Promise<IBatch[]>;
+  getAnnouncements(next: Next): Promise<IAnnouncement[]>;
 
   blockTeacher(teacherId: string, next: Next): Promise<boolean>;
   blockStudent(studentId: string, next: Next): Promise<boolean>;
@@ -29,6 +32,7 @@ export interface IAdminUseCase {
   removeStudent(studentId: string, next: Next): Promise<void>;
   removeCourse(courseId: string, next: Next): Promise<void>;
   removeBatch(batchId: string, next: Next): Promise<void>;
+  removeAnnouncemet(announcementId: string, next: Next): Promise<void>;
 
   getAdminProfile(adminId: string): Promise<IAdmin | null>;
 
@@ -36,4 +40,5 @@ export interface IAdminUseCase {
     adminId: string,
     updates: Partial<IAdmin>
   ): Promise<IAdmin>;
+  // updateBatch(batchId:string,newStudent:IStudent):Promise<IBatch>;
 }

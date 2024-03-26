@@ -10,7 +10,7 @@ import ErrorHandler from "../middlewares/errorHandler";
 import { Next } from "../../frameworks/types/serverPackageTypes";
 import { IHashpassword } from "../interface/services/hashPassword";
 import { IBatch } from "../../entities/batchEntity";
-import { promises } from "dns";
+import { IAnnouncement } from "../../entities/announcementEntity";
 
 export class AdminUseCase implements IAdminUseCase {
   private readonly adminRepository: IAdminRepository;
@@ -151,7 +151,9 @@ export class AdminUseCase implements IAdminUseCase {
       );
       student.password = hashedPassword;
 
-      return await this.adminRepository.createStudent(student);
+      const createdStudent = await this.adminRepository.createStudent(student);
+      // await this.adminRepository.updateBatch(student.batchId,createdStudent);
+      return createdStudent;
     } catch (error) {
       console.error("Error creating student:", error);
       next(new ErrorHandler(500, "Failed to create student"));
@@ -284,8 +286,8 @@ export class AdminUseCase implements IAdminUseCase {
       const batches = await this.adminRepository.getBatches();
       return batches;
     } catch (error) {
-      console.error("Error fetching batcher:", error);
-      next(new ErrorHandler(500, "Failed to fetch batcher"));
+      console.error("Error fetching batches:", error);
+      next(new ErrorHandler(500, "Failed to fetch batches"));
       return [];
     }
   }
@@ -296,6 +298,48 @@ export class AdminUseCase implements IAdminUseCase {
     } catch (error) {
       console.error("Error removing batch:", error);
       next(new ErrorHandler(500, "Failed to remove batch"));
+    }
+  }
+
+  // async updateBatch(batchId:string,newStudent:IStudent):Promise<IBatch>{
+  //   try {
+  //     const batch = await this.adminRepository.updateBatch(batchId, newStudent);
+  //     return batch;
+  //   } catch (error) {
+  //     console.error("Error updating batch:", error);
+  //     throw new Error("Failed to updating batch");
+  //   }
+  // }
+
+  async addAnnouncement(
+    announcementData: IAnnouncement,
+    next: Next
+  ): Promise<void> {
+    try {
+      await this.adminRepository.addAnnouncement(announcementData);
+    } catch (error) {
+      console.error("Error creating annousment:", error);
+      next(new ErrorHandler(500, "Failed to create annousment"));
+    }
+  }
+
+  async getAnnouncements(next: Next): Promise<IAnnouncement[]> {
+    try {
+      const announcements = await this.adminRepository.getAnnouncements();
+      return announcements;
+    } catch (error) {
+      console.error("Error fetching announcements:", error);
+      next(new ErrorHandler(500, "Failed to fetch announcements"));
+      return [];
+    }
+  }
+
+  async removeAnnouncemet(announcementId: string, next: Next): Promise<void> {
+    try {
+      await this.adminRepository.removeAnnouncement(announcementId);
+    } catch (error) {
+      console.error("Error removing annousment:", error);
+      next(new ErrorHandler(500, "Failed to remove annousment"));
     }
   }
 }
