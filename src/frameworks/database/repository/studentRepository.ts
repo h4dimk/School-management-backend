@@ -5,9 +5,11 @@ import { IStudent } from "../../../entities/studentEntity";
 
 import {
   findByEmail,
+  getAnnouncements,
   getStudentById,
   updateStudent,
 } from "./studentRepository/index";
+import { IAnnouncement } from "../../../entities/announcementEntity";
 
 export class StudentRepository implements IStudentRepository {
   constructor(private studentModels: typeof studentModel) {}
@@ -50,4 +52,14 @@ export class StudentRepository implements IStudentRepository {
       throw new Error("Failed to update student");
     }
   }
+
+  async getAnnouncements(): Promise<IAnnouncement[]> {
+    try {
+      const announcements = await getAnnouncements();
+      return announcements;
+    } catch (error) {
+      throw new Error("Failed to fetch announcements");
+    }
+  }
+  
 }

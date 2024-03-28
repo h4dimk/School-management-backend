@@ -152,8 +152,10 @@ export class AdminUseCase implements IAdminUseCase {
       student.password = hashedPassword;
 
       const createdStudent = await this.adminRepository.createStudent(student);
-      // await this.adminRepository.updateBatch(student.batchId,createdStudent);
-      return createdStudent;
+      await this.adminRepository.updateBatch(
+        student.batchId,
+        createdStudent._id ?? "defaultStudentId"
+      );
     } catch (error) {
       console.error("Error creating student:", error);
       next(new ErrorHandler(500, "Failed to create student"));

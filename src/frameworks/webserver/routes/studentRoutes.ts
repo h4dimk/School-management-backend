@@ -27,5 +27,14 @@ export const studentRoute = (router: Route) => {
       studentController.updateStudentProfile(req, res, next);
     })
   );
+
+  router.get(
+    "/get-announcements",
+    isAuth,
+    role([Role.STUDENT]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      studentController.getAnnouncements(req, res, next);
+    })
+  );
   return router;
 };

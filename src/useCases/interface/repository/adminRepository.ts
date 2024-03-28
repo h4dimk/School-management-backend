@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { IAdmin } from "../../../entities/adminEntity";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { IBatch } from "../../../entities/batchEntity";
@@ -7,7 +8,7 @@ import { ITeacher } from "../../../entities/teacherEntity";
 
 export interface IAdminRepository {
   createTeacher(teacher: ITeacher): Promise<void>;
-  createStudent(student: IStudent): Promise<void>;
+  createStudent(student: IStudent): Promise<IStudent>;
   createCourse(course: ICourse): Promise<void>;
 
   addBatch(batch: IBatch): Promise<void>;
@@ -36,5 +37,8 @@ export interface IAdminRepository {
   getAdminById(id: string): Promise<IAdmin | null>;
 
   updateAdmin(adminId: string, admin: Partial<IAdmin>): Promise<IAdmin>;
-  updateBatch(batchId: string, newStudent: IStudent): Promise<IBatch>;
+  updateBatch(
+    batchId: Types.ObjectId,
+    studentId: string
+  ): Promise<IBatch | null>;
 }

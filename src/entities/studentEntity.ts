@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import Role from "../@types/enum/roles";
 
 export interface IStudent {
@@ -6,11 +7,12 @@ export interface IStudent {
   email: string;
   password: string;
   course: string;
-  batch: string | number;
+  batch: string;
   gender: string;
   role: Role;
   isActive?: boolean;
   phonenumber?: number;
   avatar?: string;
   dob?: string | Date;
+  batchId: Types.ObjectId;
 }

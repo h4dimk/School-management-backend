@@ -5,9 +5,11 @@ import { ITeacher } from "../../../entities/teacherEntity";
 
 import {
   findByEmail,
+  getAnnouncements,
   getTeacherById,
   updateTeacher,
 } from "./teacherRepository/index";
+import { IAnnouncement } from "../../../entities/announcementEntity";
 
 export class TeacherRepository implements ITeacherRepository {
   constructor(private teacherModels: typeof teacherModel) {}
@@ -46,6 +48,15 @@ export class TeacherRepository implements ITeacherRepository {
       return updatedTeacher;
     } catch (error) {
       throw new Error("Failed to update teacher");
+    }
+  }
+
+  async getAnnouncements(): Promise<IAnnouncement[]> {
+    try {
+      const announcements = await getAnnouncements();
+      return announcements;
+    } catch (error) {
+      throw new Error("Failed to fetch announcements");
     }
   }
 }

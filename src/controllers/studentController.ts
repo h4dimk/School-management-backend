@@ -40,11 +40,17 @@ export class StudentController {
     try {
       const studentId = req.params.id;
       const updates = req.body;
-      const updatedStudent = await this.studentUseCase.updateStudentProfile(
-        studentId,
-        updates
-      );
-      return updatedStudent;
+      await this.studentUseCase.updateStudentProfile(studentId, updates);
+      res.status(200).json({ success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getAnnouncements(req: Req, res: Res, next: Next) {
+    try {
+      const announcements = await this.studentUseCase.getAnnouncements(next);
+      res.json(announcements);
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }

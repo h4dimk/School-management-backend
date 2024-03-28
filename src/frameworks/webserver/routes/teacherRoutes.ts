@@ -27,6 +27,15 @@ export const teacherRoute = (router: Route) => {
       teacherController.updateTeacherProfile(req, res, next);
     })
   );
+  
+  router.get(
+    "/get-announcements",
+    isAuth,
+    role([Role.TEACHER]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      teacherController.getAnnouncements(req, res, next);
+    })
+  );
 
   return router;
 };

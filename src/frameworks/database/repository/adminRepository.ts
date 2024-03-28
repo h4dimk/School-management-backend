@@ -34,6 +34,7 @@ import {
 import { ICourse } from "../../../entities/courseEntity";
 import { IBatch } from "../../../entities/batchEntity";
 import { IAnnouncement } from "../../../entities/announcementEntity";
+import { Types } from "mongoose";
 
 export class AdminRepository implements IAdminRepository {
   constructor(private adminModels: typeof adminModel) {}
@@ -95,9 +96,9 @@ export class AdminRepository implements IAdminRepository {
     }
   }
 
-  async createStudent(student: IStudent): Promise<void> {
+  async createStudent(student: IStudent): Promise<IStudent> {
     try {
-      await createStudent(student);
+      return await createStudent(student);
     } catch (error) {
       console.error("Error creating student:", error);
       throw new Error("Failed to create student");
@@ -231,9 +232,17 @@ export class AdminRepository implements IAdminRepository {
     }
   }
 
-  async updateBatch(batchId: string, newStudent: IStudent): Promise<IBatch> {
+  async updateBatch(
+    batchId: Types.ObjectId,
+    studentId: string
+  ): Promise<IBatch | null> {
     try {
-      const batch = await addStudentBatch(batchId, newStudent);
+      const batch = await addStudentBatch(batchId, studentId);
+
+      if (!batch) {
+        throw new Error("Batch not found");
+      }
+
       return batch;
     } catch (error) {
       console.error("Error updating batch:", error);

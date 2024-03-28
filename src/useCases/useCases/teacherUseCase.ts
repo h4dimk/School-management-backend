@@ -5,6 +5,7 @@ import IJwtService from "../interface/services/jwtService";
 import ErrorHandler from "../middlewares/errorHandler";
 import { Next } from "../../frameworks/types/serverPackageTypes";
 import { IHashpassword } from "../interface/services/hashPassword";
+import { IAnnouncement } from "../../entities/announcementEntity";
 
 export class TeacherUseCase implements ITeacherUseCase {
   private readonly teacherRepository: ITeacherRepository;
@@ -41,6 +42,7 @@ export class TeacherUseCase implements ITeacherUseCase {
           const token = await this.jwt.createToken({
             _id: teacher._id,
             role: teacher.role,
+            // isActive: teacher.isActive,
           });
           teacher.password = "";
           return { teacher, token };
@@ -78,8 +80,6 @@ export class TeacherUseCase implements ITeacherUseCase {
         throw new Error("Teacher ID is required");
       }
       if (updates.password) {
-        console.log(updates.password)
-
         const hashedPassword = await this.hashPassword.createHash(
           updates.password
         );
@@ -99,6 +99,17 @@ export class TeacherUseCase implements ITeacherUseCase {
     } catch (error) {
       console.error("Error updating Teacher profile:", error);
       throw new ErrorHandler(500, "Failed to update Teacher profile");
+    }
+  }
+
+  async getAnnouncements(next: Next): Promise<IAnnouncement[]> {
+    try {
+      const announcements = await this.teacherRepository.getAnnouncements();
+      return announcements;
+    } catch (error) {
+      console.error("Error fetching announcements:", error);
+      next(new ErrorHandler(500, "Failed to fetch announcements"));
+      return [];
     }
   }
 }

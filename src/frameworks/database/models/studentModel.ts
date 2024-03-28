@@ -25,8 +25,11 @@ const studentSchema: Schema<IStudent> = new Schema(
       required: [true, "Please provide a valid course"],
     },
     batch: {
-      type: Schema.Types.Mixed,
-      required: [true, "Please provide a valid batch"],
+      type: String,
+    },
+    batchId: {
+      type: Schema.Types.ObjectId,
+      ref: "batch", 
     },
     isActive: {
       type: Boolean,

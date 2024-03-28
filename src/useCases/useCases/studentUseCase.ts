@@ -5,6 +5,7 @@ import ErrorHandler from "../middlewares/errorHandler";
 import { Next } from "../../frameworks/types/serverPackageTypes";
 import { IHashpassword } from "../interface/services/hashPassword";
 import { IStudent } from "../../entities/studentEntity";
+import { IAnnouncement } from "../../entities/announcementEntity";
 
 export class StudentUseCase implements IStudentUseCase {
   private readonly studentRepository: IStudentRepository;
@@ -39,6 +40,7 @@ export class StudentUseCase implements IStudentUseCase {
           const token = await this.jwt.createToken({
             _id: student._id,
             role: student.role,
+            // isActive:student.isActive
           });
 
           student.password = "";
@@ -99,4 +101,17 @@ export class StudentUseCase implements IStudentUseCase {
       throw new ErrorHandler(500, "Failed to update Student profile");
     }
   }
+
+
+  async getAnnouncements(next: Next): Promise<IAnnouncement[]> {
+    try {
+      const announcements = await this.studentRepository.getAnnouncements();
+      return announcements;
+    } catch (error) {
+      console.error("Error fetching announcements:", error);
+      next(new ErrorHandler(500, "Failed to fetch announcements"));
+      return [];
+    }
+  }
+
 }
