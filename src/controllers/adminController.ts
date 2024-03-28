@@ -29,12 +29,14 @@ export class AdminController {
 
   async addTeacher(req: Req, res: Res, next: Next) {
     try {
-      const { name, email, subject, gender } = req.body;
+      const { name, email, subject, gender, batch, batchId } = req.body;
       const password = randomBytes(8).toString("hex");
       const role = Role.TEACHER;
       const newTeacher: ITeacher = {
         name,
         email,
+        batch,
+        batchId,
         subject,
         gender,
         password,

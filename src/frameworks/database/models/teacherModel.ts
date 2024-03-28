@@ -43,6 +43,13 @@ const teacherSchema: Schema<ITeacher> = new Schema(
     dob: {
       type: String || Date,
     },
+    batch: {
+      type: String,
+    },
+    batchId: {
+      type: Schema.Types.ObjectId,
+      ref: "batch",
+    },
   },
   { timestamps: true }
 );
