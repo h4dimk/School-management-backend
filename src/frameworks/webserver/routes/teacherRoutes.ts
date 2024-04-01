@@ -46,5 +46,14 @@ export const teacherRoute = (router: Route) => {
     })
   );
 
+  router.get(
+    "/get-attendances/:id",
+    isAuth,
+    role([Role.TEACHER]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      teacherController.getAttendance(req, res, next);
+    })
+  );
+
   return router;
 };

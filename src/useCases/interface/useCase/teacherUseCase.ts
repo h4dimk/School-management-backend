@@ -11,6 +11,7 @@ export interface ITeacherUseCase {
   ): Promise<{ teacher: ITeacher; token: string } | void>;
 
   getAnnouncements(next: Next): Promise<IAnnouncement[]>;
+  getAttendance(batchId: string, next: Next): Promise<IAttendence[]>;
 
   getTeacherProfile(teacherId: string): Promise<ITeacher | null>;
 

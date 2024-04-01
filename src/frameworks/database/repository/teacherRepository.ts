@@ -9,6 +9,7 @@ import {
   getTeacherById,
   updateTeacher,
   createAttendence,
+  getAttendance,
 } from "./teacherRepository/index";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { IAttendence } from "../../../entities/attendenceEntity";
@@ -69,6 +70,16 @@ export class TeacherRepository implements ITeacherRepository {
     } catch (error) {
       console.error("Error occurred while creating attendence:", error);
       throw new Error("Failed to create attendence ");
+    }
+  }
+
+  async getAttendance(batchId: string): Promise<IAttendence[]> {
+    try {
+      const attendance = await getAttendance(batchId);
+      return attendance;
+    } catch (error) {
+      console.error("Error fetching attendance:", error);
+      throw new Error("Failed to fetch attendance");
     }
   }
 }

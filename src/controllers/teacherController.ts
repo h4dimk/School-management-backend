@@ -62,8 +62,6 @@ export class TeacherController {
     try {
       const { batchId, present, absent, date } = req.body;
 
-      
-
       if (!batchId || !present || !absent || !date) {
         throw new ErrorHandler(
           400,
@@ -73,11 +71,13 @@ export class TeacherController {
 
       const existingAttendance = await attendenceModel.findOne({
         batchId,
-        date: { $gte: new Date().setHours(0, 0, 0, 0) }, 
+        date: { $gte: new Date().setHours(0, 0, 0, 0) },
       });
 
       if (existingAttendance) {
-        return res.status(400).json({ message: "Attendance already taken for today." });
+        return res
+          .status(400)
+          .json({ message: "Attendance already taken for today." });
       }
 
       const newAttendence: IAttendence = {
@@ -93,6 +93,17 @@ export class TeacherController {
       );
 
       res.status(201).json({ attendance, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getAttendance(req: Req, res: Res, next: Next) {
+    const batchId = req.params.id;
+    try {
+      const attendance = await this.teacherUseCase.getAttendance(batchId, next);
+
+      res.status(200).json({ attendance });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }

@@ -6,6 +6,7 @@ export interface ITeacherRepository {
   findByEmail(email: string): Promise<ITeacher | null>;
 
   getAnnouncements(): Promise<IAnnouncement[]>;
+  getAttendance(batchId: string): Promise<IAttendence[]>
 
   getTeacherById(teacherId: string): Promise<ITeacher | null>;
 

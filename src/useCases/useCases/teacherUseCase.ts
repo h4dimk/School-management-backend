@@ -128,4 +128,15 @@ export class TeacherUseCase implements ITeacherUseCase {
       next(new ErrorHandler(500, "Failed to add attendance"));
     }
   }
+
+  async getAttendance(batchId: string, next: Next): Promise<IAttendence[]> {
+    try {
+      const attendance = await this.teacherRepository.getAttendance(batchId);
+      return attendance;
+    } catch (error) {
+      console.error("Error fetching attendance:", error);
+      next(new ErrorHandler(500, "Failed to fetch attendance"));
+      return [];
+    }
+  }
 }
