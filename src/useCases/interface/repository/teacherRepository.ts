@@ -1,4 +1,5 @@
 import { IAnnouncement } from "../../../entities/announcementEntity";
+import { IAttendence } from "../../../entities/attendenceEntity";
 import { ITeacher } from "../../../entities/teacherEntity";
 
 export interface ITeacherRepository {
@@ -12,4 +13,6 @@ export interface ITeacherRepository {
     teacherId: string,
     teacher: Partial<ITeacher>
   ): Promise<ITeacher>;
+
+  createAttendence(attendence: IAttendence): Promise<IAttendence>;
 }

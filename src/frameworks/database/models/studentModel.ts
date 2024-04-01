@@ -29,7 +29,7 @@ const studentSchema: Schema<IStudent> = new Schema(
     },
     batchId: {
       type: Schema.Types.ObjectId,
-      ref: "batch", 
+      ref: "batch",
     },
     isActive: {
       type: Boolean,

@@ -8,8 +8,10 @@ import {
   getAnnouncements,
   getTeacherById,
   updateTeacher,
+  createAttendence,
 } from "./teacherRepository/index";
 import { IAnnouncement } from "../../../entities/announcementEntity";
+import { IAttendence } from "../../../entities/attendenceEntity";
 
 export class TeacherRepository implements ITeacherRepository {
   constructor(private teacherModels: typeof teacherModel) {}
@@ -57,6 +59,16 @@ export class TeacherRepository implements ITeacherRepository {
       return announcements;
     } catch (error) {
       throw new Error("Failed to fetch announcements");
+    }
+  }
+
+  async createAttendence(attendence: IAttendence): Promise<IAttendence> {
+    try {
+      const createdAttendence = await createAttendence(attendence);
+      return createdAttendence;
+    } catch (error) {
+      console.error("Error occurred while creating attendence:", error);
+      throw new Error("Failed to create attendence ");
     }
   }
 }

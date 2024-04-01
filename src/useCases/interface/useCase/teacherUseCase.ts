@@ -1,4 +1,5 @@
 import { IAnnouncement } from "../../../entities/announcementEntity";
+import { IAttendence } from "../../../entities/attendenceEntity";
 import { ITeacher } from "../../../entities/teacherEntity";
 import { Next } from "../../../frameworks/types/serverPackageTypes";
 
@@ -17,4 +18,9 @@ export interface ITeacherUseCase {
     teacherId: string,
     updates: Partial<ITeacher>
   ): Promise<ITeacher>;
+
+  addAttendance(
+    attendance: IAttendence,
+    next: Next
+  ): Promise<IAttendence | undefined>;
 }

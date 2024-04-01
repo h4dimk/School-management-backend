@@ -42,6 +42,7 @@ export class AdminController {
         password,
         role,
       };
+      console.log("email :", email, "password : ", password);
       const addedTeacher = await this.adminUseCase.addTeacher(newTeacher, next);
       res.status(201).json({ addedTeacher, success: true });
     } catch (error: any) {
@@ -95,6 +96,7 @@ export class AdminController {
         password,
         role,
       };
+      console.log("email :", email, "password : ", password);
       const addedStudent = await this.adminUseCase.addStudent(newStudent, next);
       res.status(201).json({ addedStudent, success: true });
     } catch (error: any) {

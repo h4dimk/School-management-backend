@@ -4,6 +4,8 @@ import { ITeacher } from "../entities/teacherEntity";
 
 import { ITeacherUseCase } from "../useCases/interface/useCase/teacherUseCase";
 import ErrorHandler from "../useCases/middlewares/errorHandler";
+import { IAttendence } from "../entities/attendenceEntity";
+import attendenceModel from "../frameworks/database/models/attendenceModel";
 
 export class TeacherController {
   private teacherUseCase: ITeacherUseCase;
@@ -51,6 +53,46 @@ export class TeacherController {
     try {
       const announcements = await this.teacherUseCase.getAnnouncements(next);
       res.json(announcements);
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async uploadAttendance(req: Req, res: Res, next: Next) {
+    try {
+      const { batchId, present, absent, date } = req.body;
+
+      
+
+      if (!batchId || !present || !absent || !date) {
+        throw new ErrorHandler(
+          400,
+          "Batch ID, present students,date, and absent students are required"
+        );
+      }
+
+      const existingAttendance = await attendenceModel.findOne({
+        batchId,
+        date: { $gte: new Date().setHours(0, 0, 0, 0) }, 
+      });
+
+      if (existingAttendance) {
+        return res.status(400).json({ message: "Attendance already taken for today." });
+      }
+
+      const newAttendence: IAttendence = {
+        batchId,
+        present,
+        absent,
+        date,
+      };
+
+      const attendance = await this.teacherUseCase.addAttendance(
+        newAttendence,
+        next
+      );
+
+      res.status(201).json({ attendance, success: true });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }

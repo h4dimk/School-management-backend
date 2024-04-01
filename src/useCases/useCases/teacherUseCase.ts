@@ -6,6 +6,7 @@ import ErrorHandler from "../middlewares/errorHandler";
 import { Next } from "../../frameworks/types/serverPackageTypes";
 import { IHashpassword } from "../interface/services/hashPassword";
 import { IAnnouncement } from "../../entities/announcementEntity";
+import { IAttendence } from "../../entities/attendenceEntity";
 
 export class TeacherUseCase implements ITeacherUseCase {
   private readonly teacherRepository: ITeacherRepository;
@@ -110,6 +111,21 @@ export class TeacherUseCase implements ITeacherUseCase {
       console.error("Error fetching announcements:", error);
       next(new ErrorHandler(500, "Failed to fetch announcements"));
       return [];
+    }
+  }
+
+  async addAttendance(
+    attendance: IAttendence,
+    next: Next
+  ): Promise<IAttendence | undefined> {
+    try {
+      const createdAttendance = await this.teacherRepository.createAttendence(
+        attendance
+      );
+      return createdAttendance;
+    } catch (error) {
+      console.error("Error adding attendance:", error);
+      next(new ErrorHandler(500, "Failed to add attendance"));
     }
   }
 }
