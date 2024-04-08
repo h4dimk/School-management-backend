@@ -6,6 +6,7 @@ import { Next } from "../../frameworks/types/serverPackageTypes";
 import { IHashpassword } from "../interface/services/hashPassword";
 import { IStudent } from "../../entities/studentEntity";
 import { IAnnouncement } from "../../entities/announcementEntity";
+import { ILeaveStudent } from "../../entities/leaveStudentEntity";
 
 export class StudentUseCase implements IStudentUseCase {
   private readonly studentRepository: IStudentRepository;
@@ -79,7 +80,7 @@ export class StudentUseCase implements IStudentUseCase {
       }
 
       if (updates.password) {
-        console.log(updates.password)
+        console.log(updates.password);
         const hashedPassword = await this.hashPassword.createHash(
           updates.password
         );
@@ -102,7 +103,6 @@ export class StudentUseCase implements IStudentUseCase {
     }
   }
 
-
   async getAnnouncements(next: Next): Promise<IAnnouncement[]> {
     try {
       const announcements = await this.studentRepository.getAnnouncements();
@@ -114,4 +114,16 @@ export class StudentUseCase implements IStudentUseCase {
     }
   }
 
+  async applyLeave(
+    leaveData: ILeaveStudent,
+    next: Next
+  ): Promise<ILeaveStudent | undefined> {
+    try {
+      const createdLeave = await this.studentRepository.createLeave(leaveData);
+      return createdLeave;
+    } catch (error) {
+      console.error("Error adding Leave Application:", error);
+      next(new ErrorHandler(500, "Failed to add Leave Application"));
+    }
+  }
 }

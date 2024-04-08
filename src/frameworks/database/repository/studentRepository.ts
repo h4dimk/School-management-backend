@@ -8,8 +8,10 @@ import {
   getAnnouncements,
   getStudentById,
   updateStudent,
+  createLeave,
 } from "./studentRepository/index";
 import { IAnnouncement } from "../../../entities/announcementEntity";
+import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 
 export class StudentRepository implements IStudentRepository {
   constructor(private studentModels: typeof studentModel) {}
@@ -61,5 +63,14 @@ export class StudentRepository implements IStudentRepository {
       throw new Error("Failed to fetch announcements");
     }
   }
-  
+
+  async createLeave(leaveData: ILeaveStudent): Promise<ILeaveStudent> {
+    try {
+      const createdLeave = await createLeave(leaveData);
+      return createdLeave;
+    } catch (error) {
+      console.error("Error occurred while creating Leave:", error);
+      throw new Error("Failed to create Leave ");
+    }
+  }
 }

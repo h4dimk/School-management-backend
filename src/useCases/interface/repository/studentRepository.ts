@@ -1,4 +1,5 @@
 import { IAnnouncement } from "../../../entities/announcementEntity";
+import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import { IStudent } from "../../../entities/studentEntity";
 
 export interface IStudentRepository {
@@ -12,4 +13,6 @@ export interface IStudentRepository {
     studentId: string,
     student: Partial<IStudent>
   ): Promise<IStudent>;
+
+  createLeave(leaveData: ILeaveStudent): Promise<ILeaveStudent>;
 }

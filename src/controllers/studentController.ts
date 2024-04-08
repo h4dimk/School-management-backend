@@ -4,6 +4,7 @@ import { IStudent } from "../entities/studentEntity";
 
 import { IStudentUseCase } from "../useCases/interface/useCase/studentUseCase";
 import ErrorHandler from "../useCases/middlewares/errorHandler";
+import { ILeaveStudent } from "../entities/leaveStudentEntity";
 
 export class StudentController {
   private studentUseCase: IStudentUseCase;
@@ -51,6 +52,26 @@ export class StudentController {
     try {
       const announcements = await this.studentUseCase.getAnnouncements(next);
       res.json(announcements);
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async applyLeave(req: Req, res: Res, next: Next) {
+    try {
+      const { leaveType, startDate, endDate, reason } = req.body;
+      const studentId = req.params.id;
+
+      const newLeave: ILeaveStudent = {
+        leaveType,
+        startDate,
+        endDate,
+        reason,
+        student: studentId,
+      };
+      const leave = await this.studentUseCase.applyLeave(newLeave, next);
+
+      res.status(201).json({ leave, success: true });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }

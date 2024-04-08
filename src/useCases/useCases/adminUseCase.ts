@@ -11,23 +11,27 @@ import { Next } from "../../frameworks/types/serverPackageTypes";
 import { IHashpassword } from "../interface/services/hashPassword";
 import { IBatch } from "../../entities/batchEntity";
 import { IAnnouncement } from "../../entities/announcementEntity";
+import { Server } from "socket.io";
 
 export class AdminUseCase implements IAdminUseCase {
   private readonly adminRepository: IAdminRepository;
   private readonly jwt: IJwtService;
   private readonly sendMail: ISendEmail;
   private readonly hashPassword: IHashpassword;
+  // private readonly io:Server;
 
   constructor(
     adminRepository: IAdminRepository,
     jwt: IJwtService,
     sendMail: ISendEmail,
-    hashPassword: IHashpassword
+    hashPassword: IHashpassword,
+    // io: Server
   ) {
     this.adminRepository = adminRepository;
     this.jwt = jwt;
     this.sendMail = sendMail;
     this.hashPassword = hashPassword;
+    // this.io = io;
   }
 
   async login(
@@ -303,22 +307,16 @@ export class AdminUseCase implements IAdminUseCase {
     }
   }
 
-  // async updateBatch(batchId:string,newStudent:IStudent):Promise<IBatch>{
-  //   try {
-  //     const batch = await this.adminRepository.updateBatch(batchId, newStudent);
-  //     return batch;
-  //   } catch (error) {
-  //     console.error("Error updating batch:", error);
-  //     throw new Error("Failed to updating batch");
-  //   }
-  // }
-
   async addAnnouncement(
     announcementData: IAnnouncement,
     next: Next
   ): Promise<void> {
     try {
-      await this.adminRepository.addAnnouncement(announcementData);
+      const newAnnouncement = await this.adminRepository.addAnnouncement(
+        announcementData
+      );
+      // this.io.emit('newAnnouncement', newAnnouncement);
+      return newAnnouncement;
     } catch (error) {
       console.error("Error creating annousment:", error);
       next(new ErrorHandler(500, "Failed to create annousment"));

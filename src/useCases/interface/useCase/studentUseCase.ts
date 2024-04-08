@@ -1,4 +1,5 @@
 import { IAnnouncement } from "../../../entities/announcementEntity";
+import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import { IStudent } from "../../../entities/studentEntity";
 import { Next } from "../../../frameworks/types/serverPackageTypes";
 
@@ -17,4 +18,9 @@ export interface IStudentUseCase {
     studentId: string,
     updates: Partial<IStudent>
   ): Promise<IStudent>;
+
+  applyLeave(
+    leaveData: ILeaveStudent,
+    next: Next
+  ): Promise<ILeaveStudent | undefined>;
 }

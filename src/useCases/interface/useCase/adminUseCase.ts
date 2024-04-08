@@ -40,5 +40,4 @@ export interface IAdminUseCase {
     adminId: string,
     updates: Partial<IAdmin>
   ): Promise<IAdmin>;
-  // updateBatch(batchId:string,newStudent:IStudent):Promise<IBatch>;
 }

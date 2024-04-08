@@ -36,5 +36,16 @@ export const studentRoute = (router: Route) => {
       studentController.getAnnouncements(req, res, next);
     })
   );
+
+  router.post(
+    "/apply-leave/:id",
+    isAuth,
+    role([Role.STUDENT]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      studentController.applyLeave(req, res, next);
+    })
+  );
+
+
   return router;
 };
