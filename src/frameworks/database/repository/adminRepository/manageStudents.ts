@@ -19,7 +19,7 @@ export const removeStudent = async (studentId: string) => {
   try {
     const deletedStudent = await studentModel.findByIdAndDelete(studentId);
     if (!deletedStudent) {
-      throw new Error("Teacher not found");
+      throw new Error("Student not found");
     }
     return deletedStudent;
   } catch (error) {

@@ -6,6 +6,7 @@ import { ITeacherUseCase } from "../useCases/interface/useCase/teacherUseCase";
 import ErrorHandler from "../useCases/middlewares/errorHandler";
 import { IAttendence } from "../entities/attendenceEntity";
 import attendenceModel from "../frameworks/database/models/attendenceModel";
+import { ILeaveTeacher } from "../entities/leaveTeacherEntity";
 
 export class TeacherController {
   private teacherUseCase: ITeacherUseCase;
@@ -104,6 +105,48 @@ export class TeacherController {
       const attendance = await this.teacherUseCase.getAttendance(batchId, next);
 
       res.status(200).json({ attendance });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async applyLeave(req: Req, res: Res, next: Next) {
+    try {
+      const { leaveType, startDate, endDate, reason } = req.body;
+      const teacherId = req.params.id;
+
+      const newLeave: ILeaveTeacher = {
+        leaveType,
+        startDate,
+        endDate,
+        reason,
+        teacher: teacherId,
+      };
+      const leave = await this.teacherUseCase.applyLeave(newLeave, next);
+
+      res.status(201).json({ leave, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getLeaves(req: Req, res: Res, next: Next) {
+    try {
+      const teacherId = req.params.id;
+
+      const leaves = await this.teacherUseCase.getLeaves(teacherId);
+
+      res.status(201).json({ leaves, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async cancelLeave(req: Req, res: Res, next: Next) {
+    try {
+      const leaveId = req.params.id;
+      await this.teacherUseCase.cancelLeave(leaveId);
+      res.status(201).json({ success: true });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }

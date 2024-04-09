@@ -11,6 +11,7 @@ export interface IStudentUseCase {
   ): Promise<{ student: IStudent; token: string } | void>;
 
   getAnnouncements(next: Next): Promise<IAnnouncement[]>;
+  getLeaves(studentId: string): Promise<ILeaveStudent[]>;
 
   getStudentProfile(studentId: string): Promise<IStudent | null>;
 
@@ -23,4 +24,6 @@ export interface IStudentUseCase {
     leaveData: ILeaveStudent,
     next: Next
   ): Promise<ILeaveStudent | undefined>;
+
+  cancelLeave(leaveId: string): Promise<void>;
 }

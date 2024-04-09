@@ -55,5 +55,32 @@ export const teacherRoute = (router: Route) => {
     })
   );
 
+  router.post(
+    "/apply-leave/:id",
+    isAuth,
+    role([Role.TEACHER]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      teacherController.applyLeave(req, res, next);
+    })
+  );
+
+  router.get(
+    "/get-leaves/:id",
+    isAuth,
+    role([Role.TEACHER]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      teacherController.getLeaves(req, res, next);
+    })
+  );
+
+  router.delete(
+    "/cancel-leave/:id",
+    isAuth,
+    role([Role.TEACHER]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      teacherController.cancelLeave(req, res, next);
+    })
+  );
+
   return router;
 };

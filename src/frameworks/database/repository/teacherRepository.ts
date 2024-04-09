@@ -10,9 +10,13 @@ import {
   updateTeacher,
   createAttendence,
   getAttendance,
+  createLeave,
+  findLeavebyTeacherId,
+  removeLeave
 } from "./teacherRepository/index";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { IAttendence } from "../../../entities/attendenceEntity";
+import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
 
 export class TeacherRepository implements ITeacherRepository {
   constructor(private teacherModels: typeof teacherModel) {}
@@ -80,6 +84,35 @@ export class TeacherRepository implements ITeacherRepository {
     } catch (error) {
       console.error("Error fetching attendance:", error);
       throw new Error("Failed to fetch attendance");
+    }
+  }
+
+  async createLeave(leaveData: ILeaveTeacher): Promise<ILeaveTeacher> {
+    try {
+      const createdLeave = await createLeave(leaveData);
+      return createdLeave;
+    } catch (error) {
+      console.error("Error occurred while creating Leave:", error);
+      throw new Error("Failed to create Leave ");
+    }
+  }
+
+  async findLeaves(teacherId: string): Promise<ILeaveTeacher[]> {
+    try {
+      const leaves = await findLeavebyTeacherId(teacherId);
+      return leaves;
+    } catch (error) {
+      console.error("Error finding leaves:", error);
+      throw new Error("Failed to find leaves");
+    }
+  }
+
+  async removeLeave(leaveId: string): Promise<void> {
+    try {
+      await removeLeave(leaveId);
+    } catch (error) {
+      console.error("Error removing leave:", error);
+      throw new Error("Failed to remove leave. Please try again later.");
     }
   }
 }

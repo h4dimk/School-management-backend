@@ -1,9 +1,9 @@
 import mongoose, { Model, Schema } from "mongoose";
 
-import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import Leave from "../../../@types/enum/leave";
+import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
 
-const leaveSchema: Schema<ILeaveStudent> = new Schema(
+const leaveSchema: Schema<ILeaveTeacher> = new Schema(
   {
     leaveType: {
       type: String,
@@ -21,9 +21,9 @@ const leaveSchema: Schema<ILeaveStudent> = new Schema(
       type: String,
       required: true,
     },
-    student: {
+    teacher: {
       type: Schema.Types.ObjectId,
-      ref: "Student",
+      ref: "Teacher",
       required: true,
     },
     status: {
@@ -34,8 +34,8 @@ const leaveSchema: Schema<ILeaveStudent> = new Schema(
   { timestamps: true }
 );
 
-const leaveModel: Model<ILeaveStudent> = mongoose.model(
-  "LeaveStudent",
+const leaveModel: Model<ILeaveTeacher> = mongoose.model(
+  "LeaveTeacher",
   leaveSchema
 );
 export default leaveModel;

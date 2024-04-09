@@ -4,6 +4,7 @@ import { IStudent } from "../../../entities/studentEntity";
 
 export interface IStudentRepository {
   findByEmail(email: string): Promise<IStudent | null>;
+  findLeaves(studentId: string): Promise<ILeaveStudent[]>;
 
   getAnnouncements(): Promise<IAnnouncement[]>;
 
@@ -15,4 +16,6 @@ export interface IStudentRepository {
   ): Promise<IStudent>;
 
   createLeave(leaveData: ILeaveStudent): Promise<ILeaveStudent>;
+
+  removeLeave(leaveId: string): Promise<void>;
 }

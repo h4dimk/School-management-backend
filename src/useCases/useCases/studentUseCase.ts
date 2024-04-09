@@ -126,4 +126,24 @@ export class StudentUseCase implements IStudentUseCase {
       next(new ErrorHandler(500, "Failed to add Leave Application"));
     }
   }
+
+  async getLeaves(studentId: string): Promise<ILeaveStudent[]> {
+    try {
+      const leaves = await this.studentRepository.findLeaves(studentId);
+      return leaves;
+    } catch (error) {
+      console.error("Error getting leaves:", error);
+      throw new Error("Failed to get leaves");
+    }
+  }
+
+  async cancelLeave(leaveId: string): Promise<void> {
+    try {
+      await this.studentRepository.removeLeave(leaveId);
+    } catch (error) {
+      console.error("Error canceling leave:", error);
+      throw new Error("Failed to cancel leave. Please try again later.");
+    }
+  }
+  
 }

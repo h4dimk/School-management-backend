@@ -46,6 +46,23 @@ export const studentRoute = (router: Route) => {
     })
   );
 
+  router.get(
+    "/get-leaves/:id",
+    isAuth,
+    role([Role.STUDENT]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      studentController.getLeaves(req, res, next);
+    })
+  );
+
+  router.delete(
+    "/cancel-leave/:id",
+    isAuth,
+    role([Role.STUDENT]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      studentController.cancelLeave(req, res, next);
+    })
+  );
 
   return router;
 };

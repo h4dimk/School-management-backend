@@ -7,6 +7,7 @@ import { Next } from "../../frameworks/types/serverPackageTypes";
 import { IHashpassword } from "../interface/services/hashPassword";
 import { IAnnouncement } from "../../entities/announcementEntity";
 import { IAttendence } from "../../entities/attendenceEntity";
+import { ILeaveTeacher } from "../../entities/leaveTeacherEntity";
 
 export class TeacherUseCase implements ITeacherUseCase {
   private readonly teacherRepository: ITeacherRepository;
@@ -137,6 +138,38 @@ export class TeacherUseCase implements ITeacherUseCase {
       console.error("Error fetching attendance:", error);
       next(new ErrorHandler(500, "Failed to fetch attendance"));
       return [];
+    }
+  }
+
+  async applyLeave(
+    leaveData: ILeaveTeacher,
+    next: Next
+  ): Promise<ILeaveTeacher | undefined> {
+    try {
+      const createdLeave = await this.teacherRepository.createLeave(leaveData);
+      return createdLeave;
+    } catch (error) {
+      console.error("Error adding Leave Application:", error);
+      next(new ErrorHandler(500, "Failed to add Leave Application"));
+    }
+  }
+
+  async getLeaves(studentId: string): Promise<ILeaveTeacher[]> {
+    try {
+      const leaves = await this.teacherRepository.findLeaves(studentId);
+      return leaves;
+    } catch (error) {
+      console.error("Error getting leaves:", error);
+      throw new Error("Failed to get leaves");
+    }
+  }
+
+  async cancelLeave(leaveId: string): Promise<void> {
+    try {
+      await this.teacherRepository.removeLeave(leaveId);
+    } catch (error) {
+      console.error("Error canceling leave:", error);
+      throw new Error("Failed to cancel leave. Please try again later.");
     }
   }
 }

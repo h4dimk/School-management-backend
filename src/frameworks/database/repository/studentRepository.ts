@@ -9,6 +9,8 @@ import {
   getStudentById,
   updateStudent,
   createLeave,
+  findLeavebyStudentId,
+  removeLeave,
 } from "./studentRepository/index";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
@@ -73,4 +75,24 @@ export class StudentRepository implements IStudentRepository {
       throw new Error("Failed to create Leave ");
     }
   }
+
+  async findLeaves(studentId: string): Promise<ILeaveStudent[]> {
+    try {
+      const leaves = await findLeavebyStudentId(studentId);
+      return leaves;
+    } catch (error) {
+      console.error("Error finding leaves:", error);
+      throw new Error("Failed to find leaves");
+    }
+  }
+
+  async removeLeave(leaveId: string): Promise<void> {
+    try {
+      await removeLeave(leaveId);
+    } catch (error) {
+      console.error("Error removing leave:", error);
+      throw new Error("Failed to remove leave. Please try again later.");
+    }
+  }
+  
 }

@@ -4,6 +4,7 @@ import { updateTeacher } from "./updateTeacher";
 import { getAnnouncements } from "./getAnnouncements";
 import { createAttendence } from "./createAttendence";
 import { getAttendance } from "./getAttendanceDetails";
+import { createLeave, findLeavebyTeacherId ,removeLeave} from "./manageLeave";
 
 export {
   findByEmail,
@@ -12,4 +13,7 @@ export {
   getAnnouncements,
   createAttendence,
   getAttendance,
+  createLeave,
+  findLeavebyTeacherId,
+  removeLeave,
 };

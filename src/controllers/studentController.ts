@@ -76,4 +76,26 @@ export class StudentController {
       next(new ErrorHandler(500, error.message));
     }
   }
+
+  async getLeaves(req: Req, res: Res, next: Next) {
+    try {
+      const studentId = req.params.id;
+
+      const leaves = await this.studentUseCase.getLeaves(studentId);
+
+      res.status(201).json({ leaves, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async cancelLeave(req: Req, res: Res, next: Next) {
+    try {
+      const leaveId = req.params.id;
+      await this.studentUseCase.cancelLeave(leaveId);
+      res.status(201).json({ success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
 }

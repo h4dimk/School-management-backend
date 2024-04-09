@@ -1,12 +1,12 @@
 import { Types } from "mongoose";
 import Leave from "../@types/enum/leave";
 
-export interface ILeaveStudent {
+export interface ILeaveTeacher {
   _id?: string;
   leaveType: string;
   startDate: Date;
   endDate: Date;
   reason: string;
-  student: Types.ObjectId | string;
-  status?:Leave;
+  teacher: Types.ObjectId | string;
+  status?: Leave;
 }
