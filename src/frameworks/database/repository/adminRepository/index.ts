@@ -20,6 +20,12 @@ import {
   removeAnnouncement,
   getAnnouncements,
 } from "./manageAnnouncement";
+import {
+  updateTeachersLeaveStatus,
+  updateStudentsLeaveStatus,
+  findTeachersLeaves,
+  findStudentsLeaves,
+} from "./manageLeave";
 
 export {
   findByEmail,
@@ -46,4 +52,8 @@ export {
   addAnnouncement,
   removeAnnouncement,
   getAnnouncements,
+  updateTeachersLeaveStatus,
+  updateStudentsLeaveStatus,
+  findTeachersLeaves,
+  findStudentsLeaves,
 };

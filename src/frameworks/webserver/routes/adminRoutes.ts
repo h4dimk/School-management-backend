@@ -176,5 +176,41 @@ export const adminRoute = (router: Route) => {
     })
   );
 
+  router.get(
+    "/get-teachers-leaves",
+    isAuth,
+    role([Role.ADMIN]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      adminController.getTeachersLeaves(req, res, next);
+    })
+  );
+
+  router.get(
+    "/get-students-leaves",
+    isAuth,
+    role([Role.ADMIN]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      adminController.getStudentsLeaves(req, res, next);
+    })
+  );
+
+  router.put(
+    "/update-teacher-leave-status",
+    isAuth,
+    role([Role.ADMIN]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      adminController.updateTeachersLeaveStatus(req, res, next);
+    })
+  );
+
+  router.put(
+    "/update-student-leave-status",
+    isAuth,
+    role([Role.ADMIN]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      adminController.updateStudentsLeaveStatus(req, res, next);
+    })
+  );
+
   return router;
 };

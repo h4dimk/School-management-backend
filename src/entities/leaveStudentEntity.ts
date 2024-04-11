@@ -8,5 +8,6 @@ export interface ILeaveStudent {
   endDate: Date;
   reason: string;
   student: Types.ObjectId | string;
-  status?:Leave;
+  studentBatch: string;
+  status?: Leave;
 }

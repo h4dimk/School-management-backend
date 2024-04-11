@@ -30,11 +30,18 @@ import {
   addAnnouncement,
   removeAnnouncement,
   getAnnouncements,
+  findTeachersLeaves,
+  updateTeachersLeaveStatus,
+  updateStudentsLeaveStatus,
+  findStudentsLeaves,
 } from "./adminRepository/index";
 import { ICourse } from "../../../entities/courseEntity";
 import { IBatch } from "../../../entities/batchEntity";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { Types } from "mongoose";
+import Leave from "../../../@types/enum/leave";
+import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
+import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 
 export class AdminRepository implements IAdminRepository {
   constructor(private adminModels: typeof adminModel) {}
@@ -274,6 +281,50 @@ export class AdminRepository implements IAdminRepository {
       return announcements;
     } catch (error) {
       throw new Error("Failed to fetch announcements");
+    }
+  }
+
+  async getTeachersLeaves(): Promise<ILeaveTeacher[]> {
+    try {
+      const leaves = await findTeachersLeaves();
+      return leaves;
+    } catch (error) {
+      console.error("Error fetching leave:", error);
+      throw new Error("Failed to fetch leave. Please try again later.");
+    }
+  }
+
+  async getStudentsLeaves(): Promise<ILeaveStudent[]> {
+    try {
+      const leaves = await findStudentsLeaves();
+      return leaves;
+    } catch (error) {
+      console.error("Error fetching leave:", error);
+      throw new Error("Failed to fetch leave. Please try again later.");
+    }
+  }
+
+  async updateTeachersLeaveStatus(
+    leaveId: string,
+    status: Leave
+  ): Promise<void> {
+    try {
+      await updateTeachersLeaveStatus(leaveId, status);
+    } catch (error) {
+      console.error("Error updating leave:", error);
+      throw new Error("Failed to update leave. Please try again later.");
+    }
+  }
+
+  async updateStudentsLeaveStatus(
+    leaveId: string,
+    status: Leave
+  ): Promise<void> {
+    try {
+      await updateStudentsLeaveStatus(leaveId, status);
+    } catch (error) {
+      console.error("Error updating leave:", error);
+      throw new Error("Failed to update leave. Please try again later.");
     }
   }
 }

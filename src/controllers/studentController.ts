@@ -59,7 +59,7 @@ export class StudentController {
 
   async applyLeave(req: Req, res: Res, next: Next) {
     try {
-      const { leaveType, startDate, endDate, reason } = req.body;
+      const { leaveType, startDate, endDate, reason, studentBatch } = req.body;
       const studentId = req.params.id;
 
       const newLeave: ILeaveStudent = {
@@ -67,6 +67,7 @@ export class StudentController {
         startDate,
         endDate,
         reason,
+        studentBatch,
         student: studentId,
       };
       const leave = await this.studentUseCase.applyLeave(newLeave, next);

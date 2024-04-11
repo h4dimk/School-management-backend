@@ -12,11 +12,15 @@ import {
   getAttendance,
   createLeave,
   findLeavebyTeacherId,
-  removeLeave
+  removeLeave,
+  findStudentsLeaves,
+  updateLeaveStatus,
 } from "./teacherRepository/index";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { IAttendence } from "../../../entities/attendenceEntity";
 import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
+import Leave from "../../../@types/enum/leave";
+import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 
 export class TeacherRepository implements ITeacherRepository {
   constructor(private teacherModels: typeof teacherModel) {}
@@ -113,6 +117,25 @@ export class TeacherRepository implements ITeacherRepository {
     } catch (error) {
       console.error("Error removing leave:", error);
       throw new Error("Failed to remove leave. Please try again later.");
+    }
+  }
+
+  async getStudentsLeaves(batch: string): Promise<ILeaveStudent[]> {
+    try {
+      const leaves = await findStudentsLeaves(batch);
+      return leaves;
+    } catch (error) {
+      console.error("Error fetching leaves:", error);
+      throw new Error("Failed to fetch leaves. Please try again later.");
+    }
+  }
+
+  async updateLeaveStatus(leaveId: string, status: Leave): Promise<void> {
+    try {
+      await updateLeaveStatus(leaveId, status);
+    } catch (error) {
+      console.error("Error updating leave:", error);
+      throw new Error("Failed to update leave. Please try again later.");
     }
   }
 }

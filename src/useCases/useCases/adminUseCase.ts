@@ -12,6 +12,9 @@ import { IHashpassword } from "../interface/services/hashPassword";
 import { IBatch } from "../../entities/batchEntity";
 import { IAnnouncement } from "../../entities/announcementEntity";
 import { Server } from "socket.io";
+import { ILeaveTeacher } from "../../entities/leaveTeacherEntity";
+import { ILeaveStudent } from "../../entities/leaveStudentEntity";
+import Leave from "../../@types/enum/leave";
 
 export class AdminUseCase implements IAdminUseCase {
   private readonly adminRepository: IAdminRepository;
@@ -24,7 +27,7 @@ export class AdminUseCase implements IAdminUseCase {
     adminRepository: IAdminRepository,
     jwt: IJwtService,
     sendMail: ISendEmail,
-    hashPassword: IHashpassword,
+    hashPassword: IHashpassword
     // io: Server
   ) {
     this.adminRepository = adminRepository;
@@ -340,6 +343,54 @@ export class AdminUseCase implements IAdminUseCase {
     } catch (error) {
       console.error("Error removing annousment:", error);
       next(new ErrorHandler(500, "Failed to remove annousment"));
+    }
+  }
+
+  async getTeachersLeaves(next: Next): Promise<ILeaveTeacher[]> {
+    try {
+      const leaves = await this.adminRepository.getTeachersLeaves();
+      return leaves;
+    } catch (error) {
+      console.error("Error fetching leaves:", error);
+      next(new ErrorHandler(500, "Failed to fetch leaves"));
+      return [];
+    }
+  }
+
+  async getStudentsLeaves(next: Next): Promise<ILeaveStudent[]> {
+    try {
+      const leaves = await this.adminRepository.getStudentsLeaves();
+      return leaves;
+    } catch (error) {
+      console.error("Error fetching leaves:", error);
+      next(new ErrorHandler(500, "Failed to fetch leaves"));
+      return [];
+    }
+  }
+
+  async updateTeacherLeaveStatus(
+    leaveId: string,
+    status: Leave,
+    next: Next
+  ): Promise<void> {
+    try {
+      await this.adminRepository.updateTeachersLeaveStatus(leaveId, status);
+    } catch (error) {
+      console.error("Error updating leave status:", error);
+      next(new ErrorHandler(500, "Failed to update leave status"));
+    }
+  }
+
+  async updateStudentsLeaveStatus(
+    leaveId: string,
+    status: Leave,
+    next: Next
+  ): Promise<void> {
+    try {
+      await this.adminRepository.updateStudentsLeaveStatus(leaveId, status);
+    } catch (error) {
+      console.error("Error updating leave status:", error);
+      next(new ErrorHandler(500, "Failed to update leave status"));
     }
   }
 }

@@ -1,7 +1,4 @@
 import { Req, Res, Next } from "../frameworks/types/serverPackageTypes";
-
-import { ITeacher } from "../entities/teacherEntity";
-
 import { ITeacherUseCase } from "../useCases/interface/useCase/teacherUseCase";
 import ErrorHandler from "../useCases/middlewares/errorHandler";
 import { IAttendence } from "../entities/attendenceEntity";
@@ -147,6 +144,28 @@ export class TeacherController {
       const leaveId = req.params.id;
       await this.teacherUseCase.cancelLeave(leaveId);
       res.status(201).json({ success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getStudentsLeaves(req: Req, res: Res, next: Next) {
+    try {
+      const batch = req.query.batch as string;
+      const leaves = await this.teacherUseCase.getStudentsLeaves(batch, next);
+      res.status(200).json({ leaves, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async updateStudentsLeaveStatus(req: Req, res: Res, next: Next) {
+    try {
+      const { leaveId, status } = req.body;
+      await this.teacherUseCase.updateLeaveStatus(leaveId, status, next);
+      res
+        .status(200)
+        .json({ message: "Leave updated successfully", success: true });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }

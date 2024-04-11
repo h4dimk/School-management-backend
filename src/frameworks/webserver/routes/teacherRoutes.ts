@@ -82,5 +82,23 @@ export const teacherRoute = (router: Route) => {
     })
   );
 
+  router.get(
+    "/get-students-leaves",
+    isAuth,
+    role([Role.TEACHER]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      teacherController.getStudentsLeaves(req, res, next);
+    })
+  );
+
+  router.put(
+    "/update-student-leave-status",
+    isAuth,
+    role([Role.TEACHER]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      teacherController.updateStudentsLeaveStatus(req, res, next);
+    })
+  );
+
   return router;
 };

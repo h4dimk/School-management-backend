@@ -1,7 +1,7 @@
 enum Leave {
   PENDING = "Pending",
-  ACCEPT="Accept",
-  REJECT = "Reject",
+  ACCEPT="Accepted",
+  REJECT = "Rejected",
 }
 
 export default Leave;

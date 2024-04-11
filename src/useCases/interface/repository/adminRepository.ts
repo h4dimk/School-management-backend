@@ -5,6 +5,9 @@ import { IBatch } from "../../../entities/batchEntity";
 import { ICourse } from "../../../entities/courseEntity";
 import { IStudent } from "../../../entities/studentEntity";
 import { ITeacher } from "../../../entities/teacherEntity";
+import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
+import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
+import Leave from "../../../@types/enum/leave";
 
 export interface IAdminRepository {
   createTeacher(teacher: ITeacher): Promise<void>;
@@ -24,6 +27,8 @@ export interface IAdminRepository {
   getCourse(): Promise<ICourse[]>;
   getBatches(): Promise<IBatch[]>;
   getAnnouncements(): Promise<IAnnouncement[]>;
+  getTeachersLeaves(): Promise<ILeaveTeacher[]>;
+  getStudentsLeaves(): Promise<ILeaveStudent[]>;
 
   blockTeacher(teacherId: string): Promise<boolean>;
   blockStudent(studentId: string): Promise<boolean>;
@@ -41,4 +46,6 @@ export interface IAdminRepository {
     batchId: Types.ObjectId,
     studentId: string
   ): Promise<IBatch | null>;
+  updateTeachersLeaveStatus(leaveId: string, status: Leave): Promise<void>;
+  updateStudentsLeaveStatus(leaveId: string, status: Leave): Promise<void>;
 }

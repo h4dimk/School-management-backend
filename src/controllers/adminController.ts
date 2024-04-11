@@ -226,13 +226,11 @@ export class AdminController {
 
   async addAnnouncement(req: Req, res: Res, next: Next) {
     try {
-      const { announcement, date } = req.body;
+      const { announcement } = req.body;
       const newAnnouncementData: IAnnouncement = {
         announcement,
         date: new Date(),
       };
-
-      console.log();
 
       const addedAnnouncement = await this.adminUseCase.addAnnouncement(
         newAnnouncementData,
@@ -260,6 +258,48 @@ export class AdminController {
       res
         .status(200)
         .json({ message: "Annoucement removed successfully", success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getTeachersLeaves(req: Req, res: Res, next: Next) {
+    try {
+      const leaves = await this.adminUseCase.getTeachersLeaves(next);
+      res.status(200).json({ leaves, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getStudentsLeaves(req: Req, res: Res, next: Next) {
+    try {
+      const leaves = await this.adminUseCase.getStudentsLeaves(next);
+      res.status(200).json({ leaves, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async updateTeachersLeaveStatus(req: Req, res: Res, next: Next) {
+    try {
+      const { leaveId, status } = req.body;
+      await this.adminUseCase.updateTeacherLeaveStatus(leaveId, status, next);
+      res
+        .status(200)
+        .json({ message: "Leave updated successfully", success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async updateStudentsLeaveStatus(req: Req, res: Res, next: Next) {
+    try {
+      const { leaveId, status } = req.body;
+      await this.adminUseCase.updateStudentsLeaveStatus(leaveId, status, next);
+      res
+        .status(200)
+        .json({ message: "Leave updated successfully", success: true });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }

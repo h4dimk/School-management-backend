@@ -26,6 +26,9 @@ const leaveSchema: Schema<ILeaveStudent> = new Schema(
       ref: "Student",
       required: true,
     },
+    studentBatch: {
+      type: String,
+    },
     status: {
       type: String,
       default: Leave.PENDING,

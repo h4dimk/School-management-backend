@@ -1,5 +1,7 @@
+import Leave from "../../../@types/enum/leave";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { IAttendence } from "../../../entities/attendenceEntity";
+import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
 import { ITeacher } from "../../../entities/teacherEntity";
 import { Next } from "../../../frameworks/types/serverPackageTypes";
@@ -14,6 +16,7 @@ export interface ITeacherUseCase {
   getAnnouncements(next: Next): Promise<IAnnouncement[]>;
   getLeaves(studentId: string): Promise<ILeaveTeacher[]>;
   getAttendance(batchId: string, next: Next): Promise<IAttendence[]>;
+  getStudentsLeaves(batch: string, next: Next): Promise<ILeaveStudent[]>;
 
   getTeacherProfile(teacherId: string): Promise<ITeacher | null>;
 
@@ -21,6 +24,7 @@ export interface ITeacherUseCase {
     teacherId: string,
     updates: Partial<ITeacher>
   ): Promise<ITeacher>;
+  updateLeaveStatus(leaveId: string, status: Leave, next: Next): Promise<void>;
 
   addAttendance(
     attendance: IAttendence,

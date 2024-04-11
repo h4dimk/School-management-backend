@@ -8,6 +8,8 @@ import { IHashpassword } from "../interface/services/hashPassword";
 import { IAnnouncement } from "../../entities/announcementEntity";
 import { IAttendence } from "../../entities/attendenceEntity";
 import { ILeaveTeacher } from "../../entities/leaveTeacherEntity";
+import { ILeaveStudent } from "../../entities/leaveStudentEntity";
+import Leave from "../../@types/enum/leave";
 
 export class TeacherUseCase implements ITeacherUseCase {
   private readonly teacherRepository: ITeacherRepository;
@@ -170,6 +172,30 @@ export class TeacherUseCase implements ITeacherUseCase {
     } catch (error) {
       console.error("Error canceling leave:", error);
       throw new Error("Failed to cancel leave. Please try again later.");
+    }
+  }
+
+  async getStudentsLeaves(batch: string, next: Next): Promise<ILeaveStudent[]> {
+    try {
+      const leaves = await this.teacherRepository.getStudentsLeaves(batch);
+      return leaves;
+    } catch (error) {
+      console.error("Error fetching leaves:", error);
+      next(new ErrorHandler(500, "Failed to fetch leaves"));
+      return [];
+    }
+  }
+
+  async updateLeaveStatus(
+    leaveId: string,
+    status: Leave,
+    next: Next
+  ): Promise<void> {
+    try {
+      await this.teacherRepository.updateLeaveStatus(leaveId, status);
+    } catch (error) {
+      console.error("Error updating leave status:", error);
+      next(new ErrorHandler(500, "Failed to update leave status"));
     }
   }
 }

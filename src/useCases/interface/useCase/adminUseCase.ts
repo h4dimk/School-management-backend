@@ -5,6 +5,9 @@ import { Next } from "../../../frameworks/types/serverPackageTypes";
 import { IAdmin } from "../../../entities/adminEntity";
 import { IBatch } from "../../../entities/batchEntity";
 import { IAnnouncement } from "../../../entities/announcementEntity";
+import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
+import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
+import Leave from "../../../@types/enum/leave";
 
 export interface IAdminUseCase {
   login(
@@ -24,6 +27,8 @@ export interface IAdminUseCase {
   getCourses(next: Next): Promise<ICourse[]>;
   getBatches(next: Next): Promise<IBatch[]>;
   getAnnouncements(next: Next): Promise<IAnnouncement[]>;
+  getTeachersLeaves(next: Next): Promise<ILeaveTeacher[]>;
+  getStudentsLeaves(next: Next): Promise<ILeaveStudent[]>;
 
   blockTeacher(teacherId: string, next: Next): Promise<boolean>;
   blockStudent(studentId: string, next: Next): Promise<boolean>;
@@ -40,4 +45,14 @@ export interface IAdminUseCase {
     adminId: string,
     updates: Partial<IAdmin>
   ): Promise<IAdmin>;
+  updateTeacherLeaveStatus(
+    leaveId: string,
+    status: Leave,
+    next: Next
+  ): Promise<void>;
+  updateStudentsLeaveStatus(
+    leaveId: string,
+    status: Leave,
+    next: Next
+  ): Promise<void>;
 }
