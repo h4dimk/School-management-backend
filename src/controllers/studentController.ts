@@ -5,6 +5,7 @@ import { IStudent } from "../entities/studentEntity";
 import { IStudentUseCase } from "../useCases/interface/useCase/studentUseCase";
 import ErrorHandler from "../useCases/middlewares/errorHandler";
 import { ILeaveStudent } from "../entities/leaveStudentEntity";
+import { IMessage } from "../entities/chatEntity";
 
 export class StudentController {
   private studentUseCase: IStudentUseCase;
@@ -62,6 +63,35 @@ export class StudentController {
       const { leaveType, startDate, endDate, reason, studentBatch } = req.body;
       const studentId = req.params.id;
 
+      // Validate input fields
+      if (!leaveType || typeof leaveType !== "string" || !leaveType.trim()) {
+        throw new Error("Please provide a valid leave type.");
+      }
+
+      if (!startDate || !(startDate instanceof Date)) {
+        throw new Error("Please provide a valid start date.");
+      }
+
+      if (!endDate || !(endDate instanceof Date)) {
+        throw new Error("Please provide a valid end date.");
+      }
+
+      if (!reason || typeof reason !== "string" || !reason.trim()) {
+        throw new Error("Please provide a valid reason for leave.");
+      }
+
+      if (
+        !studentBatch ||
+        typeof studentBatch !== "string" ||
+        !studentBatch.trim()
+      ) {
+        throw new Error("Please provide a valid student batch.");
+      }
+
+      if (!studentId || typeof studentId !== "string" || !studentId.trim()) {
+        throw new Error("Please provide a valid student ID.");
+      }
+
       const newLeave: ILeaveStudent = {
         leaveType,
         startDate,
@@ -95,6 +125,43 @@ export class StudentController {
       const leaveId = req.params.id;
       await this.studentUseCase.cancelLeave(leaveId);
       res.status(201).json({ success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async addMessage(req: Req, res: Res, next: Next) {
+    try {
+      const { message, sender, group } = req.body;
+      const newMessage: IMessage = {
+        message,
+        sender,
+        group,
+      };
+      const createdmessage = await this.studentUseCase.addMessage(newMessage);
+      res.status(201).json({ createdmessage, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getChats(req: Req, res: Res, next: Next) {
+    try {
+      const batchId = req.params.id;
+
+      const chats = await this.studentUseCase.getChats(batchId);
+
+      res.status(201).json({ chats, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getTimetables(req: Req, res: Res, next: Next) {
+    try {
+      const batchId = req.params.id;
+      const timetables = await this.studentUseCase.getTimetables(batchId, next);
+      res.status(200).json({ timetables, success: true });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }

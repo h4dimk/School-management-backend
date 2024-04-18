@@ -212,5 +212,32 @@ export const adminRoute = (router: Route) => {
     })
   );
 
+  router.post(
+    "/add-timetable",
+    isAuth,
+    role([Role.ADMIN]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      adminController.addTimetable(req, res, next);
+    })
+  );
+
+  router.get(
+    "/get-timetable",
+    isAuth,
+    role([Role.ADMIN]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      adminController.getTimetables(req, res, next);
+    })
+  );
+
+  router.delete(
+    "/remove-timetable/:id",
+    isAuth,
+    role([Role.ADMIN]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      adminController.deleteTimetable(req, res, next);
+    })
+  );
+
   return router;
 };

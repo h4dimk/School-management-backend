@@ -64,5 +64,30 @@ export const studentRoute = (router: Route) => {
     })
   );
 
+  router.post(
+    "/add-message",
+    isAuth,
+    role([Role.STUDENT]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      studentController.addMessage(req, res, next);
+    })
+  );
+
+  router.get(
+    "/get-chats/:id",
+    isAuth,
+    role([Role.STUDENT]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      studentController.getChats(req, res, next);
+    })
+  );
+  router.get(
+    "/get-timetable/:id",
+    isAuth,
+    role([Role.STUDENT]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      studentController.getTimetables(req, res, next);
+    })
+  );
   return router;
 };

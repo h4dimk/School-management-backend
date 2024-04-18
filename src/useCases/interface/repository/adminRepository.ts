@@ -8,11 +8,15 @@ import { ITeacher } from "../../../entities/teacherEntity";
 import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import Leave from "../../../@types/enum/leave";
+import { IGroup } from "../../../entities/groupEntity";
+import { ITimetable } from "../../../entities/timeTableEntity";
 
 export interface IAdminRepository {
   createTeacher(teacher: ITeacher): Promise<void>;
   createStudent(student: IStudent): Promise<IStudent>;
   createCourse(course: ICourse): Promise<void>;
+  createGroup(groupData: IGroup): Promise<void>;
+  createTimetable(timetable: ITimetable): Promise<void>;
 
   addBatch(batch: IBatch): Promise<void>;
   addAnnouncement(announcementData: IAnnouncement): Promise<void>;
@@ -29,6 +33,7 @@ export interface IAdminRepository {
   getAnnouncements(): Promise<IAnnouncement[]>;
   getTeachersLeaves(): Promise<ILeaveTeacher[]>;
   getStudentsLeaves(): Promise<ILeaveStudent[]>;
+  getTimetables(): Promise<ITimetable[]>;
 
   blockTeacher(teacherId: string): Promise<boolean>;
   blockStudent(studentId: string): Promise<boolean>;
@@ -38,6 +43,7 @@ export interface IAdminRepository {
   removeCourse(courseId: string): Promise<void>;
   removeBatch(batchId: string): Promise<void>;
   removeAnnouncement(announcementId: string): Promise<void>;
+  removeTimetable(timetableId: string): Promise<void>;
 
   getAdminById(id: string): Promise<IAdmin | null>;
 

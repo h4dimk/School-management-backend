@@ -170,4 +170,17 @@ export class TeacherController {
       next(new ErrorHandler(500, error.message));
     }
   }
+
+  async getTimetables(req: Req, res: Res, next: Next) {
+    try {
+      const teacherId = req.params.id;
+      const timetables = await this.teacherUseCase.getTimetables(
+        teacherId,
+        next
+      );
+      res.status(200).json({ timetables, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
 }

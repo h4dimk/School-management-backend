@@ -4,6 +4,7 @@ import { IAttendence } from "../../../entities/attendenceEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
 import { ITeacher } from "../../../entities/teacherEntity";
+import { ITimetable } from "../../../entities/timeTableEntity";
 import { Next } from "../../../frameworks/types/serverPackageTypes";
 
 export interface ITeacherUseCase {
@@ -17,6 +18,7 @@ export interface ITeacherUseCase {
   getLeaves(studentId: string): Promise<ILeaveTeacher[]>;
   getAttendance(batchId: string, next: Next): Promise<IAttendence[]>;
   getStudentsLeaves(batch: string, next: Next): Promise<ILeaveStudent[]>;
+  getTimetables(teacherId: string, next: Next): Promise<ITimetable[]>;
 
   getTeacherProfile(teacherId: string): Promise<ITeacher | null>;
 

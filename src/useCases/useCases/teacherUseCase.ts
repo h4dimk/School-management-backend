@@ -10,6 +10,7 @@ import { IAttendence } from "../../entities/attendenceEntity";
 import { ILeaveTeacher } from "../../entities/leaveTeacherEntity";
 import { ILeaveStudent } from "../../entities/leaveStudentEntity";
 import Leave from "../../@types/enum/leave";
+import { ITimetable } from "../../entities/timeTableEntity";
 
 export class TeacherUseCase implements ITeacherUseCase {
   private readonly teacherRepository: ITeacherRepository;
@@ -196,6 +197,27 @@ export class TeacherUseCase implements ITeacherUseCase {
     } catch (error) {
       console.error("Error updating leave status:", error);
       next(new ErrorHandler(500, "Failed to update leave status"));
+    }
+  }
+
+  async getTimetables(
+    teacherId: string,
+    next: Next
+  ): Promise<ITimetable[]> {
+    try {
+      const timetables = await this.teacherRepository.getTimetables(
+        teacherId,
+      );
+      return timetables;
+    } catch (error) {
+      console.error("Error fetching timetables:", error);
+      next(
+        new ErrorHandler(
+          500,
+          "Failed to fetch timetables. Please try again later."
+        )
+      );
+      return [];
     }
   }
 }

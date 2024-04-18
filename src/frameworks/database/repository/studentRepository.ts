@@ -11,9 +11,15 @@ import {
   createLeave,
   findLeavebyStudentId,
   removeLeave,
+  createMessage,
+  findChats,
+  findTimetables,
 } from "./studentRepository/index";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
+import { IMessage } from "../../../entities/chatEntity";
+import { IGroup } from "../../../entities/groupEntity";
+import { ITimetable } from "../../../entities/timeTableEntity";
 
 export class StudentRepository implements IStudentRepository {
   constructor(private studentModels: typeof studentModel) {}
@@ -24,7 +30,7 @@ export class StudentRepository implements IStudentRepository {
       return studentExist;
     } catch (error) {
       console.error("Error occurred while logging in student:", error);
-      throw new Error("Failed to log in student");
+      throw new Error("Failed to log instudent");
     }
   }
 
@@ -94,5 +100,34 @@ export class StudentRepository implements IStudentRepository {
       throw new Error("Failed to remove leave. Please try again later.");
     }
   }
-  
+
+  async addMessage(messageData: IMessage): Promise<IMessage> {
+    try {
+      const createdMessage = await createMessage(messageData);
+      return createdMessage;
+    } catch (error) {
+      console.error("Error occurred while creating Message:", error);
+      throw new Error("Failed to create Message ");
+    }
+  }
+
+  async findChats(batchId: string): Promise<IMessage[]> {
+    try {
+      const Messages = await findChats(batchId);
+      return Messages;
+    } catch (error) {
+      console.error("Error finding leaves:", error);
+      throw new Error("Failed to find leaves");
+    }
+  }
+
+  async getTimetables(batch: string): Promise<ITimetable[]> {
+    try {
+      const timetables = await findTimetables(batch);
+      return timetables;
+    } catch (error) {
+      console.error("Error fetching timetables:", error);
+      throw new Error("Failed to fetch timetables. Please try again later.");
+    }
+  }
 }

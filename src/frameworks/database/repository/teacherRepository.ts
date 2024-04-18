@@ -15,12 +15,16 @@ import {
   removeLeave,
   findStudentsLeaves,
   updateLeaveStatus,
+  createMessage,
+  findChats,
+  findTimetables,
 } from "./teacherRepository/index";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { IAttendence } from "../../../entities/attendenceEntity";
 import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
 import Leave from "../../../@types/enum/leave";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
+import { ITimetable } from "../../../entities/timeTableEntity";
 
 export class TeacherRepository implements ITeacherRepository {
   constructor(private teacherModels: typeof teacherModel) {}
@@ -136,6 +140,16 @@ export class TeacherRepository implements ITeacherRepository {
     } catch (error) {
       console.error("Error updating leave:", error);
       throw new Error("Failed to update leave. Please try again later.");
+    }
+  }
+
+  async getTimetables(teacherId: string): Promise<ITimetable[]> {
+    try {
+      const timetables = await findTimetables(teacherId);
+      return timetables;
+    } catch (error) {
+      console.error("Error fetching timetables:", error);
+      throw new Error("Failed to fetch timetables. Please try again later.");
     }
   }
 }

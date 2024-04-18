@@ -8,6 +8,8 @@ import Role from "../@types/enum/roles";
 import ErrorHandler from "../useCases/middlewares/errorHandler";
 import { IBatch } from "../entities/batchEntity";
 import { IAnnouncement } from "../entities/announcementEntity";
+import courseModel from "../frameworks/database/models/courseModel";
+import { ITimetable } from "../entities/timeTableEntity";
 
 export class AdminController {
   private readonly adminUseCase: IAdminUseCase;
@@ -30,6 +32,15 @@ export class AdminController {
   async addTeacher(req: Req, res: Res, next: Next) {
     try {
       const { name, email, subject, gender, batch, batchId } = req.body;
+
+      if (!name || !email || !subject || !gender || !batchId) {
+        throw new Error("Please fill in all fields.");
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        throw new Error("Please enter a valid email address.");
+      }
       const password = randomBytes(8).toString("hex");
       const role = Role.TEACHER;
       const newTeacher: ITeacher = {
@@ -84,6 +95,16 @@ export class AdminController {
   async addStudent(req: Req, res: Res, next: Next) {
     try {
       const { name, email, course, batch, gender, batchId } = req.body;
+
+      if (!name || !email || !course || !batch || !gender || !batchId) {
+        throw new Error("Please fill in all fields.");
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        throw new Error("Please enter a valid email address.");
+      }
+
       const password = randomBytes(8).toString("hex");
       const role = Role.STUDENT;
       const newStudent: IStudent = {
@@ -138,6 +159,33 @@ export class AdminController {
   async addCourse(req: Req, res: Res, next: Next) {
     try {
       const { course, subjects } = req.body;
+
+      const existingCourse = await courseModel.findOne({
+        course: { $regex: new RegExp(`^${course}$`, "i") },
+      });
+
+      if (existingCourse) {
+        return res
+          .status(400)
+          .json({ message: "Course in this name is already added" });
+      }
+      // Validate input fields
+      if (
+        !course ||
+        !subjects ||
+        !Array.isArray(subjects) ||
+        subjects.length === 0
+      ) {
+        throw new Error("Please provide a course and at least one subject.");
+      }
+
+      // Ensure each subject is a non-empty string
+      for (const subject of subjects) {
+        if (typeof subject !== "string" || subject.trim() === "") {
+          throw new Error("Invalid subject format.");
+        }
+      }
+
       const newCourse: ICourse = { course, subjects };
       const addedCourse = await this.adminUseCase.addCourse(newCourse, next);
       res.status(201).json({ addedCourse, success: true });
@@ -195,6 +243,12 @@ export class AdminController {
   async addBatch(req: Req, res: Res, next: Next) {
     try {
       const { name, students } = req.body;
+
+      // Validate input fields
+      if (!name || typeof name !== "string" || !name.trim()) {
+        throw new Error("Please provide a valid name.");
+      }
+
       const newBatch: IBatch = { name, students };
       const addedBatch = await this.adminUseCase.addBatch(newBatch, next);
       res.status(201).json({ addedBatch, success: true });
@@ -304,4 +358,47 @@ export class AdminController {
       next(new ErrorHandler(500, error.message));
     }
   }
+  async addTimetable(req: Req, res: Res, next: Next) {
+    try {
+      const { date, batch, period, subject, teacher } = req.body;
+
+      const newTimetable: ITimetable = {
+        date,
+        batch,
+        period,
+        subject,
+        teacher,
+      };
+
+      const addedTimetable = await this.adminUseCase.addTimetable(
+        newTimetable,
+        next
+      );
+      res.status(201).json({ addedTimetable, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async deleteTimetable(req: Req, res: Res, next: Next) {
+    try {
+      const timetableId = req.params.id;
+      await this.adminUseCase.removeTimetable(timetableId, next);
+      res
+        .status(200)
+        .json({ message: "Timetable removed successfully", success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getTimetables(req: Req, res: Res, next: Next) {
+    try {
+      const timetables = await this.adminUseCase.getTimetables(next);
+      res.status(200).json({ timetables, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
 }

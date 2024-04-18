@@ -8,6 +8,7 @@ import { IAnnouncement } from "../../../entities/announcementEntity";
 import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import Leave from "../../../@types/enum/leave";
+import { ITimetable } from "../../../entities/timeTableEntity";
 
 export interface IAdminUseCase {
   login(
@@ -21,6 +22,7 @@ export interface IAdminUseCase {
   addCourse(course: ICourse, next: Next): Promise<void>;
   addBatch(batch: IBatch, next: Next): Promise<void>;
   addAnnouncement(announcementData: IAnnouncement, next: Next): Promise<void>;
+  addTimetable(timetable: ITimetable, next: Next): Promise<void>;
 
   getTeachers(next: Next): Promise<ITeacher[]>;
   getStudents(next: Next): Promise<IStudent[]>;
@@ -29,6 +31,7 @@ export interface IAdminUseCase {
   getAnnouncements(next: Next): Promise<IAnnouncement[]>;
   getTeachersLeaves(next: Next): Promise<ILeaveTeacher[]>;
   getStudentsLeaves(next: Next): Promise<ILeaveStudent[]>;
+  getTimetables(next: Next): Promise<ITimetable[]>;
 
   blockTeacher(teacherId: string, next: Next): Promise<boolean>;
   blockStudent(studentId: string, next: Next): Promise<boolean>;
@@ -38,6 +41,7 @@ export interface IAdminUseCase {
   removeCourse(courseId: string, next: Next): Promise<void>;
   removeBatch(batchId: string, next: Next): Promise<void>;
   removeAnnouncemet(announcementId: string, next: Next): Promise<void>;
+  removeTimetable(timetableId: string, next: Next): Promise<void>;
 
   getAdminProfile(adminId: string): Promise<IAdmin | null>;
 

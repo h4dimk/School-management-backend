@@ -15,6 +15,7 @@ import { Server } from "socket.io";
 import { ILeaveTeacher } from "../../entities/leaveTeacherEntity";
 import { ILeaveStudent } from "../../entities/leaveStudentEntity";
 import Leave from "../../@types/enum/leave";
+import { ITimetable } from "../../entities/timeTableEntity";
 
 export class AdminUseCase implements IAdminUseCase {
   private readonly adminRepository: IAdminRepository;
@@ -391,6 +392,40 @@ export class AdminUseCase implements IAdminUseCase {
     } catch (error) {
       console.error("Error updating leave status:", error);
       next(new ErrorHandler(500, "Failed to update leave status"));
+    }
+  }
+
+  async addTimetable(timetable: ITimetable, next: Next): Promise<void> {
+    try {
+      await this.adminRepository.createTimetable(timetable);
+    } catch (error) {
+      console.error("Error creating timetable:", error);
+      next(new ErrorHandler(500, "Failed to create timetable"));
+    }
+  }
+
+  async removeTimetable(timetableId: string, next: Next): Promise<void> {
+    try {
+      await this.adminRepository.removeTimetable(timetableId);
+    } catch (error) {
+      console.error("Error removing timetable:", error);
+      next(new ErrorHandler(500, "Failed to remove timetable"));
+    }
+  }
+
+  async getTimetables(next: Next): Promise<ITimetable[]> {
+    try {
+      const timetables = await this.adminRepository.getTimetables();
+      return timetables;
+    } catch (error) {
+      console.error("Error fetching timetables:", error);
+      next(
+        new ErrorHandler(
+          500,
+          "Failed to fetch timetables. Please try again later."
+        )
+      );
+      return [];
     }
   }
 }

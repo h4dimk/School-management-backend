@@ -3,6 +3,9 @@ import { getStudentById } from "./getStudentById";
 import { updateStudent } from "./updateStudent";
 import { getAnnouncements } from "./getAnnouncements";
 import { createLeave, findLeavebyStudentId, removeLeave } from "./manageLeave";
+import { createMessage, findChats } from "../commonRepository/manageChat";
+import { createGroup, findGroup } from "../commonRepository/manageGroup";
+import { findTimetables } from "./manageTimetable";
 
 export {
   findByEmail,
@@ -12,6 +15,9 @@ export {
   createLeave,
   findLeavebyStudentId,
   removeLeave,
+  createMessage,
+  findChats,
+  createGroup,
+  findGroup,
+  findTimetables,
 };
-
-

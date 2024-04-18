@@ -7,6 +7,8 @@ import { IHashpassword } from "../interface/services/hashPassword";
 import { IStudent } from "../../entities/studentEntity";
 import { IAnnouncement } from "../../entities/announcementEntity";
 import { ILeaveStudent } from "../../entities/leaveStudentEntity";
+import { IMessage } from "../../entities/chatEntity";
+import { ITimetable } from "../../entities/timeTableEntity";
 
 export class StudentUseCase implements IStudentUseCase {
   private readonly studentRepository: IStudentRepository;
@@ -145,5 +147,35 @@ export class StudentUseCase implements IStudentUseCase {
       throw new Error("Failed to cancel leave. Please try again later.");
     }
   }
-  
+
+  async addMessage(messageData: IMessage): Promise<IMessage> {
+    try {
+      const message = await this.studentRepository.addMessage(messageData);
+      return message;
+    } catch (error) {
+      console.error("Error adding message:", error);
+      throw new Error("Failed to add message. Please try again later.");
+    }
+  }
+
+  async getChats(batchId: string): Promise<IMessage[]> {
+    try {
+      const chats = await this.studentRepository.findChats(batchId);
+      return chats;
+    } catch (error) {
+      console.error("Error getting chats:", error);
+      throw new Error("Failed to get chats");
+    }
+  }
+
+  async getTimetables(batch: string, next: Next): Promise<ITimetable[]> {
+    try {
+      const timetables = await this.studentRepository.getTimetables(batch);
+      return timetables;
+    } catch (error) {
+      console.error("Error fetching timetables:", error);
+      next(new ErrorHandler(500, "Failed to fetch timetables"));
+      return [];
+    }
+  }
 }

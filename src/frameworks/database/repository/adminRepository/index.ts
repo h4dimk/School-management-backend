@@ -27,6 +27,12 @@ import {
   findStudentsLeaves,
 } from "./manageLeave";
 
+import { createGroup } from "../commonRepository/manageGroup";
+import {
+  createTimetable,
+  deleteTimetable,
+  findTimetables,
+} from "./manageTimetable";
 export {
   findByEmail,
   createTeacher,
@@ -56,4 +62,8 @@ export {
   updateStudentsLeaveStatus,
   findTeachersLeaves,
   findStudentsLeaves,
+  createGroup,
+  createTimetable,
+  deleteTimetable,
+  findTimetables,
 };

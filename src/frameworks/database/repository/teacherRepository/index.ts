@@ -11,6 +11,8 @@ import {
   updateLeaveStatus,
   findStudentsLeaves,
 } from "./manageLeave";
+import { createMessage, findChats } from "../commonRepository/manageChat";
+import { findTimetables } from "./manageTimetable";
 
 export {
   findByEmail,
@@ -24,4 +26,7 @@ export {
   removeLeave,
   updateLeaveStatus,
   findStudentsLeaves,
+  createMessage,
+  findChats,
+  findTimetables,
 };

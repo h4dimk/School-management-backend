@@ -4,6 +4,7 @@ import { IAttendence } from "../../../entities/attendenceEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
 import { ITeacher } from "../../../entities/teacherEntity";
+import { ITimetable } from "../../../entities/timeTableEntity";
 
 export interface ITeacherRepository {
   findByEmail(email: string): Promise<ITeacher | null>;
@@ -12,6 +13,7 @@ export interface ITeacherRepository {
   getAttendance(batchId: string): Promise<IAttendence[]>;
   findLeaves(teacherId: string): Promise<ILeaveTeacher[]>;
   getStudentsLeaves(batch: string): Promise<ILeaveStudent[]>;
+  getTimetables(teacherId: string): Promise<ITimetable[]>;
 
   getTeacherById(teacherId: string): Promise<ITeacher | null>;
 

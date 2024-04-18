@@ -34,6 +34,10 @@ import {
   updateTeachersLeaveStatus,
   updateStudentsLeaveStatus,
   findStudentsLeaves,
+  createGroup,
+  createTimetable,
+  deleteTimetable,
+  findTimetables,
 } from "./adminRepository/index";
 import { ICourse } from "../../../entities/courseEntity";
 import { IBatch } from "../../../entities/batchEntity";
@@ -42,6 +46,8 @@ import { Types } from "mongoose";
 import Leave from "../../../@types/enum/leave";
 import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
+import { IGroup } from "../../../entities/groupEntity";
+import { ITimetable } from "../../../entities/timeTableEntity";
 
 export class AdminRepository implements IAdminRepository {
   constructor(private adminModels: typeof adminModel) {}
@@ -325,6 +331,43 @@ export class AdminRepository implements IAdminRepository {
     } catch (error) {
       console.error("Error updating leave:", error);
       throw new Error("Failed to update leave. Please try again later.");
+    }
+  }
+
+  async createGroup(groupData: IGroup): Promise<void> {
+    try {
+      await createGroup(groupData);
+    } catch (error) {
+      console.error("Error creating Group:", error);
+      throw new Error("Failed to create Group");
+    }
+  }
+
+  async createTimetable(timetable: ITimetable): Promise<void> {
+    try {
+      const createdtimetable = await createTimetable(timetable);
+    } catch (error) {
+      console.error("Error creating timetable:", error);
+      throw new Error("Failed to create timetable");
+    }
+  }
+
+  async removeTimetable(timetableId: string): Promise<void> {
+    try {
+      await deleteTimetable(timetableId);
+    } catch (error) {
+      console.error("Error removing timetable:", error);
+      throw new Error("Failed to remove timetable");
+    }
+  }
+
+  async getTimetables(): Promise<ITimetable[]> {
+    try {
+      const timetables = await findTimetables();
+      return timetables;
+    } catch (error) {
+      console.error("Error fetching timetables:", error);
+      throw new Error("Failed to fetch timetables. Please try again later.");
     }
   }
 }
