@@ -6,6 +6,8 @@ import { IStudentUseCase } from "../useCases/interface/useCase/studentUseCase";
 import ErrorHandler from "../useCases/middlewares/errorHandler";
 import { ILeaveStudent } from "../entities/leaveStudentEntity";
 import { IMessage } from "../entities/chatEntity";
+import { IMcqSubmission } from "../entities/mcqSubmits";
+import mcqSubmitModel from "../frameworks/database/models/mcqSubmitModel";
 
 export class StudentController {
   private studentUseCase: IStudentUseCase;
@@ -172,6 +174,39 @@ export class StudentController {
       const batchId = req.params.id;
       const mcqs = await this.studentUseCase.findMcqsByBatch(batchId, next);
       res.status(200).json({ mcqs, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async submitAnswer(req: Req, res: Res, next: Next) {
+    try {
+      const { mcqId, studentId, isCorrect } = req.body;
+      // Check if mcqId and studentId are present
+      if (!mcqId || !studentId) {
+        throw new Error("MCQ ID and student ID are required.");
+      }
+
+      // Check if isCorrect is a boolean value
+      if (typeof isCorrect !== "boolean") {
+        throw new Error("isCorrect must be a boolean value.");
+      }
+
+      const attendedQuestion = await mcqSubmitModel.findOne({mcqId, studentId});
+      if (attendedQuestion) {
+        return res
+          .status(400)
+          .json({ message: "You have already attended this question" });
+      }
+
+      const newAnswer: IMcqSubmission = {
+        mcqId,
+        studentId,
+        isCorrect,
+      };
+
+      await this.studentUseCase.submitAnswer(newAnswer, next);
+      res.status(200).json({ success: true });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }

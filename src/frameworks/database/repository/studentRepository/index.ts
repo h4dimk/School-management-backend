@@ -6,7 +6,7 @@ import { createLeave, findLeavebyStudentId, removeLeave } from "./manageLeave";
 import { createMessage, findChats } from "../commonRepository/manageChat";
 import { createGroup, findGroup } from "../commonRepository/manageGroup";
 import { findTimetables } from "./manageTimetable";
-import { findbyBatchMcqs } from "./manageMcqs";
+import { findbyBatchMcqs, createMcqSubmit } from "./manageMcqs";
 
 export {
   findByEmail,
@@ -22,4 +22,5 @@ export {
   findGroup,
   findTimetables,
   findbyBatchMcqs,
+  createMcqSubmit,
 };

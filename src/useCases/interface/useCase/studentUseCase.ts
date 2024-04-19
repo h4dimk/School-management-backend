@@ -2,6 +2,7 @@ import { IAnnouncement } from "../../../entities/announcementEntity";
 import { IMessage } from "../../../entities/chatEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import { IMcq } from "../../../entities/mcqEntity";
+import { IMcqSubmission } from "../../../entities/mcqSubmits";
 import { IStudent } from "../../../entities/studentEntity";
 import { ITimetable } from "../../../entities/timeTableEntity";
 import { Next } from "../../../frameworks/types/serverPackageTypes";
@@ -31,6 +32,7 @@ export interface IStudentUseCase {
     leaveData: ILeaveStudent,
     next: Next
   ): Promise<ILeaveStudent | undefined>;
+  submitAnswer(answer: IMcqSubmission, next: Next): Promise<void>;
 
   cancelLeave(leaveId: string): Promise<void>;
   addMessage(messageData: IMessage): Promise<IMessage>;

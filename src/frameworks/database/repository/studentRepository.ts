@@ -15,6 +15,7 @@ import {
   findChats,
   findTimetables,
   findbyBatchMcqs,
+  createMcqSubmit,
 } from "./studentRepository/index";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
@@ -22,6 +23,7 @@ import { IMessage } from "../../../entities/chatEntity";
 import { IGroup } from "../../../entities/groupEntity";
 import { ITimetable } from "../../../entities/timeTableEntity";
 import { IMcq } from "../../../entities/mcqEntity";
+import { IMcqSubmission } from "../../../entities/mcqSubmits";
 
 export class StudentRepository implements IStudentRepository {
   constructor(private studentModels: typeof studentModel) {}
@@ -140,6 +142,18 @@ export class StudentRepository implements IStudentRepository {
     } catch (error) {
       console.error("Error fetching Mcqs:", error);
       throw new Error("Failed to fetch Mcqs. Please try again later.");
+    }
+  }
+
+  async createMcqSubmit(
+    mcqSubmitDetails: IMcqSubmission
+  ): Promise<IMcqSubmission> {
+    try {
+      const answer = await createMcqSubmit(mcqSubmitDetails);
+      return answer;
+    } catch (error) {
+      console.error("Error occurred while creating answer:", error);
+      throw new Error("Failed to create answer ");
     }
   }
 }

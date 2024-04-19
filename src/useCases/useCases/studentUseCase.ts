@@ -10,6 +10,7 @@ import { ILeaveStudent } from "../../entities/leaveStudentEntity";
 import { IMessage } from "../../entities/chatEntity";
 import { ITimetable } from "../../entities/timeTableEntity";
 import { IMcq } from "../../entities/mcqEntity";
+import { IMcqSubmission } from "../../entities/mcqSubmits";
 
 export class StudentUseCase implements IStudentUseCase {
   private readonly studentRepository: IStudentRepository;
@@ -190,6 +191,15 @@ export class StudentUseCase implements IStudentUseCase {
         new ErrorHandler(500, "Failed to fetch Mcqs. Please try again later.")
       );
       return [];
+    }
+  }
+
+  async submitAnswer(answer: IMcqSubmission, next: Next): Promise<void> {
+    try {
+      await this.studentRepository.createMcqSubmit(answer);
+    } catch (error) {
+      console.error("Error submiting Answer:", error);
+      next(new ErrorHandler(500, "Failed to submit Answer"));
     }
   }
 }

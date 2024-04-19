@@ -99,5 +99,14 @@ export const studentRoute = (router: Route) => {
     })
   );
 
+  router.post(
+    "/submit-answer",
+    isAuth,
+    role([Role.STUDENT]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      studentController.submitAnswer(req, res, next);
+    })
+  );
+
   return router;
 };
