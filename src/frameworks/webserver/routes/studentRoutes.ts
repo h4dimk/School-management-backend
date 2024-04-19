@@ -89,5 +89,15 @@ export const studentRoute = (router: Route) => {
       studentController.getTimetables(req, res, next);
     })
   );
+
+  router.get(
+    "/get-mcqs-batch/:id",
+    isAuth,
+    role([Role.STUDENT]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      studentController.getMcqsByBatch(req, res, next);
+    })
+  );
+
   return router;
 };

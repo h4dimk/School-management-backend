@@ -18,6 +18,9 @@ import {
   createMessage,
   findChats,
   findTimetables,
+  findbyBatchMcqs,
+  findbyTeacherMcqs,
+  createMcq,
 } from "./teacherRepository/index";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { IAttendence } from "../../../entities/attendenceEntity";
@@ -25,6 +28,7 @@ import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
 import Leave from "../../../@types/enum/leave";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import { ITimetable } from "../../../entities/timeTableEntity";
+import { IMcq } from "../../../entities/mcqEntity";
 
 export class TeacherRepository implements ITeacherRepository {
   constructor(private teacherModels: typeof teacherModel) {}
@@ -150,6 +154,37 @@ export class TeacherRepository implements ITeacherRepository {
     } catch (error) {
       console.error("Error fetching timetables:", error);
       throw new Error("Failed to fetch timetables. Please try again later.");
+    }
+  }
+
+  async createMcqs(mcqDetails: IMcq): Promise<IMcq> {
+    try {
+      const createdMcq = await createMcq(mcqDetails);
+      return createdMcq;
+    } catch (error) {
+      console.error("Error occurred while creating Mcqs:", error);
+      throw new Error("Failed to create Mcqs ");
+    }
+  }
+
+  async getMcqsByTeacher(teacherId: string): Promise<IMcq[]> {
+    try {
+      const mcqs = await findbyTeacherMcqs(teacherId);
+
+      return mcqs;
+    } catch (error) {
+      console.error("Error fetching Mcqs:", error);
+      throw new Error("Failed to fetch Mcqs. Please try again later.");
+    }
+  }
+
+  async getMcqsByBatch(batchId: string): Promise<IMcq[]> {
+    try {
+      const mcqs = await findbyBatchMcqs(batchId);
+      return mcqs;
+    } catch (error) {
+      console.error("Error fetching Mcqs:", error);
+      throw new Error("Failed to fetch Mcqs. Please try again later.");
     }
   }
 }

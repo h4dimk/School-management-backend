@@ -13,6 +13,7 @@ import {
 } from "./manageLeave";
 import { createMessage, findChats } from "../commonRepository/manageChat";
 import { findTimetables } from "./manageTimetable";
+import { findbyBatchMcqs, createMcq, findbyTeacherMcqs } from "./manageMcq";
 
 export {
   findByEmail,
@@ -29,4 +30,7 @@ export {
   createMessage,
   findChats,
   findTimetables,
+  findbyBatchMcqs,
+  createMcq,
+  findbyTeacherMcqs,
 };

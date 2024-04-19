@@ -1,6 +1,7 @@
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { IMessage } from "../../../entities/chatEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
+import { IMcq } from "../../../entities/mcqEntity";
 import { IStudent } from "../../../entities/studentEntity";
 import { ITimetable } from "../../../entities/timeTableEntity";
 
@@ -11,6 +12,7 @@ export interface IStudentRepository {
 
   getAnnouncements(): Promise<IAnnouncement[]>;
   getTimetables(batch: string): Promise<ITimetable[]>
+  getMcqsByBatch(batchId: string): Promise<IMcq[]>;
 
   getStudentById(studentId: string): Promise<IStudent | null>;
 

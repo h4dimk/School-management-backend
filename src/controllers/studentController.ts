@@ -166,4 +166,14 @@ export class StudentController {
       next(new ErrorHandler(500, error.message));
     }
   }
+
+  async getMcqsByBatch(req: Req, res: Res, next: Next) {
+    try {
+      const batchId = req.params.id;
+      const mcqs = await this.studentUseCase.findMcqsByBatch(batchId, next);
+      res.status(200).json({ mcqs, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
 }

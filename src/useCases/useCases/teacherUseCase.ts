@@ -11,6 +11,7 @@ import { ILeaveTeacher } from "../../entities/leaveTeacherEntity";
 import { ILeaveStudent } from "../../entities/leaveStudentEntity";
 import Leave from "../../@types/enum/leave";
 import { ITimetable } from "../../entities/timeTableEntity";
+import { IMcq } from "../../entities/mcqEntity";
 
 export class TeacherUseCase implements ITeacherUseCase {
   private readonly teacherRepository: ITeacherRepository;
@@ -200,14 +201,9 @@ export class TeacherUseCase implements ITeacherUseCase {
     }
   }
 
-  async getTimetables(
-    teacherId: string,
-    next: Next
-  ): Promise<ITimetable[]> {
+  async getTimetables(teacherId: string, next: Next): Promise<ITimetable[]> {
     try {
-      const timetables = await this.teacherRepository.getTimetables(
-        teacherId,
-      );
+      const timetables = await this.teacherRepository.getTimetables(teacherId);
       return timetables;
     } catch (error) {
       console.error("Error fetching timetables:", error);
@@ -216,6 +212,41 @@ export class TeacherUseCase implements ITeacherUseCase {
           500,
           "Failed to fetch timetables. Please try again later."
         )
+      );
+      return [];
+    }
+  }
+
+  async addMcq(mcqDetails: IMcq, next: Next): Promise<void> {
+    try {
+      await this.teacherRepository.createMcqs(mcqDetails);
+    } catch (error) {
+      console.error("Error occurred while adding Mcqs:", error);
+      next(new ErrorHandler(500, "Failed to add Mcq. Please try again later."));
+    }
+  }
+
+  async findMcqsByTeacher(teacherId: string, next: Next): Promise<IMcq[]> {
+    try {
+      const mcqs = await this.teacherRepository.getMcqsByTeacher(teacherId);
+      return mcqs;
+    } catch (error) {
+      console.error("Error fetching Mcqs:", error);
+      next(
+        new ErrorHandler(500, "Failed to fetch Mcqs. Please try again later.")
+      );
+      return [];
+    }
+  }
+
+  async findMcqsByBatch(batchId: string, next: Next): Promise<IMcq[]> {
+    try {
+      const mcqs = await this.teacherRepository.getMcqsByBatch(batchId);
+      return mcqs;
+    } catch (error) {
+      console.error("Error fetching Mcqs:", error);
+      next(
+        new ErrorHandler(500, "Failed to fetch Mcqs. Please try again later.")
       );
       return [];
     }

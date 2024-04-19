@@ -14,12 +14,14 @@ import {
   createMessage,
   findChats,
   findTimetables,
+  findbyBatchMcqs,
 } from "./studentRepository/index";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import { IMessage } from "../../../entities/chatEntity";
 import { IGroup } from "../../../entities/groupEntity";
 import { ITimetable } from "../../../entities/timeTableEntity";
+import { IMcq } from "../../../entities/mcqEntity";
 
 export class StudentRepository implements IStudentRepository {
   constructor(private studentModels: typeof studentModel) {}
@@ -128,6 +130,16 @@ export class StudentRepository implements IStudentRepository {
     } catch (error) {
       console.error("Error fetching timetables:", error);
       throw new Error("Failed to fetch timetables. Please try again later.");
+    }
+  }
+
+  async getMcqsByBatch(batchId: string): Promise<IMcq[]> {
+    try {
+      const mcqs = await findbyBatchMcqs(batchId);
+      return mcqs;
+    } catch (error) {
+      console.error("Error fetching Mcqs:", error);
+      throw new Error("Failed to fetch Mcqs. Please try again later.");
     }
   }
 }

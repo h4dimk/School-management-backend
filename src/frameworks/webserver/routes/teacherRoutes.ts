@@ -109,5 +109,32 @@ export const teacherRoute = (router: Route) => {
     })
   );
 
+  router.post(
+    "/add-mcq",
+    isAuth,
+    role([Role.TEACHER]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      teacherController.addMcq(req, res, next);
+    })
+  );
+
+  router.get(
+    "/get-mcqs-teacher/:id",
+    isAuth,
+    role([Role.TEACHER]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      teacherController.getMcqsForTeacher(req, res, next);
+    })
+  );
+
+  router.get(
+    "/get-mcqs-batch/:id",
+    isAuth,
+    role([Role.TEACHER]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      teacherController.getMcqsByBatch(req, res, next);
+    })
+  );
+
   return router;
 };

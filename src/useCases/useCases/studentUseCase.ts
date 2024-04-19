@@ -9,6 +9,7 @@ import { IAnnouncement } from "../../entities/announcementEntity";
 import { ILeaveStudent } from "../../entities/leaveStudentEntity";
 import { IMessage } from "../../entities/chatEntity";
 import { ITimetable } from "../../entities/timeTableEntity";
+import { IMcq } from "../../entities/mcqEntity";
 
 export class StudentUseCase implements IStudentUseCase {
   private readonly studentRepository: IStudentRepository;
@@ -175,6 +176,19 @@ export class StudentUseCase implements IStudentUseCase {
     } catch (error) {
       console.error("Error fetching timetables:", error);
       next(new ErrorHandler(500, "Failed to fetch timetables"));
+      return [];
+    }
+  }
+
+  async findMcqsByBatch(batchId: string, next: Next): Promise<IMcq[]> {
+    try {
+      const mcqs = await this.studentRepository.getMcqsByBatch(batchId);
+      return mcqs;
+    } catch (error) {
+      console.error("Error fetching Mcqs:", error);
+      next(
+        new ErrorHandler(500, "Failed to fetch Mcqs. Please try again later.")
+      );
       return [];
     }
   }

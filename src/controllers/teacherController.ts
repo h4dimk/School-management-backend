@@ -4,6 +4,7 @@ import ErrorHandler from "../useCases/middlewares/errorHandler";
 import { IAttendence } from "../entities/attendenceEntity";
 import attendenceModel from "../frameworks/database/models/attendenceModel";
 import { ILeaveTeacher } from "../entities/leaveTeacherEntity";
+import { IMcq } from "../entities/mcqEntity";
 
 export class TeacherController {
   private teacherUseCase: ITeacherUseCase;
@@ -179,6 +180,55 @@ export class TeacherController {
         next
       );
       res.status(200).json({ timetables, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async addMcq(req: Req, res: Res, next: Next) {
+    try {
+      const { batchId, correctAnswer, options, question, teacherId } = req.body;
+      if (!batchId || !correctAnswer || !question || !teacherId) {
+        return res.status(400).json({ message: "All fields are required" });
+      }
+
+      for (const option of options) {
+        if (typeof option !== "string" || option.trim() === "") {
+          return res
+            .status(400)
+            .json({ message: "Options should be non-empty" });
+        }
+      }
+
+      const newMcq: IMcq = {
+        batchId,
+        correctAnswer,
+        options,
+        question,
+        teacherId,
+      };
+      const createdMcq = await this.teacherUseCase.addMcq(newMcq, next);
+      res.status(200).json({ createdMcq, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getMcqsForTeacher(req: Req, res: Res, next: Next) {
+    try {
+      const teacherId = req.params.id;
+      const mcqs = await this.teacherUseCase.findMcqsByTeacher(teacherId, next);
+      res.status(200).json({ mcqs, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getMcqsByBatch(req: Req, res: Res, next: Next) {
+    try {
+      const batchId = req.params.id;
+      const mcqs = await this.teacherUseCase.findMcqsByBatch(batchId, next);
+      res.status(200).json({ mcqs, success: true });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }
