@@ -1,5 +1,6 @@
 import Leave from "../../../@types/enum/leave";
 import { IAnnouncement } from "../../../entities/announcementEntity";
+import { IAssignment } from "../../../entities/assignmentEntity";
 import { IAttendence } from "../../../entities/attendenceEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
@@ -17,6 +18,7 @@ export interface ITeacherRepository {
   getTimetables(teacherId: string): Promise<ITimetable[]>;
   getMcqsByBatch(batchId: string): Promise<IMcq[]>;
   getMcqsByTeacher(teacherId: string): Promise<IMcq[]>;
+  findAssignments(batchId: string): Promise<IAssignment[]>
 
   getTeacherById(teacherId: string): Promise<ITeacher | null>;
 

@@ -233,4 +233,17 @@ export class TeacherController {
       next(new ErrorHandler(500, error.message));
     }
   }
+
+  async getAssignmentsBatch(req: Req, res: Res, next: Next) {
+    try {
+      const batchId = req.params.id;
+      const assignments = await this.teacherUseCase.getAssignments(
+        batchId,
+        next
+      );
+      res.status(200).json({ assignments, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
 }

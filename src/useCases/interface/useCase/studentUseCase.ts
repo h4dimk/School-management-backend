@@ -1,4 +1,5 @@
 import { IAnnouncement } from "../../../entities/announcementEntity";
+import { IAssignment } from "../../../entities/assignmentEntity";
 import { IMessage } from "../../../entities/chatEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import { IMcq } from "../../../entities/mcqEntity";
@@ -36,4 +37,6 @@ export interface IStudentUseCase {
 
   cancelLeave(leaveId: string): Promise<void>;
   addMessage(messageData: IMessage): Promise<IMessage>;
+  addAssignment(assignment: IAssignment, next: Next): Promise<void>;
+  getAssignments(studentId: string, next: Next): Promise<IAssignment[]>;
 }

@@ -21,6 +21,7 @@ import {
   findbyBatchMcqs,
   findbyTeacherMcqs,
   createMcq,
+  findAssignmentbyBatchId,
 } from "./teacherRepository/index";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { IAttendence } from "../../../entities/attendenceEntity";
@@ -29,6 +30,7 @@ import Leave from "../../../@types/enum/leave";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import { ITimetable } from "../../../entities/timeTableEntity";
 import { IMcq } from "../../../entities/mcqEntity";
+import { IAssignment } from "../../../entities/assignmentEntity";
 
 export class TeacherRepository implements ITeacherRepository {
   constructor(private teacherModels: typeof teacherModel) {}
@@ -185,6 +187,15 @@ export class TeacherRepository implements ITeacherRepository {
     } catch (error) {
       console.error("Error fetching Mcqs:", error);
       throw new Error("Failed to fetch Mcqs. Please try again later.");
+    }
+  }
+  async findAssignments(batchId: string): Promise<IAssignment[]> {
+    try {
+      const assignments = await findAssignmentbyBatchId(batchId);
+      return assignments;
+    } catch (error) {
+      console.error("Error occurred while fetching assignments:", error);
+      throw new Error("Failed to fetch assignments ");
     }
   }
 }

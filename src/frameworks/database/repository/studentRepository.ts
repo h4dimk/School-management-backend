@@ -16,6 +16,8 @@ import {
   findTimetables,
   findbyBatchMcqs,
   createMcqSubmit,
+  createAssignment,
+  findAssignmentbyStudentId,
 } from "./studentRepository/index";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
@@ -24,6 +26,7 @@ import { IGroup } from "../../../entities/groupEntity";
 import { ITimetable } from "../../../entities/timeTableEntity";
 import { IMcq } from "../../../entities/mcqEntity";
 import { IMcqSubmission } from "../../../entities/mcqSubmits";
+import { IAssignment } from "../../../entities/assignmentEntity";
 
 export class StudentRepository implements IStudentRepository {
   constructor(private studentModels: typeof studentModel) {}
@@ -154,6 +157,26 @@ export class StudentRepository implements IStudentRepository {
     } catch (error) {
       console.error("Error occurred while creating answer:", error);
       throw new Error("Failed to create answer ");
+    }
+  }
+
+  async createAssignment(assignment: IAssignment): Promise<IAssignment> {
+    try {
+      const createdAssignment = await createAssignment(assignment);
+      return createdAssignment;
+    } catch (error) {
+      console.error("Error occurred while creating assignment:", error);
+      throw new Error("Failed to create assignment ");
+    }
+  }
+
+  async findAssignments(studentId: string): Promise<IAssignment[]> {
+    try {
+      const assignments = await findAssignmentbyStudentId(studentId);
+      return assignments;
+    } catch (error) {
+      console.error("Error occurred while fetching assignments:", error);
+      throw new Error("Failed to fetch assignments ");
     }
   }
 }

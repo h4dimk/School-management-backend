@@ -2,7 +2,7 @@ import Role from "../../../@types/enum/roles";
 import { Req, Res, Next, Route } from "../../types/serverPackageTypes";
 import { isAuth, role } from "../middlewares/auth";
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors";
-import { studentController, teacherController } from "./injuctions/injuctions";
+import { teacherController } from "./injuctions/injuctions";
 
 export const teacherRoute = (router: Route) => {
   router.post(
@@ -133,6 +133,15 @@ export const teacherRoute = (router: Route) => {
     role([Role.TEACHER]),
     catchAsyncErrors((req: Req, res: Res, next: Next) => {
       teacherController.getMcqsByBatch(req, res, next);
+    })
+  );
+
+  router.get(
+    "/get-assignments/:id",
+    isAuth,
+    role([Role.TEACHER]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      teacherController.getAssignmentsBatch(req, res, next);
     })
   );
 

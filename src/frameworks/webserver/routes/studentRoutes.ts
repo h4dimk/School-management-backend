@@ -108,5 +108,23 @@ export const studentRoute = (router: Route) => {
     })
   );
 
+  router.post(
+    "/upload-assignment",
+    isAuth,
+    role([Role.STUDENT]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      studentController.addAssignment(req, res, next);
+    })
+  );
+
+  router.get(
+    "/get-assignments/:id",
+    isAuth,
+    role([Role.STUDENT]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      studentController.getAssignmentsStudents(req, res, next);
+    })
+  );
+
   return router;
 };

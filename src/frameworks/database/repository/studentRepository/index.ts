@@ -7,6 +7,10 @@ import { createMessage, findChats } from "../commonRepository/manageChat";
 import { createGroup, findGroup } from "../commonRepository/manageGroup";
 import { findTimetables } from "./manageTimetable";
 import { findbyBatchMcqs, createMcqSubmit } from "./manageMcqs";
+import {
+  createAssignment,
+  findAssignmentbyStudentId,
+} from "./manageAssignment";
 
 export {
   findByEmail,
@@ -23,4 +27,6 @@ export {
   findTimetables,
   findbyBatchMcqs,
   createMcqSubmit,
+  createAssignment,
+  findAssignmentbyStudentId,
 };

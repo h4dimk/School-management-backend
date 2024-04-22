@@ -11,6 +11,7 @@ import { IMessage } from "../../entities/chatEntity";
 import { ITimetable } from "../../entities/timeTableEntity";
 import { IMcq } from "../../entities/mcqEntity";
 import { IMcqSubmission } from "../../entities/mcqSubmits";
+import { IAssignment } from "../../entities/assignmentEntity";
 
 export class StudentUseCase implements IStudentUseCase {
   private readonly studentRepository: IStudentRepository;
@@ -200,6 +201,28 @@ export class StudentUseCase implements IStudentUseCase {
     } catch (error) {
       console.error("Error submiting Answer:", error);
       next(new ErrorHandler(500, "Failed to submit Answer"));
+    }
+  }
+
+  async addAssignment(assignment: IAssignment, next: Next): Promise<void> {
+    try {
+      await this.studentRepository.createAssignment(assignment);
+    } catch (error) {
+      console.error("Error occurred while add assignment:", error);
+      next(new ErrorHandler(500, "Failed to add Assignment"));
+    }
+  }
+
+  async getAssignments(studentId: string, next: Next): Promise<IAssignment[]> {
+    try {
+      const assignments = await this.studentRepository.findAssignments(
+        studentId
+      );
+      return assignments;
+    } catch (error) {
+      console.error("Error occurred while fetching assignments:", error);
+      next(new ErrorHandler(500, "Failed to fetch Assignment"));
+      return [];
     }
   }
 }

@@ -8,6 +8,7 @@ import { ILeaveStudent } from "../entities/leaveStudentEntity";
 import { IMessage } from "../entities/chatEntity";
 import { IMcqSubmission } from "../entities/mcqSubmits";
 import mcqSubmitModel from "../frameworks/database/models/mcqSubmitModel";
+import { IAssignment } from "../entities/assignmentEntity";
 
 export class StudentController {
   private studentUseCase: IStudentUseCase;
@@ -192,7 +193,10 @@ export class StudentController {
         throw new Error("isCorrect must be a boolean value.");
       }
 
-      const attendedQuestion = await mcqSubmitModel.findOne({mcqId, studentId});
+      const attendedQuestion = await mcqSubmitModel.findOne({
+        mcqId,
+        studentId,
+      });
       if (attendedQuestion) {
         return res
           .status(400)
@@ -207,6 +211,35 @@ export class StudentController {
 
       await this.studentUseCase.submitAnswer(newAnswer, next);
       res.status(200).json({ success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async addAssignment(req: Req, res: Res, next: Next) {
+    try {
+      const { name, assignment, studentId, batchId } = req.body;
+      const newAssignment: IAssignment = {
+        name,
+        assignment,
+        student: studentId,
+        batch: batchId,
+      };
+      await this.studentUseCase.addAssignment(newAssignment, next);
+      res.status(200).json({ success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+  
+  async getAssignmentsStudents(req: Req, res: Res, next: Next) {
+    try {
+      const studentId = req.params.id;
+      const assignments = await this.studentUseCase.getAssignments(
+        studentId,
+        next
+      );
+      res.status(200).json({ assignments, success: true });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }

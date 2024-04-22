@@ -12,6 +12,7 @@ import { ILeaveStudent } from "../../entities/leaveStudentEntity";
 import Leave from "../../@types/enum/leave";
 import { ITimetable } from "../../entities/timeTableEntity";
 import { IMcq } from "../../entities/mcqEntity";
+import { IAssignment } from "../../entities/assignmentEntity";
 
 export class TeacherUseCase implements ITeacherUseCase {
   private readonly teacherRepository: ITeacherRepository;
@@ -248,6 +249,16 @@ export class TeacherUseCase implements ITeacherUseCase {
       next(
         new ErrorHandler(500, "Failed to fetch Mcqs. Please try again later.")
       );
+      return [];
+    }
+  }
+  async getAssignments(batchId: string, next: Next): Promise<IAssignment[]> {
+    try {
+      const assignments = await this.teacherRepository.findAssignments(batchId);
+      return assignments;
+    } catch (error) {
+      console.error("Error occurred while fetching assignments:", error);
+      next(new ErrorHandler(500, "Failed to fetch Assignment"));
       return [];
     }
   }
