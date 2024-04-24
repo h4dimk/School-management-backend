@@ -280,10 +280,10 @@ export class AdminController {
 
   async addAnnouncement(req: Req, res: Res, next: Next) {
     try {
-      const { announcement } = req.body;
+      const { announcement, date } = req.body;
       const newAnnouncementData: IAnnouncement = {
         announcement,
-        date: new Date(),
+        date,
       };
 
       const addedAnnouncement = await this.adminUseCase.addAnnouncement(
@@ -400,5 +400,4 @@ export class AdminController {
       next(new ErrorHandler(500, error.message));
     }
   }
-
 }

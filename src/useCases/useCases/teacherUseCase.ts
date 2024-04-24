@@ -13,6 +13,7 @@ import Leave from "../../@types/enum/leave";
 import { ITimetable } from "../../entities/timeTableEntity";
 import { IMcq } from "../../entities/mcqEntity";
 import { IAssignment } from "../../entities/assignmentEntity";
+import { Io } from "../../frameworks/webserver/config/socket";
 
 export class TeacherUseCase implements ITeacherUseCase {
   private readonly teacherRepository: ITeacherRepository;
@@ -112,6 +113,7 @@ export class TeacherUseCase implements ITeacherUseCase {
   async getAnnouncements(next: Next): Promise<IAnnouncement[]> {
     try {
       const announcements = await this.teacherRepository.getAnnouncements();
+
       return announcements;
     } catch (error) {
       console.error("Error fetching announcements:", error);

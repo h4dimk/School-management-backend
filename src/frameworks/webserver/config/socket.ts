@@ -1,4 +1,4 @@
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 
 import { app } from "./app";
 import { createServer } from "http";
@@ -16,6 +16,14 @@ const Io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer, {
 });
 
 Io.on("connect", (client) => {
+  console.log("A user connected:", client.id);
+
+  client.on("createAnnouncement", (announcement) => {
+    Io.emit("newAnnouncement", announcement);
+  });
+
+  
+
   client.on("disconnect", () => {
     console.log("the client ", client.id, " has been disconected");
   });

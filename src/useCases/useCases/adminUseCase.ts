@@ -16,6 +16,7 @@ import { ILeaveTeacher } from "../../entities/leaveTeacherEntity";
 import { ILeaveStudent } from "../../entities/leaveStudentEntity";
 import Leave from "../../@types/enum/leave";
 import { ITimetable } from "../../entities/timeTableEntity";
+import { Io } from "../../frameworks/webserver/config/socket";
 
 export class AdminUseCase implements IAdminUseCase {
   private readonly adminRepository: IAdminRepository;
@@ -319,7 +320,6 @@ export class AdminUseCase implements IAdminUseCase {
       const newAnnouncement = await this.adminRepository.addAnnouncement(
         announcementData
       );
-      // this.io.emit('newAnnouncement', newAnnouncement);
       return newAnnouncement;
     } catch (error) {
       console.error("Error creating annousment:", error);
