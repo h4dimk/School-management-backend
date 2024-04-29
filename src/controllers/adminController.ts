@@ -215,6 +215,17 @@ export class AdminController {
     }
   }
 
+  async updateCourseDetails(req: Req, res: Res, next: Next) {
+    try {
+      const courseId = req.params.id;
+      const updates = req.body;
+      await this.adminUseCase.editCourse(courseId, updates);
+      res.status(200).json({ success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
   async getAdminProfile(req: Req, res: Res, next: Next) {
     try {
       const adminId = req.params.id;

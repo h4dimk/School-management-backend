@@ -9,3 +9,5 @@ export const getCourses = async () => {
     throw new Error("Failed to fetch courses");
   }
 };
+
+

@@ -38,6 +38,7 @@ import {
   createTimetable,
   deleteTimetable,
   findTimetables,
+  upadateCourse,
 } from "./adminRepository/index";
 import { ICourse } from "../../../entities/courseEntity";
 import { IBatch } from "../../../entities/batchEntity";
@@ -190,6 +191,25 @@ export class AdminRepository implements IAdminRepository {
     } catch (error) {
       console.error("Error removing course:", error);
       throw new Error("Failed to remove course");
+    }
+  }
+
+  async updateCourse(
+    courseId: string,
+    updatedCourse: Partial<ICourse>
+  ): Promise<ICourse> {
+    try {
+      if (!courseId) {
+        throw new Error("Course ID is required");
+      }
+      const course = await upadateCourse(courseId, updatedCourse);
+      if (!course) {
+        throw new Error("Course not found");
+      }
+
+      return course;
+    } catch (error) {
+      throw new Error("Failed to update Course");
     }
   }
 

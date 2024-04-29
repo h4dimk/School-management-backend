@@ -5,6 +5,7 @@ import { IAttendence } from "../entities/attendenceEntity";
 import attendenceModel from "../frameworks/database/models/attendenceModel";
 import { ILeaveTeacher } from "../entities/leaveTeacherEntity";
 import { IMcq } from "../entities/mcqEntity";
+import { IMessage } from "../entities/chatEntity";
 
 export class TeacherController {
   private teacherUseCase: ITeacherUseCase;
@@ -242,6 +243,33 @@ export class TeacherController {
         next
       );
       res.status(200).json({ assignments, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async addMessage(req: Req, res: Res, next: Next) {
+    try {
+      const { message, sender, group } = req.body;
+      const newMessage: IMessage = {
+        message,
+        sender,
+        group,
+      };
+      const createdmessage = await this.teacherUseCase.addMessage(newMessage);
+      res.status(201).json({ createdmessage, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getChats(req: Req, res: Res, next: Next) {
+    try {
+      const batchId = req.params.id;
+
+      const chats = await this.teacherUseCase.getChats(batchId);
+
+      res.status(201).json({ chats, success: true });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }

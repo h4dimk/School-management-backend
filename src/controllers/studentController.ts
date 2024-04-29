@@ -66,35 +66,6 @@ export class StudentController {
       const { leaveType, startDate, endDate, reason, studentBatch } = req.body;
       const studentId = req.params.id;
 
-      // Validate input fields
-      if (!leaveType || typeof leaveType !== "string" || !leaveType.trim()) {
-        throw new Error("Please provide a valid leave type.");
-      }
-
-      if (!startDate || !(startDate instanceof Date)) {
-        throw new Error("Please provide a valid start date.");
-      }
-
-      if (!endDate || !(endDate instanceof Date)) {
-        throw new Error("Please provide a valid end date.");
-      }
-
-      if (!reason || typeof reason !== "string" || !reason.trim()) {
-        throw new Error("Please provide a valid reason for leave.");
-      }
-
-      if (
-        !studentBatch ||
-        typeof studentBatch !== "string" ||
-        !studentBatch.trim()
-      ) {
-        throw new Error("Please provide a valid student batch.");
-      }
-
-      if (!studentId || typeof studentId !== "string" || !studentId.trim()) {
-        throw new Error("Please provide a valid student ID.");
-      }
-
       const newLeave: ILeaveStudent = {
         leaveType,
         startDate,
@@ -231,7 +202,7 @@ export class StudentController {
       next(new ErrorHandler(500, error.message));
     }
   }
-  
+
   async getAssignmentsStudents(req: Req, res: Res, next: Next) {
     try {
       const studentId = req.params.id;

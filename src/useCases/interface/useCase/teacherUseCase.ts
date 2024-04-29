@@ -2,6 +2,7 @@ import Leave from "../../../@types/enum/leave";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { IAssignment } from "../../../entities/assignmentEntity";
 import { IAttendence } from "../../../entities/attendenceEntity";
+import { IMessage } from "../../../entities/chatEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
 import { IMcq } from "../../../entities/mcqEntity";
@@ -24,6 +25,8 @@ export interface ITeacherUseCase {
   findMcqsByTeacher(teacherId: string, next: Next): Promise<IMcq[]>;
   findMcqsByBatch(batchId: string, next: Next): Promise<IMcq[]>;
   getAssignments(batchId: string, next: Next): Promise<IAssignment[]>;
+  getChats(batchId: string): Promise<IMessage[]>;
+
 
   getTeacherProfile(teacherId: string): Promise<ITeacher | null>;
 
@@ -38,6 +41,8 @@ export interface ITeacherUseCase {
     next: Next
   ): Promise<IAttendence | undefined>;
   addMcq(mcqDetails: IMcq, next: Next): Promise<void>;
+  addMessage(messageData: IMessage): Promise<IMessage>;
+
 
   applyLeave(
     leaveData: ILeaveTeacher,

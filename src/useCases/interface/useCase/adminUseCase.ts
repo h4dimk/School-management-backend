@@ -59,4 +59,5 @@ export interface IAdminUseCase {
     status: Leave,
     next: Next
   ): Promise<void>;
+  editCourse(courseId: string, updates: Partial<ICourse>): Promise<ICourse>;
 }

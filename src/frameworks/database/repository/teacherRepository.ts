@@ -31,6 +31,7 @@ import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import { ITimetable } from "../../../entities/timeTableEntity";
 import { IMcq } from "../../../entities/mcqEntity";
 import { IAssignment } from "../../../entities/assignmentEntity";
+import { IMessage } from "../../../entities/chatEntity";
 
 export class TeacherRepository implements ITeacherRepository {
   constructor(private teacherModels: typeof teacherModel) {}
@@ -196,6 +197,26 @@ export class TeacherRepository implements ITeacherRepository {
     } catch (error) {
       console.error("Error occurred while fetching assignments:", error);
       throw new Error("Failed to fetch assignments ");
+    }
+  }
+
+  async addMessage(messageData: IMessage): Promise<IMessage> {
+    try {
+      const createdMessage = await createMessage(messageData);
+      return createdMessage;
+    } catch (error) {
+      console.error("Error occurred while creating Message:", error);
+      throw new Error("Failed to create Message ");
+    }
+  }
+
+  async findChats(batchId: string): Promise<IMessage[]> {
+    try {
+      const Messages = await findChats(batchId);
+      return Messages;
+    } catch (error) {
+      console.error("Error finding leaves:", error);
+      throw new Error("Failed to find leaves");
     }
   }
 }

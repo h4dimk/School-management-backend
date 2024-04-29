@@ -103,6 +103,15 @@ export const adminRoute = (router: Route) => {
     })
   );
 
+  router.put(
+    "/update-course/:id",
+    isAuth,
+    role([Role.ADMIN]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      adminController.updateCourseDetails(req, res, next);
+    })
+  );
+
   router.get(
     "/get-admin/:id",
     isAuth,

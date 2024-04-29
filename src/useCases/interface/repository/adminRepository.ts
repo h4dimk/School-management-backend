@@ -54,4 +54,5 @@ export interface IAdminRepository {
   ): Promise<IBatch | null>;
   updateTeachersLeaveStatus(leaveId: string, status: Leave): Promise<void>;
   updateStudentsLeaveStatus(leaveId: string, status: Leave): Promise<void>;
+  updateCourse(courseId: string, updatedCourse: Partial<ICourse>):Promise<ICourse>;
 }

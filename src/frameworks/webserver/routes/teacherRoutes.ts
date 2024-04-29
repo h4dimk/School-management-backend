@@ -145,5 +145,23 @@ export const teacherRoute = (router: Route) => {
     })
   );
 
+  router.post(
+    "/add-message",
+    isAuth,
+    role([Role.TEACHER]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      teacherController.addMessage(req, res, next);
+    })
+  );
+
+  router.get(
+    "/get-chats/:id",
+    isAuth,
+    role([Role.TEACHER]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      teacherController.getChats(req, res, next);
+    })
+  );
+
   return router;
 };

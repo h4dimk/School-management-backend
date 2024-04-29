@@ -16,6 +16,7 @@ import { findTimetables } from "./manageTimetable";
 import { findbyBatchMcqs, createMcq, findbyTeacherMcqs } from "./manageMcq";
 import { findAssignmentbyBatchId } from "./manageAssignment";
 
+
 export {
   findByEmail,
   getTeacherById,

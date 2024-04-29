@@ -10,7 +10,7 @@ import { blockStudent, removeStudent } from "./manageStudents";
 import { createCourse } from "./createCourse";
 import { findCourse } from "./findCourse";
 import { getCourses } from "./getCourses";
-import { removeCourse } from "./removeCourse";
+import { removeCourse,upadateCourse } from "./removeCourse";
 import { updateAdmin } from "./updateAdmin";
 import { getAdminById } from "./getAdminById";
 import { addBatch, getBatches, removeBatch } from "./manageBatch";
@@ -66,4 +66,5 @@ export {
   createTimetable,
   deleteTimetable,
   findTimetables,
+  upadateCourse,
 };

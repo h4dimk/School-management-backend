@@ -14,6 +14,7 @@ import { ITimetable } from "../../entities/timeTableEntity";
 import { IMcq } from "../../entities/mcqEntity";
 import { IAssignment } from "../../entities/assignmentEntity";
 import { Io } from "../../frameworks/webserver/config/socket";
+import { IMessage } from "../../entities/chatEntity";
 
 export class TeacherUseCase implements ITeacherUseCase {
   private readonly teacherRepository: ITeacherRepository;
@@ -262,6 +263,26 @@ export class TeacherUseCase implements ITeacherUseCase {
       console.error("Error occurred while fetching assignments:", error);
       next(new ErrorHandler(500, "Failed to fetch Assignment"));
       return [];
+    }
+  }
+
+  async addMessage(messageData: IMessage): Promise<IMessage> {
+    try {
+      const message = await this.teacherRepository.addMessage(messageData);
+      return message;
+    } catch (error) {
+      console.error("Error adding message:", error);
+      throw new Error("Failed to add message. Please try again later.");
+    }
+  }
+
+  async getChats(batchId: string): Promise<IMessage[]> {
+    try {
+      const chats = await this.teacherRepository.findChats(batchId);
+      return chats;
+    } catch (error) {
+      console.error("Error getting chats:", error);
+      throw new Error("Failed to get chats");
     }
   }
 }

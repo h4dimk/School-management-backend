@@ -238,6 +238,25 @@ export class AdminUseCase implements IAdminUseCase {
     }
   }
 
+  async editCourse(
+    courseId: string,
+    updates: Partial<ICourse>
+  ): Promise<ICourse> {
+    try {
+      if (!courseId) {
+        throw new Error("Course ID is required");
+      }
+      const updatedCourse = await this.adminRepository.updateCourse(
+        courseId,
+        updates
+      );
+      return updatedCourse;
+    } catch (error) {
+      console.error("Error updating course:", error);
+      throw new ErrorHandler(500, "Failed to update course");
+    }
+  }
+
   async getAdminProfile(adminId: string): Promise<IAdmin | null> {
     try {
       if (!adminId) {
