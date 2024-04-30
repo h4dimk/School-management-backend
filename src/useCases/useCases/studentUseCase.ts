@@ -182,9 +182,9 @@ export class StudentUseCase implements IStudentUseCase {
     }
   }
 
-  async findMcqsByBatch(batchId: string, next: Next): Promise<IMcq[]> {
+  async findMcqsByBatch(batchId: string,studentId: string, next: Next): Promise<IMcq[]> {
     try {
-      const mcqs = await this.studentRepository.getMcqsByBatch(batchId);
+      const mcqs = await this.studentRepository.getMcqsByBatch(batchId,studentId);
       return mcqs;
     } catch (error) {
       console.error("Error fetching Mcqs:", error);

@@ -15,7 +15,7 @@ export interface IStudentRepository {
 
   getAnnouncements(): Promise<IAnnouncement[]>;
   getTimetables(batch: string): Promise<ITimetable[]>;
-  getMcqsByBatch(batchId: string): Promise<IMcq[]>;
+  getMcqsByBatch(batchId: string,studentId: string): Promise<IMcq[]>;
 
   getStudentById(studentId: string): Promise<IStudent | null>;
 

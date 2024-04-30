@@ -138,9 +138,9 @@ export class StudentRepository implements IStudentRepository {
     }
   }
 
-  async getMcqsByBatch(batchId: string): Promise<IMcq[]> {
+  async getMcqsByBatch(batchId: string,studentId: string): Promise<IMcq[]> {
     try {
-      const mcqs = await findbyBatchMcqs(batchId);
+      const mcqs = await findbyBatchMcqs(batchId,studentId);
       return mcqs;
     } catch (error) {
       console.error("Error fetching Mcqs:", error);

@@ -20,7 +20,7 @@ export interface IStudentUseCase {
   getChats(batchId: string): Promise<IMessage[]>;
   getTimetables(batch: string, next: Next): Promise<ITimetable[]>;
 
-  findMcqsByBatch(batchId: string, next: Next): Promise<IMcq[]>;
+  findMcqsByBatch(batchId: string,studentId: string, next: Next): Promise<IMcq[]>;
 
   getStudentProfile(studentId: string): Promise<IStudent | null>;
 

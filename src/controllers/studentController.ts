@@ -144,8 +144,14 @@ export class StudentController {
 
   async getMcqsByBatch(req: Req, res: Res, next: Next) {
     try {
-      const batchId = req.params.id;
-      const mcqs = await this.studentUseCase.findMcqsByBatch(batchId, next);
+      const { studentId } = req.query;
+      const { id: batchId } = req.params;
+      console.log(req.params);
+      const mcqs = await this.studentUseCase.findMcqsByBatch(
+        batchId,
+        studentId as string,
+        next
+      );
       res.status(200).json({ mcqs, success: true });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
