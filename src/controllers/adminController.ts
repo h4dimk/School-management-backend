@@ -411,4 +411,13 @@ export class AdminController {
       next(new ErrorHandler(500, error.message));
     }
   }
+
+  async getAtendence(req: Req, res: Res, next: Next) {
+    try {
+      const attendance = await this.adminUseCase.getTodaysAttendence(next);
+      res.status(200).json({ attendance, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
 }

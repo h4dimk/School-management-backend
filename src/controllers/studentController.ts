@@ -106,11 +106,12 @@ export class StudentController {
 
   async addMessage(req: Req, res: Res, next: Next) {
     try {
-      const { message, sender, group } = req.body;
+      const { message, sender, group, date } = req.body;
       const newMessage: IMessage = {
         message,
         sender,
         group,
+        date,
       };
       const createdmessage = await this.studentUseCase.addMessage(newMessage);
       res.status(201).json({ createdmessage, success: true });

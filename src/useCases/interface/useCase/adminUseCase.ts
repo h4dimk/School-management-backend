@@ -32,6 +32,9 @@ export interface IAdminUseCase {
   getTeachersLeaves(next: Next): Promise<ILeaveTeacher[]>;
   getStudentsLeaves(next: Next): Promise<ILeaveStudent[]>;
   getTimetables(next: Next): Promise<ITimetable[]>;
+  getTodaysAttendence(
+    next: Next
+  ): Promise<{ present: string[]; absent: string[] }>;
 
   blockTeacher(teacherId: string, next: Next): Promise<boolean>;
   blockStudent(studentId: string, next: Next): Promise<boolean>;

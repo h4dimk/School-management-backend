@@ -35,6 +35,8 @@ export interface IAdminRepository {
   getStudentsLeaves(): Promise<ILeaveStudent[]>;
   getTimetables(): Promise<ITimetable[]>;
 
+  fetchAttendence(): Promise<{ present: string[]; absent: string[] }> 
+
   blockTeacher(teacherId: string): Promise<boolean>;
   blockStudent(studentId: string): Promise<boolean>;
 

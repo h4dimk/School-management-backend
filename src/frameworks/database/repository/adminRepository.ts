@@ -39,6 +39,7 @@ import {
   deleteTimetable,
   findTimetables,
   upadateCourse,
+  getAttendence,
 } from "./adminRepository/index";
 import { ICourse } from "../../../entities/courseEntity";
 import { IBatch } from "../../../entities/batchEntity";
@@ -388,6 +389,16 @@ export class AdminRepository implements IAdminRepository {
     } catch (error) {
       console.error("Error fetching timetables:", error);
       throw new Error("Failed to fetch timetables. Please try again later.");
+    }
+  }
+
+  async fetchAttendence(): Promise<{ present: string[]; absent: string[] }> {
+    try {
+      const attendance = await getAttendence();
+      return attendance;
+    } catch (error) {
+      console.error("Error fetching attendance:", error);
+      throw new Error("Failed to fetch attendance");
     }
   }
 }

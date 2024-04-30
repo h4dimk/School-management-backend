@@ -17,6 +17,10 @@ const chatSchema: Schema<IMessage> = new Schema(
       ref: "batch",
       required: true,
     },
+    date: {
+      type: Date,
+      default: Date.now,
+    },
   },
   { timestamps: true }
 );

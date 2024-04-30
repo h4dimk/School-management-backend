@@ -5,4 +5,5 @@ export interface IMessage {
   message: string;
   sender: Types.ObjectId;
   group: Types.ObjectId;
+  date: Date;
 }

@@ -22,7 +22,9 @@ Io.on("connect", (client) => {
     Io.emit("newAnnouncement", announcement);
   });
 
-  
+  client.on("addMessage", (message) => {
+    Io.emit("newMessage", message);
+  });
 
   client.on("disconnect", () => {
     console.log("the client ", client.id, " has been disconected");

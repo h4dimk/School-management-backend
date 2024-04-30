@@ -248,5 +248,14 @@ export const adminRoute = (router: Route) => {
     })
   );
 
+  router.get(
+    "/get-attendence",
+    isAuth,
+    role([Role.ADMIN]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      adminController.getAtendence(req, res, next);
+    })
+  );
+
   return router;
 };

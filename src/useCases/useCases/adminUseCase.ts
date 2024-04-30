@@ -447,4 +447,23 @@ export class AdminUseCase implements IAdminUseCase {
       return [];
     }
   }
+
+  async getTodaysAttendence(
+    next: Next
+  ): Promise<{ present: string[]; absent: string[] }> {
+    try {
+      const attendance = await this.adminRepository.fetchAttendence();
+      return attendance;
+    } catch (error) {
+      console.error("Error fetching attendence:", error);
+      next(
+        new ErrorHandler(
+          500,
+          "Failed to fetch attendence. Please try again later."
+        )
+      );
+
+      return { present: [], absent: [] };
+    }
+  }
 }

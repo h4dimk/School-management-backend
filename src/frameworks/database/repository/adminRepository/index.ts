@@ -33,6 +33,8 @@ import {
   deleteTimetable,
   findTimetables,
 } from "./manageTimetable";
+import { getAttendence } from "./manageAttendence";
+
 export {
   findByEmail,
   createTeacher,
@@ -67,4 +69,5 @@ export {
   deleteTimetable,
   findTimetables,
   upadateCourse,
+  getAttendence,
 };
