@@ -4,6 +4,7 @@ import { IMessage } from "../../../entities/chatEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import { IMcq } from "../../../entities/mcqEntity";
 import { IMcqSubmission } from "../../../entities/mcqSubmits";
+import { IRemark } from "../../../entities/remarksEntity";
 import { IStudent } from "../../../entities/studentEntity";
 import { ITimetable } from "../../../entities/timeTableEntity";
 
@@ -12,10 +13,12 @@ export interface IStudentRepository {
   findLeaves(studentId: string): Promise<ILeaveStudent[]>;
   findChats(batchId: string): Promise<IMessage[]>;
   findAssignments(studentId: string): Promise<IAssignment[]>;
+  findMcqsAnswered(studentId: string): Promise<IMcqSubmission[]>;
+  findRemarks(batchId: string): Promise<IRemark[]>;
 
   getAnnouncements(): Promise<IAnnouncement[]>;
   getTimetables(batch: string): Promise<ITimetable[]>;
-  getMcqsByBatch(batchId: string,studentId: string): Promise<IMcq[]>;
+  getMcqsByBatch(batchId: string, studentId: string): Promise<IMcq[]>;
 
   getStudentById(studentId: string): Promise<IStudent | null>;
 

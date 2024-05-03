@@ -4,6 +4,7 @@ import { IMessage } from "../../../entities/chatEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import { IMcq } from "../../../entities/mcqEntity";
 import { IMcqSubmission } from "../../../entities/mcqSubmits";
+import { IRemark } from "../../../entities/remarksEntity";
 import { IStudent } from "../../../entities/studentEntity";
 import { ITimetable } from "../../../entities/timeTableEntity";
 import { Next } from "../../../frameworks/types/serverPackageTypes";
@@ -20,7 +21,12 @@ export interface IStudentUseCase {
   getChats(batchId: string): Promise<IMessage[]>;
   getTimetables(batch: string, next: Next): Promise<ITimetable[]>;
 
-  findMcqsByBatch(batchId: string,studentId: string, next: Next): Promise<IMcq[]>;
+  findMcqsByBatch(
+    batchId: string,
+    studentId: string,
+    next: Next
+  ): Promise<IMcq[]>;
+  getAnsweredMcqs(studentId: string, next: Next): Promise<IMcqSubmission[]>;
 
   getStudentProfile(studentId: string): Promise<IStudent | null>;
 
@@ -39,4 +45,5 @@ export interface IStudentUseCase {
   addMessage(messageData: IMessage): Promise<IMessage>;
   addAssignment(assignment: IAssignment, next: Next): Promise<void>;
   getAssignments(studentId: string, next: Next): Promise<IAssignment[]>;
+  getRemarks(batchId: string): Promise<IRemark[]>
 }

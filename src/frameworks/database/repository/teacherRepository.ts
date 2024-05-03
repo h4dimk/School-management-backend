@@ -22,6 +22,9 @@ import {
   findbyTeacherMcqs,
   createMcq,
   findAssignmentbyBatchId,
+  getBatches,
+  createRemark,
+  findRemarks,
 } from "./teacherRepository/index";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { IAttendence } from "../../../entities/attendenceEntity";
@@ -32,6 +35,8 @@ import { ITimetable } from "../../../entities/timeTableEntity";
 import { IMcq } from "../../../entities/mcqEntity";
 import { IAssignment } from "../../../entities/assignmentEntity";
 import { IMessage } from "../../../entities/chatEntity";
+import { IRemark } from "../../../entities/remarksEntity";
+import { IBatch } from "../../../entities/batchEntity";
 
 export class TeacherRepository implements ITeacherRepository {
   constructor(private teacherModels: typeof teacherModel) {}
@@ -217,6 +222,36 @@ export class TeacherRepository implements ITeacherRepository {
     } catch (error) {
       console.error("Error finding leaves:", error);
       throw new Error("Failed to find leaves");
+    }
+  }
+
+  async createRemarks(remark: IRemark): Promise<IRemark> {
+    try {
+      const createdRemark = await createRemark(remark);
+      return createdRemark;
+    } catch (error) {
+      console.error("Error creating remark:", error);
+      throw new Error("Failed to create remark");
+    }
+  }
+
+  async findRemarks(teacherId: string): Promise<IRemark[]> {
+    try {
+      const remarks = await findRemarks(teacherId);
+      return remarks;
+    } catch (error) {
+      console.error("Error finding remarks:", error);
+      throw new Error("Failed to find remarks");
+    }
+  }
+
+  async findBatches(): Promise<IBatch[]> {
+    try {
+      const batches = await getBatches();
+      return batches;
+    } catch (error) {
+      console.error("Error finding batches:", error);
+      throw new Error("Failed to find batches");
     }
   }
 }

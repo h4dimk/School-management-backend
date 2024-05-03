@@ -4,18 +4,17 @@ import mcqSubmitModel from "../../models/mcqSubmitModel";
 
 export const findbyBatchMcqs = async (batchId: string, studentId: string) => {
   try {
-    // Find all mcqs for the batch
     const mcqs = await mcqModel.find({ batchId });
 
-    
-    // Find mcq submissions for the student
     const mcqSubmissions = await mcqSubmitModel.find({
       studentId,
-      mcqId: { $in: mcqs.map(mcq => mcq._id) }
+      mcqId: { $in: mcqs.map((mcq) => mcq._id) },
     });
 
-    // Filter out the mcqs that have already been submitted by the student
-    const remainingMcqs = mcqs.filter(mcq => !mcqSubmissions.some(submission => submission.mcqId.equals(mcq._id)));
+    const remainingMcqs = mcqs.filter(
+      (mcq) =>
+        !mcqSubmissions.some((submission) => submission.mcqId.equals(mcq._id))
+    );
 
     return remainingMcqs;
   } catch (error) {
@@ -24,7 +23,6 @@ export const findbyBatchMcqs = async (batchId: string, studentId: string) => {
   }
 };
 
-
 export const createMcqSubmit = async (mcqSubmitDetails: IMcqSubmission) => {
   try {
     const createdMcqSubmit = await mcqSubmitModel.create(mcqSubmitDetails);
@@ -32,5 +30,20 @@ export const createMcqSubmit = async (mcqSubmitDetails: IMcqSubmission) => {
   } catch (error) {
     console.error("Error occurred while creating McqsSubmit:", error);
     throw new Error("Failed to creating McqsSubmit");
+  }
+};
+
+export const findAnsweredMCQs = async (studentId: string) => {
+  try {
+    const mcqSubmissions = await mcqSubmitModel.find({ studentId }).populate('mcqId');
+
+    // const answeredMcqIds = mcqSubmissions.map((submission) => submission.mcqId);
+
+    // const answeredMcqs = await mcqModel.find({ _id: { $in: answeredMcqIds } });
+
+    return mcqSubmissions;
+  } catch (error) {
+    console.error("Error occurred while fetching answered MCQs:", error);
+    throw new Error("Failed to fetch answered MCQs");
   }
 };

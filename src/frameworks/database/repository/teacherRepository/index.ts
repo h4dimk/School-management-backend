@@ -15,7 +15,8 @@ import { createMessage, findChats } from "../commonRepository/manageChat";
 import { findTimetables } from "./manageTimetable";
 import { findbyBatchMcqs, createMcq, findbyTeacherMcqs } from "./manageMcq";
 import { findAssignmentbyBatchId } from "./manageAssignment";
-
+import { getBatches } from "./manageBatches";
+import { createRemark, findRemarks } from "./manageRemarks";
 
 export {
   findByEmail,
@@ -36,4 +37,7 @@ export {
   createMcq,
   findbyTeacherMcqs,
   findAssignmentbyBatchId,
+  getBatches,
+  createRemark,
+  findRemarks,
 };

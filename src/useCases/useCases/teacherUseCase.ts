@@ -13,8 +13,9 @@ import Leave from "../../@types/enum/leave";
 import { ITimetable } from "../../entities/timeTableEntity";
 import { IMcq } from "../../entities/mcqEntity";
 import { IAssignment } from "../../entities/assignmentEntity";
-import { Io } from "../../frameworks/webserver/config/socket";
 import { IMessage } from "../../entities/chatEntity";
+import { IRemark } from "../../entities/remarksEntity";
+import { IBatch } from "../../entities/batchEntity";
 
 export class TeacherUseCase implements ITeacherUseCase {
   private readonly teacherRepository: ITeacherRepository;
@@ -283,6 +284,36 @@ export class TeacherUseCase implements ITeacherUseCase {
     } catch (error) {
       console.error("Error getting chats:", error);
       throw new Error("Failed to get chats");
+    }
+  }
+
+  async addRemarks(remarks: IRemark): Promise<IRemark> {
+    try {
+      const addedRemark = await this.teacherRepository.createRemarks(remarks);
+      return addedRemark;
+    } catch (error) {
+      console.error("Error addding remark:", error);
+      throw new Error("Failed to add remark");
+    }
+  }
+
+  async getRemarks(teacherId: string): Promise<IRemark[]> {
+    try {
+      const remarks = await this.teacherRepository.findRemarks(teacherId);
+      return remarks;
+    } catch (error) {
+      console.error("Error getting remarks:", error);
+      throw new Error("Failed to get remarks");
+    }
+  }
+
+  async getBatches(): Promise<IBatch[]> {
+    try {
+      const batches = await this.teacherRepository.findBatches();
+      return batches;
+    } catch (error) {
+      console.error("Error getting batches:", error);
+      throw new Error("Failed to get batches");
     }
   }
 }

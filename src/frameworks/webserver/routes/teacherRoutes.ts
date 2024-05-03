@@ -163,5 +163,32 @@ export const teacherRoute = (router: Route) => {
     })
   );
 
+  router.post(
+    "/add-remarks",
+    isAuth,
+    role([Role.TEACHER]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      teacherController.addRemark(req, res, next);
+    })
+  );
+
+  router.get(
+    "/get-remarks/:id",
+    isAuth,
+    role([Role.TEACHER]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      teacherController.getRemarks(req, res, next);
+    })
+  );
+
+  router.get(
+    "/get-batches",
+    isAuth,
+    role([Role.TEACHER]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      teacherController.getBatches(req, res, next);
+    })
+  );
+
   return router;
 };

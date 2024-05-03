@@ -6,6 +6,7 @@ import attendenceModel from "../frameworks/database/models/attendenceModel";
 import { ILeaveTeacher } from "../entities/leaveTeacherEntity";
 import { IMcq } from "../entities/mcqEntity";
 import { IMessage } from "../entities/chatEntity";
+import { IRemark } from "../entities/remarksEntity";
 
 export class TeacherController {
   private teacherUseCase: ITeacherUseCase;
@@ -270,6 +271,45 @@ export class TeacherController {
       const chats = await this.teacherUseCase.getChats(batchId);
 
       res.status(201).json({ chats, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async addRemark(req: Req, res: Res, next: Next) {
+    try {
+      const { batchId, date, remark, subject, teacherId, files } = req.body;
+      const newRemark: IRemark = {
+        batchId,
+        date,
+        remark,
+        subject,
+        teacherId,
+        files,
+      };
+
+      const addedRemark = await this.teacherUseCase.addRemarks(newRemark);
+      res.status(201).json({ addedRemark, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getRemarks(req: Req, res: Res, next: Next) {
+    try {
+      const teacherId = req.params.id;
+
+      const remarks = await this.teacherUseCase.getRemarks(teacherId);
+      res.status(201).json({ remarks, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getBatches(req: Req, res: Res, next: Next) {
+    try {
+      const batches = await this.teacherUseCase.getBatches();
+      res.status(201).json({ batches, success: true });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }

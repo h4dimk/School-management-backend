@@ -12,6 +12,7 @@ import { ITimetable } from "../../entities/timeTableEntity";
 import { IMcq } from "../../entities/mcqEntity";
 import { IMcqSubmission } from "../../entities/mcqSubmits";
 import { IAssignment } from "../../entities/assignmentEntity";
+import { IRemark } from "../../entities/remarksEntity";
 
 export class StudentUseCase implements IStudentUseCase {
   private readonly studentRepository: IStudentRepository;
@@ -182,9 +183,16 @@ export class StudentUseCase implements IStudentUseCase {
     }
   }
 
-  async findMcqsByBatch(batchId: string,studentId: string, next: Next): Promise<IMcq[]> {
+  async findMcqsByBatch(
+    batchId: string,
+    studentId: string,
+    next: Next
+  ): Promise<IMcq[]> {
     try {
-      const mcqs = await this.studentRepository.getMcqsByBatch(batchId,studentId);
+      const mcqs = await this.studentRepository.getMcqsByBatch(
+        batchId,
+        studentId
+      );
       return mcqs;
     } catch (error) {
       console.error("Error fetching Mcqs:", error);
@@ -223,6 +231,30 @@ export class StudentUseCase implements IStudentUseCase {
       console.error("Error occurred while fetching assignments:", error);
       next(new ErrorHandler(500, "Failed to fetch Assignment"));
       return [];
+    }
+  }
+
+  async getAnsweredMcqs(
+    studentId: string,
+    next: Next
+  ): Promise<IMcqSubmission[]> {
+    try {
+      const mcqs = await this.studentRepository.findMcqsAnswered(studentId);
+      return mcqs;
+    } catch (error) {
+      console.error("Error occurred while fetching Answered Mcqs:", error);
+      next(new ErrorHandler(500, "Failed to fetch Answered Mcqs"));
+      return [];
+    }
+  }
+
+  async getRemarks(batchId: string): Promise<IRemark[]> {
+    try {
+      const remarks = await this.studentRepository.findRemarks(batchId);
+      return remarks;
+    } catch (error) {
+      console.error("Error getting remarks:", error);
+      throw new Error("Failed to get remarks");
     }
   }
 }

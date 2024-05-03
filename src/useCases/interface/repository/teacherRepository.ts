@@ -2,10 +2,12 @@ import Leave from "../../../@types/enum/leave";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { IAssignment } from "../../../entities/assignmentEntity";
 import { IAttendence } from "../../../entities/attendenceEntity";
+import { IBatch } from "../../../entities/batchEntity";
 import { IMessage } from "../../../entities/chatEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
 import { IMcq } from "../../../entities/mcqEntity";
+import { IRemark } from "../../../entities/remarksEntity";
 import { ITeacher } from "../../../entities/teacherEntity";
 import { ITimetable } from "../../../entities/timeTableEntity";
 
@@ -21,6 +23,8 @@ export interface ITeacherRepository {
   getMcqsByTeacher(teacherId: string): Promise<IMcq[]>;
   findAssignments(batchId: string): Promise<IAssignment[]>;
   findChats(batchId: string): Promise<IMessage[]>;
+  findRemarks(teacherId: string): Promise<IRemark[]>;
+  findBatches(): Promise<IBatch[]>;
 
   getTeacherById(teacherId: string): Promise<ITeacher | null>;
 
@@ -33,6 +37,7 @@ export interface ITeacherRepository {
   createAttendence(attendence: IAttendence): Promise<IAttendence>;
   createLeave(leaveData: ILeaveTeacher): Promise<ILeaveTeacher>;
   createMcqs(mcqDetails: IMcq): Promise<IMcq>;
+  createRemarks(remark: IRemark): Promise<IRemark>;
 
   addMessage(messageData: IMessage): Promise<IMessage>;
 

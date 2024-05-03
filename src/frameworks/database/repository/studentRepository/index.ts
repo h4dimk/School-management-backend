@@ -6,11 +6,16 @@ import { createLeave, findLeavebyStudentId, removeLeave } from "./manageLeave";
 import { createMessage, findChats } from "../commonRepository/manageChat";
 import { createGroup, findGroup } from "../commonRepository/manageGroup";
 import { findTimetables } from "./manageTimetable";
-import { findbyBatchMcqs, createMcqSubmit } from "./manageMcqs";
+import {
+  findbyBatchMcqs,
+  createMcqSubmit,
+  findAnsweredMCQs,
+} from "./manageMcqs";
 import {
   createAssignment,
   findAssignmentbyStudentId,
 } from "./manageAssignment";
+import { findRemarks } from "./manageRmarks";
 
 export {
   findByEmail,
@@ -29,4 +34,6 @@ export {
   createMcqSubmit,
   createAssignment,
   findAssignmentbyStudentId,
+  findAnsweredMCQs,
+  findRemarks,
 };

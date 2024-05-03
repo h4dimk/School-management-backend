@@ -18,6 +18,8 @@ import {
   createMcqSubmit,
   createAssignment,
   findAssignmentbyStudentId,
+  findAnsweredMCQs,
+  findRemarks,
 } from "./studentRepository/index";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
@@ -27,6 +29,7 @@ import { ITimetable } from "../../../entities/timeTableEntity";
 import { IMcq } from "../../../entities/mcqEntity";
 import { IMcqSubmission } from "../../../entities/mcqSubmits";
 import { IAssignment } from "../../../entities/assignmentEntity";
+import { IRemark } from "../../../entities/remarksEntity";
 
 export class StudentRepository implements IStudentRepository {
   constructor(private studentModels: typeof studentModel) {}
@@ -138,9 +141,9 @@ export class StudentRepository implements IStudentRepository {
     }
   }
 
-  async getMcqsByBatch(batchId: string,studentId: string): Promise<IMcq[]> {
+  async getMcqsByBatch(batchId: string, studentId: string): Promise<IMcq[]> {
     try {
-      const mcqs = await findbyBatchMcqs(batchId,studentId);
+      const mcqs = await findbyBatchMcqs(batchId, studentId);
       return mcqs;
     } catch (error) {
       console.error("Error fetching Mcqs:", error);
@@ -177,6 +180,26 @@ export class StudentRepository implements IStudentRepository {
     } catch (error) {
       console.error("Error occurred while fetching assignments:", error);
       throw new Error("Failed to fetch assignments ");
+    }
+  }
+
+  async findMcqsAnswered(studentId: string): Promise<IMcqSubmission[]> {
+    try {
+      const answeredMcqs = await findAnsweredMCQs(studentId);
+      return answeredMcqs;
+    } catch (error) {
+      console.error("Error occurred while fetching answered MCQs:", error);
+      throw new Error("Failed to fetch answered MCQs");
+    }
+  }
+
+  async findRemarks(batchId: string): Promise<IRemark[]> {
+    try {
+      const remarks = await findRemarks(batchId);
+      return remarks;
+    } catch (error) {
+      console.error("Error finding remarks:", error);
+      throw new Error("Failed to find remarks");
     }
   }
 }

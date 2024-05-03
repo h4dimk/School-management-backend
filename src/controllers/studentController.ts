@@ -146,7 +146,6 @@ export class StudentController {
     try {
       const { studentId } = req.query;
       const { id: batchId } = req.params;
-      console.log(req.params);
       const mcqs = await this.studentUseCase.findMcqsByBatch(
         batchId,
         studentId as string,
@@ -218,6 +217,30 @@ export class StudentController {
         next
       );
       res.status(200).json({ assignments, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getAnsweredMcqsById(req: Req, res: Res, next: Next) {
+    try {
+      const studentId = req.params.id;
+      const answeredMcqs = await this.studentUseCase.getAnsweredMcqs(
+        studentId,
+        next
+      );
+      res.status(200).json({ answeredMcqs, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getRemarks(req: Req, res: Res, next: Next) {
+    try {
+      const batchId = req.params.id;
+
+      const remarks = await this.studentUseCase.getRemarks(batchId);
+      res.status(201).json({ remarks, success: true });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }

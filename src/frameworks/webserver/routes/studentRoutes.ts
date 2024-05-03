@@ -126,5 +126,23 @@ export const studentRoute = (router: Route) => {
     })
   );
 
+  router.get(
+    "/get-answered-mcqs/:id",
+    isAuth,
+    role([Role.STUDENT]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      studentController.getAnsweredMcqsById(req, res, next);
+    })
+  );
+
+  router.get(
+    "/get-remarks/:id",
+    isAuth,
+    role([Role.STUDENT]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      studentController.getRemarks(req, res, next);
+    })
+  );
+
   return router;
 };
