@@ -245,4 +245,14 @@ export class StudentController {
       next(new ErrorHandler(500, error.message));
     }
   }
+
+  async getAttendence(req: Req, res: Res, next: Next) {
+    try {
+      const studentId = req.params.id;
+      const attendance = await this.studentUseCase.getAttendance(studentId);
+      res.status(201).json({ attendance, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
 }

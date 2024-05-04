@@ -29,6 +29,7 @@ export interface IStudentUseCase {
   getAnsweredMcqs(studentId: string, next: Next): Promise<IMcqSubmission[]>;
 
   getStudentProfile(studentId: string): Promise<IStudent | null>;
+  getAttendance(studentId: string): Promise<any>;
 
   updateStudentProfile(
     studentId: string,

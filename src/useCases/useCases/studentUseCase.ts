@@ -257,4 +257,14 @@ export class StudentUseCase implements IStudentUseCase {
       throw new Error("Failed to get remarks");
     }
   }
+
+  async getAttendance(studentId: string): Promise<any> {
+    try {
+      const attendance = await this.studentRepository.findAttendance(studentId);
+      return attendance;
+    } catch (error) {
+      console.error("Error getting attendance:", error);
+      throw new Error("Failed to get attendance");
+    }
+  }
 }

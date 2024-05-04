@@ -15,6 +15,7 @@ export interface IStudentRepository {
   findAssignments(studentId: string): Promise<IAssignment[]>;
   findMcqsAnswered(studentId: string): Promise<IMcqSubmission[]>;
   findRemarks(batchId: string): Promise<IRemark[]>;
+  findAttendance(studentId: string): Promise<any>
 
   getAnnouncements(): Promise<IAnnouncement[]>;
   getTimetables(batch: string): Promise<ITimetable[]>;

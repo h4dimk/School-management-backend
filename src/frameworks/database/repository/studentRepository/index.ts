@@ -16,6 +16,7 @@ import {
   findAssignmentbyStudentId,
 } from "./manageAssignment";
 import { findRemarks } from "./manageRmarks";
+import { getAttendance } from "./manageAttendance";
 
 export {
   findByEmail,
@@ -36,4 +37,5 @@ export {
   findAssignmentbyStudentId,
   findAnsweredMCQs,
   findRemarks,
+  getAttendance,
 };

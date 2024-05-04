@@ -20,6 +20,7 @@ import {
   findAssignmentbyStudentId,
   findAnsweredMCQs,
   findRemarks,
+  getAttendance,
 } from "./studentRepository/index";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
@@ -202,4 +203,15 @@ export class StudentRepository implements IStudentRepository {
       throw new Error("Failed to find remarks");
     }
   }
+
+  async findAttendance(studentId: string): Promise<any> {
+    try {
+      const attendance = await getAttendance(studentId);
+      return attendance;
+    } catch (error) {
+      console.error("Error finding attendance:", error);
+      throw new Error("Failed to find attendance");
+    }
+  }
+  
 }
