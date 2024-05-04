@@ -13,7 +13,7 @@ export const createRemark = async (remark: IRemark) => {
 
 export const findRemarks = async (teacherId: string) => {
   try {
-    const remarks = remarkModel.find({ teacherId });
+    const remarks = remarkModel.find({ teacherId }).populate("batchId");
     return remarks;
   } catch (error) {
     console.error("Error finding Remarks:", error);

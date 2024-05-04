@@ -7,5 +7,5 @@ export interface IRemark {
     batchId: Types.ObjectId;  
     subject: string;
     date: Date;
-    files?: string[];  
+    files?: string;  
   }

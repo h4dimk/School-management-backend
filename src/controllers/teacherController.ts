@@ -279,6 +279,11 @@ export class TeacherController {
   async addRemark(req: Req, res: Res, next: Next) {
     try {
       const { batchId, date, remark, subject, teacherId, files } = req.body;
+      if (!batchId || !date || !remark || !subject || !teacherId) {
+        throw new Error(
+          "Batch ID, date, remark, subject, and teacher ID are required."
+        );
+      }
       const newRemark: IRemark = {
         batchId,
         date,

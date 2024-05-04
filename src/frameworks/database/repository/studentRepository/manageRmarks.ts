@@ -2,7 +2,7 @@ import remarkModel from "../../models/remarkModel";
 
 export const findRemarks = async (batchId: string) => {
   try {
-    const remarks = remarkModel.find({ batchId });
+    const remarks = remarkModel.find({ batchId }).populate("teacherId");
     return remarks;
   } catch (error) {
     console.error("Error finding Remarks:", error);

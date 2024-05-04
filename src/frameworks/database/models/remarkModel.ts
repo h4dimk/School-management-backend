@@ -26,8 +26,7 @@ const remarkSchema: Schema<IRemark> = new Schema(
       required: true,
     },
     files: {
-      type: [String],
-      default: [],
+      type: String,
     },
   },
   { timestamps: true }
