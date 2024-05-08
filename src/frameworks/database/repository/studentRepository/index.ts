@@ -17,6 +17,8 @@ import {
 } from "./manageAssignment";
 import { findRemarks } from "./manageRmarks";
 import { getAttendance } from "./manageAttendance";
+import { getBatchRanks } from "../commonRepository/manageBatchRanks";
+
 
 export {
   findByEmail,
@@ -38,4 +40,5 @@ export {
   findAnsweredMCQs,
   findRemarks,
   getAttendance,
+  getBatchRanks
 };

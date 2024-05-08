@@ -25,6 +25,7 @@ import {
   getBatches,
   createRemark,
   findRemarks,
+  getBatchRanks
 } from "./teacherRepository/index";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { IAttendence } from "../../../entities/attendenceEntity";
@@ -37,6 +38,7 @@ import { IAssignment } from "../../../entities/assignmentEntity";
 import { IMessage } from "../../../entities/chatEntity";
 import { IRemark } from "../../../entities/remarksEntity";
 import { IBatch } from "../../../entities/batchEntity";
+import { IMcqSubmission } from "../../../entities/mcqSubmits";
 
 export class TeacherRepository implements ITeacherRepository {
   constructor(private teacherModels: typeof teacherModel) {}
@@ -252,6 +254,16 @@ export class TeacherRepository implements ITeacherRepository {
     } catch (error) {
       console.error("Error finding batches:", error);
       throw new Error("Failed to find batches");
+    }
+  }
+
+  async findBatchRanks(batchId: string): Promise<IMcqSubmission[]> {
+    try {
+      const students = await getBatchRanks(batchId);
+      return students;
+    } catch (error) {
+      console.error("Error finding student ranks:", error);
+      throw new Error("Failed to find student ranks");
     }
   }
 }

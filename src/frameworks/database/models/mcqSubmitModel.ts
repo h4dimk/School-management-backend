@@ -8,6 +8,11 @@ const mcqSubmitSchema: Schema<IMcqSubmission> = new Schema(
       ref: "Mcq",
       required: true,
     },
+    batchId: {
+      type: Schema.Types.ObjectId,
+      ref: "batch",
+      required: true,
+    },
     studentId: {
       type: Schema.Types.ObjectId,
       ref: "Student",

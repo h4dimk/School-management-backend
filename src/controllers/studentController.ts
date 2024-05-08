@@ -159,7 +159,7 @@ export class StudentController {
 
   async submitAnswer(req: Req, res: Res, next: Next) {
     try {
-      const { mcqId, studentId, isCorrect } = req.body;
+      const { mcqId, studentId, isCorrect, batchId } = req.body;
       // Check if mcqId and studentId are present
       if (!mcqId || !studentId) {
         throw new Error("MCQ ID and student ID are required.");
@@ -184,6 +184,7 @@ export class StudentController {
         mcqId,
         studentId,
         isCorrect,
+        batchId,
       };
 
       await this.studentUseCase.submitAnswer(newAnswer, next);
@@ -251,6 +252,16 @@ export class StudentController {
       const studentId = req.params.id;
       const attendance = await this.studentUseCase.getAttendance(studentId);
       res.status(201).json({ attendance, success: true });
+    } catch (error: any) {
+      next(new ErrorHandler(500, error.message));
+    }
+  }
+
+  async getBatchRanks(req: Req, res: Res, next: Next) {
+    try {
+      const batchId = req.params.id;
+      const ranks = await this.studentUseCase.getBatchRanks(batchId, next);
+      res.status(201).json({ ranks, success: true });
     } catch (error: any) {
       next(new ErrorHandler(500, error.message));
     }

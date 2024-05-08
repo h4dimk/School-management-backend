@@ -20,6 +20,7 @@ export interface IStudentUseCase {
   getLeaves(studentId: string): Promise<ILeaveStudent[]>;
   getChats(batchId: string): Promise<IMessage[]>;
   getTimetables(batch: string, next: Next): Promise<ITimetable[]>;
+  getBatchRanks(batchId: string, next: Next): Promise<IMcqSubmission[]>;
 
   findMcqsByBatch(
     batchId: string,
@@ -46,5 +47,5 @@ export interface IStudentUseCase {
   addMessage(messageData: IMessage): Promise<IMessage>;
   addAssignment(assignment: IAssignment, next: Next): Promise<void>;
   getAssignments(studentId: string, next: Next): Promise<IAssignment[]>;
-  getRemarks(batchId: string): Promise<IRemark[]>
+  getRemarks(batchId: string): Promise<IRemark[]>;
 }

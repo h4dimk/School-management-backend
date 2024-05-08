@@ -21,6 +21,7 @@ import {
   findAnsweredMCQs,
   findRemarks,
   getAttendance,
+  getBatchRanks,
 } from "./studentRepository/index";
 import { IAnnouncement } from "../../../entities/announcementEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
@@ -213,5 +214,14 @@ export class StudentRepository implements IStudentRepository {
       throw new Error("Failed to find attendance");
     }
   }
-  
+
+  async findBatchRanks(batchId: string): Promise<IMcqSubmission[]> {
+    try {
+      const students = await getBatchRanks(batchId);
+      return students;
+    } catch (error) {
+      console.error("Error finding student ranks:", error);
+      throw new Error("Failed to find student ranks");
+    }
+  }
 }

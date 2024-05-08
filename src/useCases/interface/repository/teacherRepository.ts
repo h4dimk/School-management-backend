@@ -7,6 +7,7 @@ import { IMessage } from "../../../entities/chatEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
 import { IMcq } from "../../../entities/mcqEntity";
+import { IMcqSubmission } from "../../../entities/mcqSubmits";
 import { IRemark } from "../../../entities/remarksEntity";
 import { ITeacher } from "../../../entities/teacherEntity";
 import { ITimetable } from "../../../entities/timeTableEntity";
@@ -25,6 +26,7 @@ export interface ITeacherRepository {
   findChats(batchId: string): Promise<IMessage[]>;
   findRemarks(teacherId: string): Promise<IRemark[]>;
   findBatches(): Promise<IBatch[]>;
+  findBatchRanks(batchId: string): Promise<IMcqSubmission[]>;
 
   getTeacherById(teacherId: string): Promise<ITeacher | null>;
 

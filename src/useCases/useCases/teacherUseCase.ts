@@ -16,6 +16,7 @@ import { IAssignment } from "../../entities/assignmentEntity";
 import { IMessage } from "../../entities/chatEntity";
 import { IRemark } from "../../entities/remarksEntity";
 import { IBatch } from "../../entities/batchEntity";
+import { IMcqSubmission } from "../../entities/mcqSubmits";
 
 export class TeacherUseCase implements ITeacherUseCase {
   private readonly teacherRepository: ITeacherRepository;
@@ -314,6 +315,17 @@ export class TeacherUseCase implements ITeacherUseCase {
     } catch (error) {
       console.error("Error getting batches:", error);
       throw new Error("Failed to get batches");
+    }
+  }
+
+  async getBatchRanks(batchId: string,next:Next): Promise<IMcqSubmission[]> {
+    try {
+      const students = await this.teacherRepository.findBatchRanks(batchId);
+      return students;
+    } catch (error) {
+      console.error("Error finding student ranks:", error);
+      next(new ErrorHandler(500, "Failed to find student ranks:"));
+      return [];
     }
   }
 }

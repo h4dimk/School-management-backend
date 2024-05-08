@@ -319,4 +319,16 @@ export class TeacherController {
       next(new ErrorHandler(500, error.message));
     }
   }
+
+  async getBatchRanks(req: Req, res: Res, next: Next){
+    try {
+      const batchId= req.params.id;
+      const ranks= await this.teacherUseCase.getBatchRanks(batchId,next);
+      res.status(201).json({ ranks, success: true });
+
+    } catch (error:any) {
+      next(new ErrorHandler(500, error.message));
+      
+    }
+  }
 }

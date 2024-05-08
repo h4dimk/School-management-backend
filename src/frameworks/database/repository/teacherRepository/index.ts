@@ -17,6 +17,7 @@ import { findbyBatchMcqs, createMcq, findbyTeacherMcqs } from "./manageMcq";
 import { findAssignmentbyBatchId } from "./manageAssignment";
 import { getBatches } from "./manageBatches";
 import { createRemark, findRemarks } from "./manageRemarks";
+import { getBatchRanks } from "../commonRepository/manageBatchRanks";
 
 export {
   findByEmail,
@@ -40,4 +41,5 @@ export {
   getBatches,
   createRemark,
   findRemarks,
+  getBatchRanks
 };

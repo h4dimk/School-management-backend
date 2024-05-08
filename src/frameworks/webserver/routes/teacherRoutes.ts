@@ -189,6 +189,14 @@ export const teacherRoute = (router: Route) => {
       teacherController.getBatches(req, res, next);
     })
   );
+  router.get(
+    "/get-batch-ranks/:id",
+    isAuth,
+    role([Role.TEACHER]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      teacherController.getBatchRanks(req, res, next);
+    })
+  );
 
   return router;
 };

@@ -153,5 +153,14 @@ export const studentRoute = (router: Route) => {
     })
   );
 
+  router.get(
+    "/get-batch-ranks/:id",
+    // isAuth,
+    // role([Role.STUDENT]),
+    catchAsyncErrors((req: Req, res: Res, next: Next) => {
+      studentController.getBatchRanks(req, res, next);
+    })
+  );
+
   return router;
 };

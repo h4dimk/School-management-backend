@@ -7,6 +7,7 @@ import { IMessage } from "../../../entities/chatEntity";
 import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
 import { ILeaveTeacher } from "../../../entities/leaveTeacherEntity";
 import { IMcq } from "../../../entities/mcqEntity";
+import { IMcqSubmission } from "../../../entities/mcqSubmits";
 import { IRemark } from "../../../entities/remarksEntity";
 import { ITeacher } from "../../../entities/teacherEntity";
 import { ITimetable } from "../../../entities/timeTableEntity";
@@ -30,6 +31,7 @@ export interface ITeacherUseCase {
   getChats(batchId: string): Promise<IMessage[]>;
   getRemarks(teacherId: string): Promise<IRemark[]>;
   getBatches(): Promise<IBatch[]>;
+  getBatchRanks(batchId: string, next: Next): Promise<IMcqSubmission[]>;
 
   getTeacherProfile(teacherId: string): Promise<ITeacher | null>;
 

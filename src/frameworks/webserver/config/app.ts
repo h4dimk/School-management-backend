@@ -11,7 +11,7 @@ import { studentRoute } from "../routes/studentRoutes";
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT,
     credentials: true,
     methods: ["GET", "PATCH", "PUT", "POST", "DELETE"],
     optionsSuccessStatus: 204,

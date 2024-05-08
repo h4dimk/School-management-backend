@@ -267,4 +267,15 @@ export class StudentUseCase implements IStudentUseCase {
       throw new Error("Failed to get attendance");
     }
   }
+
+  async getBatchRanks(batchId: string, next: Next): Promise<IMcqSubmission[]> {
+    try {
+      const students = await this.studentRepository.findBatchRanks(batchId);
+      return students;
+    } catch (error) {
+      console.error("Error finding student ranks:", error);
+      next(new ErrorHandler(500, "Failed to find student ranks:"));
+      return [];
+    }
+  }
 }

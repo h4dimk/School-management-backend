@@ -5,4 +5,5 @@ export interface IMcqSubmission {
   mcqId: Types.ObjectId;
   studentId: Types.ObjectId;
   isCorrect: boolean;
+  batchId:Types.ObjectId;
 }

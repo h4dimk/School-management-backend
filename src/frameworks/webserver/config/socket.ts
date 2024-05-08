@@ -11,7 +11,7 @@ const httpServer = createServer(app);
 
 const Io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT,
   },
 });
 
