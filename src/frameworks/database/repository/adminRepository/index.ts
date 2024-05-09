@@ -10,7 +10,7 @@ import { blockStudent, removeStudent } from "./manageStudents";
 import { createCourse } from "./createCourse";
 import { findCourse } from "./findCourse";
 import { getCourses } from "./getCourses";
-import { removeCourse,upadateCourse } from "./removeCourse";
+import { removeCourse, upadateCourse } from "./removeCourse";
 import { updateAdmin } from "./updateAdmin";
 import { getAdminById } from "./getAdminById";
 import { addBatch, getBatches, removeBatch } from "./manageBatch";
@@ -32,6 +32,9 @@ import {
   createTimetable,
   deleteTimetable,
   findTimetables,
+  alreadyAssignedTeacher,
+  existingTimetable,
+  validateTimetableDate,
 } from "./manageTimetable";
 import { getAttendence } from "./manageAttendence";
 
@@ -70,4 +73,7 @@ export {
   findTimetables,
   upadateCourse,
   getAttendence,
+  validateTimetableDate,
+  alreadyAssignedTeacher,
+  existingTimetable,
 };

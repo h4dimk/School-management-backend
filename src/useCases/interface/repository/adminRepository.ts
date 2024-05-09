@@ -35,7 +35,7 @@ export interface IAdminRepository {
   getStudentsLeaves(): Promise<ILeaveStudent[]>;
   getTimetables(): Promise<ITimetable[]>;
 
-  fetchAttendence(): Promise<{ present: string[]; absent: string[] }> 
+  fetchAttendence(): Promise<{ present: string[]; absent: string[] }>;
 
   blockTeacher(teacherId: string): Promise<boolean>;
   blockStudent(studentId: string): Promise<boolean>;
@@ -56,5 +56,15 @@ export interface IAdminRepository {
   ): Promise<IBatch | null>;
   updateTeachersLeaveStatus(leaveId: string, status: Leave): Promise<void>;
   updateStudentsLeaveStatus(leaveId: string, status: Leave): Promise<void>;
-  updateCourse(courseId: string, updatedCourse: Partial<ICourse>):Promise<ICourse>;
+  updateCourse(
+    courseId: string,
+    updatedCourse: Partial<ICourse>
+  ): Promise<ICourse>;
+
+  validateTimeTable(
+    date: Date,
+    period: number,
+    batch: string,
+    teacher: string
+  ): Promise<string | undefined>;
 }

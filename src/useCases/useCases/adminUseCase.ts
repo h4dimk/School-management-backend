@@ -448,6 +448,20 @@ export class AdminUseCase implements IAdminUseCase {
     }
   }
 
+  async validateTimetable(
+    date: Date,
+    period: number,
+    batch: string,
+    teacher: string
+  ): Promise<string | undefined> {
+    return await this.adminRepository.validateTimeTable(
+      date,
+      period,
+      batch,
+      teacher
+    );
+  }
+
   async getTodaysAttendence(
     next: Next
   ): Promise<{ present: string[]; absent: string[] }> {

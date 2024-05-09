@@ -22,8 +22,8 @@ export const getBatchRanks = async (batchId: string) => {
       },
       {
         $project: {
-          studentDetails: "$_id", 
-          totalCorrect: 1, 
+          studentDetails: "$_id",
+          totalCorrect: 1,
           _id: 0,
         },
       },

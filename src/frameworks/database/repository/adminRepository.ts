@@ -40,6 +40,9 @@ import {
   findTimetables,
   upadateCourse,
   getAttendence,
+  validateTimetableDate,
+  alreadyAssignedTeacher,
+  existingTimetable,
 } from "./adminRepository/index";
 import { ICourse } from "../../../entities/courseEntity";
 import { IBatch } from "../../../entities/batchEntity";
@@ -389,6 +392,32 @@ export class AdminRepository implements IAdminRepository {
     } catch (error) {
       console.error("Error fetching timetables:", error);
       throw new Error("Failed to fetch timetables. Please try again later.");
+    }
+  }
+
+  async validateTimeTable(
+    date: Date,
+    period: number,
+    batch: string,
+    teacher: string
+  ): Promise<string | undefined> {
+    const timeTableDateError = await validateTimetableDate(date);
+    if (timeTableDateError) {
+      return timeTableDateError;
+    }
+    const existingTimetableError = await existingTimetable(period, date, batch);
+    if (existingTimetableError) {
+      return existingTimetableError;
+    }
+
+    const alreadyAssignedTeacherError = await alreadyAssignedTeacher(
+      period,
+      date,
+      teacher
+    );
+
+    if (alreadyAssignedTeacherError) {
+      return alreadyAssignedTeacherError;
     }
   }
 

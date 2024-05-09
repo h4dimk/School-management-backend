@@ -10,6 +10,7 @@ import { IBatch } from "../entities/batchEntity";
 import { IAnnouncement } from "../entities/announcementEntity";
 import courseModel from "../frameworks/database/models/courseModel";
 import { ITimetable } from "../entities/timeTableEntity";
+import timetableModel from "../frameworks/database/models/timetableModel";
 
 export class AdminController {
   private readonly adminUseCase: IAdminUseCase;
@@ -372,6 +373,24 @@ export class AdminController {
   async addTimetable(req: Req, res: Res, next: Next) {
     try {
       const { date, batch, period, subject, teacher } = req.body;
+
+      if (!date || !batch || !period || !subject || !teacher) {
+        throw new Error("Please fill in all fields.");
+      }
+
+      const timetableError = await this.adminUseCase.validateTimetable(
+        date,
+        period,
+        batch,
+        teacher
+      );
+
+      if (timetableError) {
+        return res.status(400).json({
+          message: timetableError,
+          success: false,
+        });
+      }
 
       const newTimetable: ITimetable = {
         date,

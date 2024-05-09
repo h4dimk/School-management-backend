@@ -38,3 +38,46 @@ export const findTimetables = async () => {
     throw new Error("Failed to fetch timetable");
   }
 };
+
+// Validations
+
+export const validateTimetableDate = async (date: Date) => {
+  const currentDate = new Date();
+  if (new Date(date) < currentDate) {
+    const message = "The date cannot be in the past.";
+    return message;
+  }
+};
+
+export const existingTimetable = async (
+  period: number,
+  date: Date,
+  batch: string
+) => {
+  const existingTimetable = await timetableModel.findOne({
+    period,
+    date,
+    batch,
+  });
+
+  if (existingTimetable) {
+    const message = `A timetable with this period and date already exists for this batch`;
+    return message;
+  }
+};
+
+export const alreadyAssignedTeacher = async (
+  period: number,
+  date: Date,
+  teacher: string
+) => {
+  const alreadyAssignedTeacher = await timetableModel.findOne({
+    period,
+    date,
+    teacher,
+  });
+  if (alreadyAssignedTeacher) {
+    const message = `The teacher is already scheduled for a batch during this period. Please choose a different period or teacher.`;
+    return message;
+  }
+};

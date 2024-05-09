@@ -63,4 +63,11 @@ export interface IAdminUseCase {
     next: Next
   ): Promise<void>;
   editCourse(courseId: string, updates: Partial<ICourse>): Promise<ICourse>;
+
+  validateTimetable(
+    date: Date,
+    period: number,
+    batch: string,
+    teacher: string
+  ): Promise<string | undefined>;
 }
