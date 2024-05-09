@@ -1,0 +1,37 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.studentController = exports.teacherController = exports.adminController = void 0;
+const adminModel_1 = __importDefault(require("../../../database/models/adminModel"));
+const teacherModel_1 = __importDefault(require("../../../database/models/teacherModel"));
+const studentModel_1 = __importDefault(require("../../../database/models/studentModel"));
+const adminRepository_1 = require("../../../database/repository/adminRepository");
+const teacherRepository_1 = require("../../../database/repository/teacherRepository");
+const studentRepository_1 = require("../../../database/repository/studentRepository");
+const adminController_1 = require("../../../../controllers/adminController");
+const teacherController_1 = require("../../../../controllers/teacherController");
+const studentController_1 = require("../../../../controllers/studentController");
+const adminUseCase_1 = require("../../../../useCases/useCases/adminUseCase");
+const teacherUseCase_1 = require("../../../../useCases/useCases/teacherUseCase");
+const studentUseCase_1 = require("../../../../useCases/useCases/studentUseCase");
+const jwt_1 = __importDefault(require("../../../services/jwt"));
+const sendMail_1 = require("../../../services/sendMail");
+const hashPassword_1 = require("../../../services/hashPassword");
+const jwt = new jwt_1.default();
+const sendMail = new sendMail_1.SendMail();
+const encrypt = new hashPassword_1.Encrypt();
+const adminRepository = new adminRepository_1.AdminRepository(adminModel_1.default);
+const teacherRepository = new teacherRepository_1.TeacherRepository(teacherModel_1.default);
+const studentRepository = new studentRepository_1.StudentRepository(studentModel_1.default);
+const adminUseCase = new adminUseCase_1.AdminUseCase(adminRepository, jwt, sendMail, encrypt);
+const teacherUseCase = new teacherUseCase_1.TeacherUseCase(teacherRepository, jwt, encrypt);
+const studentUseCase = new studentUseCase_1.StudentUseCase(studentRepository, jwt, encrypt);
+const adminController = new adminController_1.AdminController(adminUseCase);
+exports.adminController = adminController;
+const teacherController = new teacherController_1.TeacherController(teacherUseCase);
+exports.teacherController = teacherController;
+const studentController = new studentController_1.StudentController(studentUseCase);
+exports.studentController = studentController;
+//# sourceMappingURL=injuctions.js.map

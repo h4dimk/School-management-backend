@@ -1,0 +1,33 @@
+import studentModel from "../models/studentModel";
+import { IStudentRepository } from "../../../useCases/interface/repository/studentRepository";
+import { IStudent } from "../../../entities/studentEntity";
+import { IAnnouncement } from "../../../entities/announcementEntity";
+import { ILeaveStudent } from "../../../entities/leaveStudentEntity";
+import { IMessage } from "../../../entities/chatEntity";
+import { ITimetable } from "../../../entities/timeTableEntity";
+import { IMcq } from "../../../entities/mcqEntity";
+import { IMcqSubmission } from "../../../entities/mcqSubmits";
+import { IAssignment } from "../../../entities/assignmentEntity";
+import { IRemark } from "../../../entities/remarksEntity";
+export declare class StudentRepository implements IStudentRepository {
+    private studentModels;
+    constructor(studentModels: typeof studentModel);
+    findByEmail(email: string): Promise<IStudent | null>;
+    getStudentById(studentId: string): Promise<IStudent | null>;
+    updateStudent(studentId: string, student: Partial<IStudent>): Promise<IStudent>;
+    getAnnouncements(): Promise<IAnnouncement[]>;
+    createLeave(leaveData: ILeaveStudent): Promise<ILeaveStudent>;
+    findLeaves(studentId: string): Promise<ILeaveStudent[]>;
+    removeLeave(leaveId: string): Promise<void>;
+    addMessage(messageData: IMessage): Promise<IMessage>;
+    findChats(batchId: string): Promise<IMessage[]>;
+    getTimetables(batch: string): Promise<ITimetable[]>;
+    getMcqsByBatch(batchId: string, studentId: string): Promise<IMcq[]>;
+    createMcqSubmit(mcqSubmitDetails: IMcqSubmission): Promise<IMcqSubmission>;
+    createAssignment(assignment: IAssignment): Promise<IAssignment>;
+    findAssignments(studentId: string): Promise<IAssignment[]>;
+    findMcqsAnswered(studentId: string): Promise<IMcqSubmission[]>;
+    findRemarks(batchId: string): Promise<IRemark[]>;
+    findAttendance(studentId: string): Promise<any>;
+    findBatchRanks(batchId: string): Promise<IMcqSubmission[]>;
+}
