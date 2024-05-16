@@ -37,6 +37,7 @@ import {
   validateTimetableDate,
 } from "./manageTimetable";
 import { getAttendence } from "./manageAttendence";
+import { validateUser } from "./userAddingValidation";
 
 export {
   findByEmail,
@@ -76,4 +77,5 @@ export {
   validateTimetableDate,
   alreadyAssignedTeacher,
   existingTimetable,
+  validateUser,
 };

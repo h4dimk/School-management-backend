@@ -480,4 +480,11 @@ export class AdminUseCase implements IAdminUseCase {
       return { present: [], absent: [] };
     }
   }
+
+  async validateUser(email: string): Promise<string | undefined> {
+    const validateError = await this.adminRepository.validateUser(email);
+    if (validateError) {
+      return validateError;
+    }
+  }
 }

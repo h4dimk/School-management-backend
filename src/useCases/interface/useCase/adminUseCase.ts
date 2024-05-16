@@ -70,4 +70,5 @@ export interface IAdminUseCase {
     batch: string,
     teacher: string
   ): Promise<string | undefined>;
+  validateUser(email: string): Promise<string | undefined>;
 }

@@ -38,10 +38,23 @@ export class AdminController {
         throw new Error("Please fill in all fields.");
       }
 
+      const validateUserError = await this.adminUseCase.validateUser(email);
+
+      if (validateUserError) {
+        return res.status(400).json({
+          message: validateUserError,
+          success: false,
+        });
+      }
+
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
-        throw new Error("Please enter a valid email address.");
+        return res.status(400).json({
+          message: "Please enter a valid email address",
+          success: false,
+        });
       }
+
       const password = randomBytes(8).toString("hex");
       const role = Role.TEACHER;
       const newTeacher: ITeacher = {
@@ -101,9 +114,21 @@ export class AdminController {
         throw new Error("Please fill in all fields.");
       }
 
+      const validateUserError = await this.adminUseCase.validateUser(email);
+
+      if (validateUserError) {
+        return res.status(400).json({
+          message: validateUserError,
+          success: false,
+        });
+      }
+
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
-        throw new Error("Please enter a valid email address.");
+        return res.status(400).json({
+          message: "Please enter a valid email address",
+          success: false,
+        });
       }
 
       const password = randomBytes(8).toString("hex");
@@ -178,13 +203,6 @@ export class AdminController {
         subjects.length === 0
       ) {
         throw new Error("Please provide a course and at least one subject.");
-      }
-
-      // Ensure each subject is a non-empty string
-      for (const subject of subjects) {
-        if (typeof subject !== "string" || subject.trim() === "") {
-          throw new Error("Invalid subject format.");
-        }
       }
 
       const newCourse: ICourse = { course, subjects };

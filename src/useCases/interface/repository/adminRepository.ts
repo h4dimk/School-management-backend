@@ -67,4 +67,5 @@ export interface IAdminRepository {
     batch: string,
     teacher: string
   ): Promise<string | undefined>;
+  validateUser(email: string): Promise<string | undefined>;
 }

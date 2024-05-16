@@ -43,6 +43,7 @@ import {
   validateTimetableDate,
   alreadyAssignedTeacher,
   existingTimetable,
+  validateUser,
 } from "./adminRepository/index";
 import { ICourse } from "../../../entities/courseEntity";
 import { IBatch } from "../../../entities/batchEntity";
@@ -428,6 +429,13 @@ export class AdminRepository implements IAdminRepository {
     } catch (error) {
       console.error("Error fetching attendance:", error);
       throw new Error("Failed to fetch attendance");
+    }
+  }
+
+  async validateUser(email: string): Promise<string | undefined> {
+    const validateError = await validateUser(email);
+    if (validateError) {
+      return validateError;
     }
   }
 }
