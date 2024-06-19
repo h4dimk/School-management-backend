@@ -27,8 +27,12 @@ app.use("/api/admin", adminRoute(express.Router()));
 app.use("/api/teacher", teacherRoute(express.Router()));
 app.use("/api/student", studentRoute(express.Router()));
 
-//unknown url
+// Handle the root route "/"
+app.get("/", (req: Request, res: Response) => {
+  res.json({ success: true, message: "Welcome" });
+});
 
+//unknown url
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   const error = new Error(`route ${req.originalUrl} isn't found`) as any;
   error.statusCode = 404;
