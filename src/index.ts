@@ -17,17 +17,16 @@ const start = () => {
   });
 
   // Cron job to send request every 2 minutes
-  // cron.schedule("*/2 * * * *", () => {
-  //   axios
-  //     .get(SERVER)
-  //     .then((response) => {
-  //       console.log(`Request sent successfully at ${new Date()}`);
-  //     })
-  //     .catch((error) => {
-  //       console.error(`Error sending request: ${error.message}`);
-  //     });
-  // });
-  
+  cron.schedule("*/2 * * * *", () => {
+    axios
+      .get(SERVER)
+      .then((response) => {
+        console.log(`Request sent successfully at ${new Date()}`);
+      })
+      .catch((error) => {
+        console.error(`Error sending request: ${error.message}`);
+      });
+  });
 };
 
 start();
