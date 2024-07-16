@@ -7,14 +7,11 @@ export const login = async (
   password: string
 ): Promise<{ admin: IAdmin } | void> => {
   try {
-    // Call the method in the admin repository to find the admin by email
     const admin = await adminRepository.findByEmail(email);
 
-    // If admin is found and the password matches, return the admin object
     if (admin && admin.password === password) {
       return { admin };
     } else {
-      // If admin is not found or the password doesn't match, return void
       return;
     }
   } catch (error) {
